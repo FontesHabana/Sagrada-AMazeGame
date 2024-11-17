@@ -11,8 +11,8 @@ namespace MazeBuilder
     {  //Tamaño del laberinto principal
         public static int mainWidth = 13;
         public static int mainHeight = 13;
-        public static Cell[,] mainMaze { get; set; }
-
+        public static Cell[,] mainMaze;
+        public static Trap[] mazeTrap;
         //Laberinto principal
 
         #region mainMaze
@@ -74,82 +74,101 @@ namespace MazeBuilder
                 }
             }
 
-            StaticCell(mainMaze);
+            //Fija celdas estaticas
+            StaticCell();
+
+
         }
 
         //Declarar celdas específicas. Esta disposición es personal con el fin de conectar los distintos espacios de una forma más equilibrada.
         //Es totalmente una decisión personal
-        public static void StaticCell(Cell[,] maze)
+        public static void StaticCell()
         {
             int xcenter = (mainWidth - 1) / 2;
             int ycenter = (mainHeight - 1) / 2;
             //Celdas fijas para cualquier laberinto cuadrado de lado 2k+1 con k>2
             //Center Cell
-            maze[xcenter, ycenter].Visited = false;
-            maze[xcenter, ycenter].Wall[(int)WallDir.N] = false;
-            maze[xcenter, ycenter - 1].Wall[(int)WallDir.S] = false;
-            maze[xcenter, ycenter].Wall[(int)WallDir.E] = false;
-            maze[xcenter + 1, ycenter].Wall[(int)WallDir.W] = false;
-            maze[xcenter, ycenter].Wall[(int)WallDir.S] = false;
-            maze[xcenter, ycenter + 1].Wall[(int)WallDir.N] = false;
-            maze[xcenter, ycenter].Wall[(int)WallDir.W] = false;
-            maze[xcenter - 1, ycenter].Wall[(int)WallDir.E] = false;
+            mainMaze[xcenter, ycenter].Wall[(int)WallDir.N] = false;
+            mainMaze[xcenter, ycenter - 1].Wall[(int)WallDir.S] = false;
+            mainMaze[xcenter, ycenter].Wall[(int)WallDir.E] = false;
+            mainMaze[xcenter + 1, ycenter].Wall[(int)WallDir.W] = false;
+            mainMaze[xcenter, ycenter].Wall[(int)WallDir.S] = false;
+            mainMaze[xcenter, ycenter + 1].Wall[(int)WallDir.N] = false;
+            mainMaze[xcenter, ycenter].Wall[(int)WallDir.W] = false;
+            mainMaze[xcenter - 1, ycenter].Wall[(int)WallDir.E] = false;
 
             //0-1-2
-            maze[xcenter - 2, ycenter - 2].Wall[(int)WallDir.N] = false;
-            maze[xcenter - 2, ycenter - 2].Wall[(int)WallDir.W] = false;
+            mainMaze[xcenter - 2, ycenter - 2].Wall[(int)WallDir.N] = false;
+            mainMaze[xcenter - 2, ycenter - 2].Wall[(int)WallDir.W] = false;
 
-            maze[xcenter - 2, ycenter - 3].Wall[(int)WallDir.S] = false;
-            maze[xcenter - 3, ycenter - 2].Wall[(int)WallDir.E] = false;
+            mainMaze[xcenter - 2, ycenter - 3].Wall[(int)WallDir.S] = false;
+            mainMaze[xcenter - 3, ycenter - 2].Wall[(int)WallDir.E] = false;
             //0-2-3
-            maze[xcenter + 2, ycenter - 2].Wall[(int)WallDir.N] = false;
-            maze[xcenter + 2, ycenter - 2].Wall[(int)WallDir.E] = false;
+            mainMaze[xcenter + 2, ycenter - 2].Wall[(int)WallDir.N] = false;
+            mainMaze[xcenter + 2, ycenter - 2].Wall[(int)WallDir.E] = false;
 
-            maze[xcenter + 2, ycenter - 3].Wall[(int)WallDir.S] = false;
-            maze[xcenter + 3, ycenter - 2].Wall[(int)WallDir.W] = false;
+            mainMaze[xcenter + 2, ycenter - 3].Wall[(int)WallDir.S] = false;
+            mainMaze[xcenter + 3, ycenter - 2].Wall[(int)WallDir.W] = false;
             //0-3-4
-            maze[xcenter + 2, ycenter + 2].Wall[(int)WallDir.S] = false;
-            maze[xcenter + 2, ycenter + 2].Wall[(int)WallDir.E] = false;
+            mainMaze[xcenter + 2, ycenter + 2].Wall[(int)WallDir.S] = false;
+            mainMaze[xcenter + 2, ycenter + 2].Wall[(int)WallDir.E] = false;
 
-            maze[xcenter + 2, ycenter + 3].Wall[(int)WallDir.N] = false;
-            maze[xcenter + 3, ycenter + 2].Wall[(int)WallDir.W] = false;
+            mainMaze[xcenter + 2, ycenter + 3].Wall[(int)WallDir.N] = false;
+            mainMaze[xcenter + 3, ycenter + 2].Wall[(int)WallDir.W] = false;
             //0-4-1
-            maze[xcenter - 2, ycenter + 2].Wall[(int)WallDir.S] = false;
-            maze[xcenter - 2, ycenter + 2].Wall[(int)WallDir.W] = false;
+            mainMaze[xcenter - 2, ycenter + 2].Wall[(int)WallDir.S] = false;
+            mainMaze[xcenter - 2, ycenter + 2].Wall[(int)WallDir.W] = false;
 
-            maze[xcenter - 2, ycenter + 3].Wall[(int)WallDir.N] = false;
-            maze[xcenter - 3, ycenter + 2].Wall[(int)WallDir.E] = false;
+            mainMaze[xcenter - 2, ycenter + 3].Wall[(int)WallDir.N] = false;
+            mainMaze[xcenter - 3, ycenter + 2].Wall[(int)WallDir.E] = false;
 
             #region 13x13
             //A partir de aquí es solo para 13x13       
             //1-4
-            maze[0, 8].Wall[(int)WallDir.S] = true;
-            maze[0, 9].Wall[(int)WallDir.N] = false;
+            mainMaze[0, 8].Wall[(int)WallDir.S] = false;
+            mainMaze[0, 9].Wall[(int)WallDir.N] = false;
 
-            maze[2, 8].Wall[(int)WallDir.S] = false;
-            maze[2, 9].Wall[(int)WallDir.N] = false;
+            mainMaze[2, 8].Wall[(int)WallDir.S] = false;
+            mainMaze[2, 9].Wall[(int)WallDir.N] = false;
 
             //2-3
-            maze[10, 4].Wall[(int)WallDir.S] = false;
-            maze[10, 5].Wall[(int)WallDir.N] = false;
+            mainMaze[10, 3].Wall[(int)WallDir.S] = false;
+            mainMaze[10, 4].Wall[(int)WallDir.N] = false;
 
-            maze[12, 4].Wall[(int)WallDir.S] = false;
-            maze[12, 5].Wall[(int)WallDir.N] = false;
+            mainMaze[12, 3].Wall[(int)WallDir.S] = false;
+            mainMaze[12, 4].Wall[(int)WallDir.N] = false;
             //1-2
-            maze[3, 0].Wall[(int)WallDir.E] = false;
-            maze[4, 0].Wall[(int)WallDir.W] = false;
+            mainMaze[3, 0].Wall[(int)WallDir.E] = false;
+            mainMaze[4, 0].Wall[(int)WallDir.W] = false;
 
-            maze[3, 2].Wall[(int)WallDir.E] = false;
-            maze[4, 2].Wall[(int)WallDir.W] = false;
+            mainMaze[3, 2].Wall[(int)WallDir.E] = false;
+            mainMaze[4, 2].Wall[(int)WallDir.W] = false;
             //4-3
-            maze[3, 10].Wall[(int)WallDir.E] = false;
-            maze[4, 10].Wall[(int)WallDir.W] = false;
+            mainMaze[8, 10].Wall[(int)WallDir.E] = false;
+            mainMaze[9, 10].Wall[(int)WallDir.W] = false;
 
-            maze[3, 12].Wall[(int)WallDir.E] = false;
-            maze[4, 12].Wall[(int)WallDir.W] = false;
+            mainMaze[8, 12].Wall[(int)WallDir.E] = false;
+            mainMaze[9, 12].Wall[(int)WallDir.W] = false;
 
             #endregion
         }
+
+        //Generar las trampas
+        /*public static void GeneratingTrap()
+        {
+            Trap[] mazeTrap = new Trap[20];
+            Random rand = new Random();
+            int x = rand.Next(1, mainWidth - 1);
+            int y = rand.Next(1, mainHeight - 1);
+
+            for (int i = 0; i < mazeTrap.Length; i++)
+            {
+                mazeTrap[i] = new Trap(x, y);
+            }
+        }*/
+
+
+
         #endregion
         //Maze algorithm
         #region mazealgorithm

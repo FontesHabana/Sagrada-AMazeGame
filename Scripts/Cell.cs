@@ -5,6 +5,9 @@ namespace MazeBuilder
         public (int, int) Coordenada { get; set; }
         public bool[] Wall = { true, true, true, true };
         public bool Visited { get; set; }
+        public bool Occuped { get; set; }
+
+        public bool IsATramp { get; set; }
 
 
         //constructor
@@ -12,6 +15,8 @@ namespace MazeBuilder
         {
             Coordenada = (x, y);
             Visited = false;
+            Occuped = false;
+            IsATramp = false;
         }
 
     }
