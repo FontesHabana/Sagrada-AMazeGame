@@ -12,7 +12,6 @@ namespace MazeBuilder
         public static int mainWidth = 13;
         public static int mainHeight = 13;
         public static Cell[,] mainMaze;
-        public static Trap[] mazeTrap;
         //Laberinto principal
 
         #region mainMaze
@@ -76,6 +75,31 @@ namespace MazeBuilder
 
             //Fija celdas estaticas
             StaticCell();
+            //Generar trampas en el laberinto con una probabilidad de 1/5
+            Random rnd = new Random();
+            for (int x = 1; x < mainWidth - 1; x++)
+            {
+                for (int y = 1; y < mainHeight - 1; y++)
+                {
+                    if (mainMaze[x - 1, y] is Trap)
+                    {
+                        y += 1;
+                    }
+                    if (((x < 5 || x > 7) && (y < 5 || y > 7)))
+                    {
+                        if (rnd.Next(0, 3) == 0)
+                        {
+                            Trap trap = new Trap(x, y);
+                            trap.Wall = mainMaze[x, y].Wall;
+                            mainMaze[x, y] = trap;
+                            y += 1;
+                        }
+                    }
+
+                }
+            }
+
+
 
 
         }
@@ -153,19 +177,7 @@ namespace MazeBuilder
             #endregion
         }
 
-        //Generar las trampas
-        /*public static void GeneratingTrap()
-        {
-            Trap[] mazeTrap = new Trap[20];
-            Random rand = new Random();
-            int x = rand.Next(1, mainWidth - 1);
-            int y = rand.Next(1, mainHeight - 1);
 
-            for (int i = 0; i < mazeTrap.Length; i++)
-            {
-                mazeTrap[i] = new Trap(x, y);
-            }
-        }*/
 
 
 

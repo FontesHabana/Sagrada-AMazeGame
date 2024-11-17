@@ -11,7 +11,7 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        int i = 5;
+        int i = 10;
         GameMaster.InitGame();
         while (i > 0)
         {

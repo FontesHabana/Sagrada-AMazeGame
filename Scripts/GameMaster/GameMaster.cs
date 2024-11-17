@@ -2,6 +2,7 @@ using MazeBuilder;
 using Tiles;
 using Spectre.Console;
 using UserInterface;
+using System.Security.Cryptography.X509Certificates;
 
 namespace LogicGame
 {
@@ -20,7 +21,7 @@ namespace LogicGame
 
         public static bool InitGame()
         {   //Declarar jugadores. Más adelante esto será elegible
-            playeramount = 1;
+            playeramount = 2;
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
@@ -34,6 +35,7 @@ namespace LogicGame
             MazeCanvas.PrintMaze();
             for (int i = 0; i < playeramount; i++)
             {
+                Maze.mainMaze[players[i].Position.Item1, players[i].Position.Item2].Occuped = true;
                 MazeCanvas.AddTile(players[i]);
             }
             return true;
@@ -51,6 +53,10 @@ namespace LogicGame
                 if (Player.Movement(key) == true)
                 {
                     speed--;
+                    if (Maze.mainMaze[Player.Position.Item1, Player.Position.Item2] is Trap)
+                    {
+                        Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
+                    }
                 }
 
             }

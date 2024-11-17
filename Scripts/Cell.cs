@@ -19,5 +19,11 @@ namespace MazeBuilder
             IsATramp = false;
         }
 
+        public virtual void ApplyEffect()
+        {
+
+        }
+
+
     }
 }
