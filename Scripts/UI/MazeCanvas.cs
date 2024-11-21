@@ -36,17 +36,17 @@ namespace UserInterface
                 {
                     if (Maze.mainMaze[x, y] is Trap)
                     {
-                        PrintTrap(x, y, Maze.mainMaze, canvas);
+                        AddTrap(x, y, Maze.mainMaze, canvas);
                     }
                     else
                     {
-                        PrintCell(x, y, Maze.mainMaze, canvas);
+                        AddCell(x, y, Maze.mainMaze, canvas);
                     }
                 }
             }
-            AnsiConsole.Write(canvas);
+
         }
-        public static void PrintCell(int x, int y, Cell[,] maze, Canvas canvas)
+        private static void AddCell(int x, int y, Cell[,] maze, Canvas canvas)
         {
             //Print Cell
             if (Maze.mainMaze[x, y].Visited)
@@ -84,7 +84,7 @@ namespace UserInterface
             }
         }
 
-        public static void PrintTrap(int x, int y, Cell[,] maze, Canvas canvas)
+        private static void AddTrap(int x, int y, Cell[,] maze, Canvas canvas)
         {
             //Print Trap
 
@@ -139,10 +139,13 @@ namespace UserInterface
             canvas.SetPixel(3 * tile.Position.Item1 + 2, 3 * tile.Position.Item2 + 1, tile.Appearance);
             canvas.SetPixel(3 * tile.Position.Item1 + 1, 3 * tile.Position.Item2 + 2, tile.Appearance);
             canvas.SetPixel(3 * tile.Position.Item1 + 2, 3 * tile.Position.Item2 + 2, tile.Appearance);
+            ;
+        }
+
+        public static void RefreshMaze()
+        {
             AnsiConsole.Clear();
             AnsiConsole.Write(canvas);
         }
-
-
     }
 }

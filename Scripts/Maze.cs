@@ -1,3 +1,4 @@
+# pragma warning disable
 namespace MazeBuilder
 {
     public enum WallDir
@@ -77,15 +78,25 @@ namespace MazeBuilder
             StaticCell();
             //Generar trampas en el laberinto con una probabilidad de 1/5
             Random rnd = new Random();
-            for (int x = 1; x < mainWidth - 1; x++)
+            for (int x = 1; x < mainWidth - 2; x++)
             {
-                for (int y = 1; y < mainHeight - 1; y++)
+                for (int y = 1; y < mainHeight - 2; y++)
                 {
                     if (mainMaze[x - 1, y] is Trap)
                     {
                         y += 1;
                     }
-                    if (((x < 5 || x > 7) && (y < 5 || y > 7)))
+                    if (x < 5 || x > 7)
+                    {
+                        if (rnd.Next(0, 3) == 0)
+                        {
+                            Trap trap = new Trap(x, y);
+                            trap.Wall = mainMaze[x, y].Wall;
+                            mainMaze[x, y] = trap;
+                            y += 1;
+                        }
+                    }
+                    else if (y < 5 || y > 7)
                     {
                         if (rnd.Next(0, 3) == 0)
                         {

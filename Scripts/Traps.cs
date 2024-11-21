@@ -50,7 +50,7 @@ namespace MazeBuilder
                     NewMaze();
                     break;
                 case TrapEffect.Attack:
-                    System.Console.WriteLine("Attack");
+                    Damage();
                     break;
 
                 case TrapEffect.Teletransportation:
@@ -74,7 +74,8 @@ namespace MazeBuilder
                 Maze.mainMaze[GameMaster.players[i].Position.Item1, GameMaster.players[i].Position.Item2].Occuped = true;
                 MazeCanvas.AddTile(GameMaster.players[i]);
             }
-            System.Console.WriteLine("NewMaze");
+            MazeCanvas.AddTile(GameMaster.mainFlag);
+
         }
         private static bool Teletransportation()
         {
@@ -85,20 +86,20 @@ namespace MazeBuilder
             //Establece una posición de la x en el borde del lado opuesto del tablero
             if (GameMaster.Player.Position.Item1 < 6)
             {
-                newX = rnd.Next(Maze.mainWidth - 4, Maze.mainWidth);
+                newX = rnd.Next(Maze.mainWidth - 4, Maze.mainWidth - 1);
             }
             else
             {
-                newX = rnd.Next(0, 4);
+                newX = rnd.Next(0, 3);
             }
             //Establece una posición de la y en el borde del lado opuesto del tablero
             if (GameMaster.Player.Position.Item2 < 6)
             {
-                newY = rnd.Next(Maze.mainHeight - 4, Maze.mainHeight);
+                newY = rnd.Next(Maze.mainHeight - 4, Maze.mainHeight - 1);
             }
             else
             {
-                newY = rnd.Next(0, 4);
+                newY = rnd.Next(0, 3);
             }
             if (Maze.mainMaze[newX, newY].Occuped == false)
             {
@@ -112,10 +113,24 @@ namespace MazeBuilder
                 return true;
             }
             MazeCanvas.AddTile(GameMaster.Player);
+            if (GameMaster.Player.haveFlag)
+            {
+                GameMaster.mainFlag.Position = GameMaster.Player.Position;
+                MazeCanvas.AddTile(GameMaster.mainFlag);
+            }
             System.Console.WriteLine("Teletransportation");
             return true;
         }
-
+        private static void Damage()
+        {
+            Random rnd = new Random();
+            GameMaster.Player.Life -= rnd.Next(2, 5);
+            if (GameMaster.Player.Life <= 0)
+            {
+                GameMaster.Player.Respawn(GameMaster.Player);
+            }
+            //Agregar método que te regresa al inicio
+        }
     }
 
     //Quitar vida
