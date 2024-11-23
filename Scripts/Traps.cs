@@ -90,7 +90,7 @@ namespace MazeBuilder
             }
             else
             {
-                newX = rnd.Next(0, 3);
+                newX = rnd.Next(1, 4);
             }
             //Establece una posición de la y en el borde del lado opuesto del tablero
             if (GameMaster.Player.Position.Item2 < 6)
@@ -99,7 +99,7 @@ namespace MazeBuilder
             }
             else
             {
-                newY = rnd.Next(0, 3);
+                newY = rnd.Next(1, 4);
             }
             if (Maze.mainMaze[newX, newY].Occuped == false)
             {

@@ -141,11 +141,21 @@ namespace UserInterface
             canvas.SetPixel(3 * tile.Position.Item1 + 2, 3 * tile.Position.Item2 + 2, tile.Appearance);
             ;
         }
-
+        //Esto no va aquí esto va en un generico de la pantalla
         public static void RefreshMaze()
         {
+            GameDisplay.layout["MazeContainer"].Update(
+                new Panel(Align.Center(MazeCanvas.canvas))
+            );
+            GameDisplay.PlayerStatus();
+
+
             AnsiConsole.Clear();
-            AnsiConsole.Write(canvas);
+
+            AnsiConsole.Write(GameDisplay.layout);
+
+            ///AnsiConsole.Clear();
+            //AnsiConsole.Write(canvas);
         }
     }
 }

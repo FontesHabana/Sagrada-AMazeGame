@@ -15,15 +15,17 @@ namespace Tiles
         public int Life { get; set; }
         public int Speed { get; set; }
         public int Attack { get; set; }
+        public int Power { get; set; }
 
         public bool haveFlag { get; set; }
 
 
-        public Character((int, int) position, Color appearance, string name, int life, int speed, int attack) : base(position, appearance)
+        public Character((int, int) position, Color appearance, string name, int life, int speed, int power, int attack) : base(position, appearance)
         {
             Name = name;
             Life = life;
             Speed = speed;
+            Power = power;
             Attack = attack;
             haveFlag = false;
         }
@@ -48,10 +50,10 @@ namespace Tiles
 
                 if (Position.Item1 != 0 && Position.Item1 != Maze.mainWidth - 1 && Position.Item2 != 0 && Position.Item2 != Maze.mainHeight - 1)
                 {
-                    if ((Maze.mainMaze[Position.Item1 + 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1 + 1, Position.Item2].Wall[(int)WallDir.W])
-                    || (Maze.mainMaze[Position.Item1 - 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1 - 1, Position.Item2].Wall[(int)WallDir.E])
-                    || (Maze.mainMaze[Position.Item1, Position.Item2 + 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2 + 1].Wall[(int)WallDir.N])
-                    || (Maze.mainMaze[Position.Item1, Position.Item2 - 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2 - 1].Wall[(int)WallDir.S]))
+                    if ((Maze.mainMaze[Position.Item1 + 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.E])
+                    || (Maze.mainMaze[Position.Item1 - 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.W])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 + 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.S])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 - 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.N]))
                     {
                         for (int i = 0; i < GameMaster.players.Count; i++)
                         {

@@ -16,6 +16,7 @@ namespace LogicGame
         private static Color[] appearance = [Color.Blue, Color.Red, Color.Green, Color.Yellow];
         private static int[] speed = [5, 5, 5, 5];
         public static Character Player { get; set; }
+        public static int playerspeed = 0;
         public static Flag mainFlag = new Flag((6, 6), Color.DarkMagenta);
 
 
@@ -27,7 +28,7 @@ namespace LogicGame
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], 3);
+                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], 10, 3);
                 players.Add(Player);
             }
             Random rand = new Random();
@@ -44,7 +45,7 @@ namespace LogicGame
 
             MazeCanvas.AddTile(mainFlag);
 
-            MazeCanvas.RefreshMaze();
+            //MazeCanvas.RefreshMaze();
 
             return true;
         }
@@ -52,15 +53,15 @@ namespace LogicGame
         public static void Turn()
         {
             Player = players[turn];
-            int speed = Player.Speed;
-            System.Console.WriteLine($"{Player.Name} es tu turno");
-            while (speed > 0)
+            playerspeed = Player.Speed;
+            MazeCanvas.RefreshMaze();
+            while (playerspeed > 0)
             {
 
                 ConsoleKeyInfo key = Console.ReadKey();
-                if (Player.Movement(key) == true)
+                if (Player.Movement(key) == true && playerspeed > 0)
                 {
-                    speed--;
+                    playerspeed--;
                     Player.HaveFlag();
                     Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
 
@@ -77,10 +78,17 @@ namespace LogicGame
                     }
                 }
                 MazeCanvas.RefreshMaze();
-                Victory(VictoryCondition());
+                if (VictoryCondition() > 0)
+                {
+                    Victory(VictoryCondition());
+                    break;
+                }
+
+
             }
+            NextTurn();
         }
-        public static void NextTurn()
+        private static void NextTurn()
         {
             turn++;
             turn %= playeramount;
@@ -110,6 +118,7 @@ namespace LogicGame
 
         public static void Victory(int winner)
         {
+            //players[turn].Speed = 0;
             switch (winner)
             {
                 case 1:

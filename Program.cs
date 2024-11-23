@@ -11,16 +11,14 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        int i = 10;
+        GameDisplay.GameScreen();
         GameMaster.InitGame();
-        while (i > 0)
-        {
+        //MazeCanvas.RefreshMaze();
+        while (GameMaster.VictoryCondition() == 0)
+        {// La victoria se desata al finalizar el turno. Hay que implementar que el final se desate cuando llegues a la meta
             GameMaster.Turn();
-            GameMaster.NextTurn();
-            i--;
+
         }
-
-
 
     }
 }
