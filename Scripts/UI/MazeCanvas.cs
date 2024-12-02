@@ -34,19 +34,14 @@ namespace UserInterface
             {
                 for (int y = 0; y < Maze.mainHeight; y++)
                 {
-                    if (Maze.mainMaze[x, y] is Trap)
-                    {
-                        AddTrap(x, y, Maze.mainMaze, canvas);
-                    }
-                    else
-                    {
-                        AddCell(x, y, Maze.mainMaze, canvas);
-                    }
+
+                    AddCell(x, y, Maze.mainMaze, canvas);
+
                 }
             }
 
         }
-        private static void AddCell(int x, int y, Cell[,] maze, Canvas canvas)
+        public static void AddCell(int x, int y, Cell[,] maze, Canvas canvas)
         {
             //Print Cell
             if (Maze.mainMaze[x, y].Visited)
@@ -84,7 +79,7 @@ namespace UserInterface
             }
         }
 
-        private static void AddTrap(int x, int y, Cell[,] maze, Canvas canvas)
+        public static void AddTrap(int x, int y, Cell[,] maze, Canvas canvas)
         {
             //Print Trap
 
@@ -144,10 +139,12 @@ namespace UserInterface
         //Esto no va aquí esto va en un generico de la pantalla
         public static void RefreshMaze()
         {
+
             GameDisplay.layout["MazeContainer"].Update(
                 new Panel(Align.Center(MazeCanvas.canvas))
             );
             GameDisplay.PlayerStatus();
+            GameDisplay.GameMenu();
 
 
             AnsiConsole.Clear();

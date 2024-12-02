@@ -18,6 +18,10 @@ namespace LogicGame
         public static Character Player { get; set; }
         public static int playerspeed = 0;
         public static Flag mainFlag = new Flag((6, 6), Color.DarkMagenta);
+        public static List<(bool, string)> gameOption = new List<(bool, string)> { (true, "Attack"), (false, "Show Traps"), (false, "Special Effect"), (false, "Next Turn") };
+
+
+
 
 
         //Variable speed modificar más adelante
@@ -55,28 +59,89 @@ namespace LogicGame
             Player = players[turn];
             playerspeed = Player.Speed;
             MazeCanvas.RefreshMaze();
-            while (playerspeed > 0)
+            while (true)
             {
 
+
                 ConsoleKeyInfo key = Console.ReadKey();
-                if (Player.Movement(key) == true && playerspeed > 0)
-                {
-                    playerspeed--;
-                    Player.HaveFlag();
-                    Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
 
-
-                }
-                if (Player.AttackTo(key) == true)
+                for (int x = 0; x < Maze.mainWidth; x++)
                 {
-                    for (int i = 0; i < players.Count; i++)
+                    for (int y = 0; y < Maze.mainHeight; y++)
                     {
-                        if (players[i].Life <= 0)
+                        if (Maze.mainMaze[x, y] is Trap)
                         {
-                            players[i].Respawn(players[i]);
+                            MazeCanvas.AddCell(x, y, Maze.mainMaze, MazeCanvas.canvas);
                         }
                     }
                 }
+
+
+                if (playerspeed > 0)
+                {
+                    if (Player.Movement(key))
+                    {
+                        playerspeed--;
+                        Player.HaveFlag();
+                        Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
+
+
+                    }
+                }
+
+
+                if (Menu(gameOption, key))
+                {
+
+                }
+                if (key.Key == ConsoleKey.Enter)
+                {
+                    int option = 0;
+                    foreach (var item in gameOption)
+                    {
+                        if (item.Item1)
+                        {
+                            option = gameOption.IndexOf(item);
+                        }
+                    }
+                    switch (option)
+                    {
+                        case 0:
+                            if (Player.AttackTo())
+                            {
+                                for (int i = 0; i < players.Count; i++)
+                                {
+                                    if (players[i].Life <= 0)
+                                    {
+                                        players[i].Respawn(players[i]);
+                                    }
+                                }
+                            }
+
+                            break;
+                        case 1:
+                            Player.ShowTrap();
+                            break;
+                        case 2:
+
+                            Console.WriteLine("estoy viendo mi poder");
+                            break;
+                        default:
+                            break;
+                    }
+                    if (gameOption[3].Item1)
+                    {
+
+                        break;
+                    }
+
+
+
+
+
+
+                }
+
                 MazeCanvas.RefreshMaze();
                 if (VictoryCondition() > 0)
                 {
@@ -84,10 +149,11 @@ namespace LogicGame
                     break;
                 }
 
-
             }
+
             NextTurn();
         }
+
         private static void NextTurn()
         {
             turn++;
@@ -146,6 +212,57 @@ namespace LogicGame
 
         }
 
+        public static bool Menu(List<(bool, string)> menu, ConsoleKeyInfo key)
+        {
+            if (key.Key == ConsoleKey.UpArrow)
+            {
+                for (var i = 0; i < menu.Count; i++)
+                {
+                    if (menu[i].Item1)
+                    {
+                        menu[i] = (false, menu[i].Item2);
+                        if (i == 0)
+                        {
+                            menu[menu.Count - 1] = (true, menu[menu.Count - 1].Item2);
+                            return true;
+                        }
+                        else
+                        {
+                            menu[i - 1] = (true, menu[i - 1].Item2);
+                            return true;
+                        }
+                    }
+                }
+
+
+
+            }
+
+            if (key.Key == ConsoleKey.DownArrow)
+            {
+                for (int i = 0; i < menu.Count; i++)
+                {
+                    if (menu[i].Item1)
+                    {
+                        menu[i] = (false, menu[i].Item2);
+                        if (i == menu.Count - 1)
+                        {
+                            menu[0] = (true, menu[0].Item2);
+                            return true;
+                        }
+                        else
+                        {
+                            menu[i + 1] = (true, menu[i + 1].Item2);
+                            return true;
+                        }
+                    }
+
+                }
+            }
+
+
+            return false;
+        }
 
     }
 }

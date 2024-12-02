@@ -30,6 +30,7 @@ namespace UserInterface
                              new Layout("bottom")
                          )
                      );
+
             layout["MazeContainer"].MinimumSize(85);
             layout["top"].Ratio(3);
 
@@ -43,6 +44,7 @@ namespace UserInterface
             new Markup($"{GameMaster.Player.Name} [blue]Is your turn![/]"),
             VerticalAlignment.Middle))
             .Expand());
+
 
 
             layout["Character Status"].Update(
@@ -62,11 +64,31 @@ namespace UserInterface
 
 
         }
+
+        public static void GameMenu()
+        {
+            var table = new Table();
+            table.AddColumn("Options");
+            foreach (var item in GameMaster.gameOption)
+            {
+                if (item.Item1)
+                {
+                    table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
+                }
+                else
+                {
+                    table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
+                }
+            }
+
+
+            layout["GameOption"].Update(
+                table
+            );
+
+
+
+        }
     }
-
-
-
-
-
 }
 

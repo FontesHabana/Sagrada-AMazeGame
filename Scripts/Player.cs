@@ -1,5 +1,6 @@
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 using System.Security;
 using LogicGame;
 using MazeBuilder;
@@ -42,12 +43,11 @@ namespace Tiles
             MazeCanvas.AddTile(GameMaster.mainFlag);
 
         }
-        public bool AttackTo(ConsoleKeyInfo keyInput)
+        public bool AttackTo()
         {
-
-            if (keyInput.Key == ConsoleKey.D1)
-            {//Esta condición está mal, en los bordes del tablero da error y ataca a traves de las paredes
-
+            //General Atack
+            if (Power > 4)
+            {
                 if (Position.Item1 != 0 && Position.Item1 != Maze.mainWidth - 1 && Position.Item2 != 0 && Position.Item2 != Maze.mainHeight - 1)
                 {
                     if ((Maze.mainMaze[Position.Item1 + 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.E])
@@ -65,16 +65,142 @@ namespace Tiles
                                 GameMaster.players[i].Life -= Attack;
                             }
                         }
+                        Power -= 4;
+                        if (Power < 0)
+                        {
+                            Power = 0;
+                        }
+                        return true;
+                    }
+                }
+                //Atack in laterals
+                //West
+                if (Position.Item1 == 0 && Position.Item2 != 0 && Position.Item2 != Maze.mainHeight - 1)
+                {
+                    if ((Maze.mainMaze[Position.Item1 + 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.E])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 + 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.S])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 - 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.N]))
+                    {
+                        for (int i = 0; i < GameMaster.players.Count; i++)
+                        {
+                            if (GameMaster.players[i].Position == (Position.Item1 + 1, Position.Item2)
+                            || GameMaster.players[i].Position == (Position.Item1, Position.Item2 + 1)
+                            || GameMaster.players[i].Position == (Position.Item1, Position.Item2 - 1))
+                            {
+                                GameMaster.players[i].Life -= Attack;
+                            }
+                        }
+                        Power -= 4;
+                        if (Power < 0)
+                        {
+                            Power = 0;
+                        }
+                        return true;
+                    }
+                }
+                //East
+                if (Position.Item1 == Maze.mainWidth - 1 && Position.Item2 != 0 && Position.Item2 != Maze.mainHeight - 1)
+                {
+                    if ((Maze.mainMaze[Position.Item1 - 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.W])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 + 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.S])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 - 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.N]))
+                    {
+                        for (int i = 0; i < GameMaster.players.Count; i++)
+                        {
+                            if (GameMaster.players[i].Position == (Position.Item1 - 1, Position.Item2)
+                            || GameMaster.players[i].Position == (Position.Item1, Position.Item2 + 1)
+                            || GameMaster.players[i].Position == (Position.Item1, Position.Item2 - 1))
+                            {
+                                GameMaster.players[i].Life -= Attack;
+                            }
+                        }
+                        Power -= 4;
+                        if (Power < 0)
+                        {
+                            Power = 0;
+                        }
+                        return true;
+                    }
+                }
+                //North
+                if (Position.Item1 != 0 && Position.Item1 != Maze.mainWidth - 1 && Position.Item2 == 0)
+                {
+                    if ((Maze.mainMaze[Position.Item1 + 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.E])
+                    || (Maze.mainMaze[Position.Item1 - 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.W])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 + 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.S]))
+                    {
+                        for (int i = 0; i < GameMaster.players.Count; i++)
+                        {
+                            if (GameMaster.players[i].Position == (Position.Item1 + 1, Position.Item2)
+                            || GameMaster.players[i].Position == (Position.Item1 - 1, Position.Item2)
+                            || GameMaster.players[i].Position == (Position.Item1, Position.Item2 + 1))
+                            {
+                                GameMaster.players[i].Life -= Attack;
+                            }
+                        }
+                        Power -= 4;
+                        if (Power < 0)
+                        {
+                            Power = 0;
+                        }
+                        return true;
+                    }
+                }
+                //South
+                if (Position.Item1 != 0 && Position.Item1 != Maze.mainWidth - 1 && Position.Item2 == Maze.mainHeight - 1)
+                {
+                    if ((Maze.mainMaze[Position.Item1 + 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.E])
+                    || (Maze.mainMaze[Position.Item1 - 1, Position.Item2].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.W])
+                    || (Maze.mainMaze[Position.Item1, Position.Item2 - 1].Occuped && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[(int)WallDir.N]))
+                    {
+                        for (int i = 0; i < GameMaster.players.Count; i++)
+                        {
+                            if (GameMaster.players[i].Position == (Position.Item1 + 1, Position.Item2)
+                            || GameMaster.players[i].Position == (Position.Item1 - 1, Position.Item2)
+                            || GameMaster.players[i].Position == (Position.Item1, Position.Item2 - 1))
+                            {
+                                GameMaster.players[i].Life -= Attack;
+                            }
+                        }
+                        Power -= 4;
+                        if (Power < 0)
+                        {
+                            Power = 0;
+                        }
+                        return true;
                     }
                 }
 
+            }
+            return false;
+        }
+
+        public bool ShowTrap()
+        {
+            if (Power > 0)
+            {
+                Power -= 3;
+                if (Power < 3)
+                {
+                    Power = 0;
+                }
+                for (int x = 0; x < Maze.mainWidth; x++)
+                {
+                    for (int y = 0; y < Maze.mainHeight; y++)
+                    {
+                        if (Maze.mainMaze[x, y] is Trap)
+                        {
+                            MazeCanvas.AddTrap(x, y, Maze.mainMaze, MazeCanvas.canvas);
+                        }
+                    }
+                }
                 return true;
             }
 
 
+
             return false;
         }
-
         public bool HaveFlag()
         {
 
@@ -98,6 +224,88 @@ namespace Tiles
             return false;
         }
 
+    }
+
+    static class Power
+    {
+        //Atravesar paredes
+        public static bool JumpWall(ConsoleKeyInfo keyInput, Character player)
+        {
+            Tile tile = new Tile(player.Position, player.Appearance);
+            //Hacia arriba
+            if (player.Power > 5)
+            {
+                if (keyInput.Key == ConsoleKey.W && player.Position.Item2 != 0
+                                 && Maze.mainMaze[player.Position.Item1, player.Position.Item2 - 1].Occuped == false)
+                {
+                    MazeCanvas.RemoveTile(tile);
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
+                    player.Position = (player.Position.Item1, player.Position.Item2 - 1);
+                    tile.Position = player.Position;
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
+                    MazeCanvas.AddTile(tile);
+                    player.Power -= 5;
+                    return true;
+                }
+                //Hacia derecha
+                if (keyInput.Key == ConsoleKey.D && player.Position.Item1 != (Maze.mainWidth + 1)
+                                                          && Maze.mainMaze[player.Position.Item1 + 1, player.Position.Item2].Occuped == false)
+                {
+                    MazeCanvas.RemoveTile(tile);
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
+                    player.Position = (player.Position.Item1 + 1, player.Position.Item2);
+                    tile.Position = player.Position;
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
+                    MazeCanvas.AddTile(tile);
+                    player.Power -= 5;
+                    return true;
+                }
+                //Hacia izquierda
+                if (keyInput.Key == ConsoleKey.A && player.Position.Item1 != 0
+                                                         && Maze.mainMaze[player.Position.Item1 - 1, player.Position.Item2].Occuped == false)
+                {
+                    MazeCanvas.RemoveTile(tile);
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
+                    player.Position = (player.Position.Item1 - 1, player.Position.Item2);
+                    tile.Position = player.Position;
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
+                    MazeCanvas.AddTile(tile);
+                    player.Power -= 5;
+                    return true;
+                }
+                //Hacia abajo
+                if (keyInput.Key == ConsoleKey.S && player.Position.Item2 != (Maze.mainHeight - 1)
+                                                         && Maze.mainMaze[player.Position.Item1, player.Position.Item2 + 1].Occuped == false)
+                {
+                    MazeCanvas.RemoveTile(tile);
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
+                    player.Position = (player.Position.Item1, player.Position.Item2 + 1);
+                    tile.Position = player.Position;
+                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
+                    MazeCanvas.AddTile(tile);
+                    player.Power -= 5;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        //Aumentar velocidad
+        public static bool IncreaseSpeed(int speed)
+        {
+            GameMaster.playerspeed += speed;
+            return true;
+        }
+        //Aumentar vida FALTAN COSAS POR HACER
+        public static bool IncreaseLife(int life)
+        {
+            GameMaster.Player.Life += life;
+            //Cuando se generen la lista de jugadores que la vida no supere la vida original del jugador
+            return true;
+        }
+        //Teletransportación
+
+        //
     }
 
 }

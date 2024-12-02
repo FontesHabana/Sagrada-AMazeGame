@@ -9,8 +9,16 @@ using LogicGame;
 
 public class Program
 {
+
     public static void Main(string[] args)
     {
+        //Presentación del juego
+
+        //Menú de inicio
+
+        //Switch con opciones del menú de inicio?
+
+
         GameDisplay.GameScreen();
         GameMaster.InitGame();
         //MazeCanvas.RefreshMaze();
@@ -19,6 +27,7 @@ public class Program
             GameMaster.Turn();
 
         }
+
 
     }
 }
