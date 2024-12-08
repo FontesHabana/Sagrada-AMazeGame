@@ -25,8 +25,8 @@ public class Program
         while (GameMaster.VictoryCondition() == 0)
         {// La victoria se desata al finalizar el turno. Hay que implementar que el final se desate cuando llegues a la meta
             GameMaster.Turn();
-
         }
+
 
 
     }

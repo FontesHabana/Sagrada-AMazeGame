@@ -9,6 +9,7 @@ namespace UserInterface
     {
         public static Canvas canvas = new Canvas(3 * Maze.mainWidth + 1, 3 * Maze.mainHeight + 1);
 
+
         public static void PrintMaze()
         {
             Cell[,] mainMaze = Maze.mainMaze;
@@ -139,14 +140,32 @@ namespace UserInterface
         //Esto no va aquí esto va en un generico de la pantalla
         public static void RefreshMaze()
         {
+            for (int x = 0; x < Maze.mainWidth; x++)
+            {
+                for (int y = 0; y < Maze.mainHeight; y++)
+                {
+                    if (Maze.mainMaze[x, y] is Trap)
+                    {
+                        AddCell(x, y, Maze.mainMaze, canvas);
+                    }
+                }
+            }
+            for (int i = 0; i < GameMaster.players.Count; i++)
+            {
+                AddTile(GameMaster.players[i]);
+            }
+            AddTile(GameMaster.mainFlag);
+
+
 
             GameDisplay.layout["MazeContainer"].Update(
-                new Panel(Align.Center(MazeCanvas.canvas))
+                new Panel(Align.Center(canvas))
             );
             GameDisplay.PlayerStatus();
             GameDisplay.GameMenu();
 
 
+            Console.WriteLine();
             AnsiConsole.Clear();
 
             AnsiConsole.Write(GameDisplay.layout);
@@ -154,5 +173,28 @@ namespace UserInterface
             ///AnsiConsole.Clear();
             //AnsiConsole.Write(canvas);
         }
+        public static void ShowTrap()
+        {
+            for (int x = 0; x < Maze.mainWidth; x++)
+            {
+                for (int y = 0; y < Maze.mainHeight; y++)
+                {
+                    if (Maze.mainMaze[x, y] is Trap)
+                    {
+                        AddTrap(x, y, Maze.mainMaze, canvas);
+                    }
+                }
+            }
+
+            GameDisplay.layout["MazeContainer"].Update(
+                new Panel(Align.Center(canvas))
+            );
+
+            AnsiConsole.Write(GameDisplay.layout);
+
+            ///AnsiConsole.Clear();
+            //AnsiConsole.Write(canvas);
+        }
+
     }
 }

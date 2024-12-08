@@ -58,25 +58,13 @@ namespace LogicGame
         {
             Player = players[turn];
             playerspeed = Player.Speed;
-            MazeCanvas.RefreshMaze();
+
             while (true)
             {
 
 
+                MazeCanvas.RefreshMaze();
                 ConsoleKeyInfo key = Console.ReadKey();
-
-                for (int x = 0; x < Maze.mainWidth; x++)
-                {
-                    for (int y = 0; y < Maze.mainHeight; y++)
-                    {
-                        if (Maze.mainMaze[x, y] is Trap)
-                        {
-                            MazeCanvas.AddCell(x, y, Maze.mainMaze, MazeCanvas.canvas);
-                        }
-                    }
-                }
-
-
                 if (playerspeed > 0)
                 {
                     if (Player.Movement(key))
@@ -84,16 +72,12 @@ namespace LogicGame
                         playerspeed--;
                         Player.HaveFlag();
                         Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
-
-
                     }
                 }
 
 
-                if (Menu(gameOption, key))
-                {
-
-                }
+                Menu(gameOption, key);
+                //Guardar este menu como un metodo independiente
                 if (key.Key == ConsoleKey.Enter)
                 {
                     int option = 0;
@@ -120,7 +104,12 @@ namespace LogicGame
 
                             break;
                         case 1:
-                            Player.ShowTrap();
+                            if (Player.ShowTrap())
+                            {
+                                MazeCanvas.ShowTrap();
+                                Thread.Sleep(1000);
+                            }
+                            MazeCanvas.RefreshMaze();
                             break;
                         case 2:
 
@@ -142,7 +131,7 @@ namespace LogicGame
 
                 }
 
-                MazeCanvas.RefreshMaze();
+                //MazeCanvas.RefreshMaze();
                 if (VictoryCondition() > 0)
                 {
                     Victory(VictoryCondition());
