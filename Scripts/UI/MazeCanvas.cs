@@ -140,16 +140,17 @@ namespace UserInterface
         //Esto no va aquí esto va en un generico de la pantalla
         public static void RefreshMaze()
         {
-            for (int x = 0; x < Maze.mainWidth; x++)
-            {
-                for (int y = 0; y < Maze.mainHeight; y++)
-                {
-                    if (Maze.mainMaze[x, y] is Trap)
-                    {
-                        AddCell(x, y, Maze.mainMaze, canvas);
-                    }
-                }
-            }
+            /* for (int x = 0; x < Maze.mainWidth; x++)
+             {
+                 for (int y = 0; y < Maze.mainHeight; y++)
+                 {
+                     if (Maze.mainMaze[x, y] is Trap)
+                     {
+                         AddCell(x, y, Maze.mainMaze, canvas);
+                     }
+                 }
+             }*/
+            PrintMaze();
             for (int i = 0; i < GameMaster.players.Count; i++)
             {
                 AddTile(GameMaster.players[i]);

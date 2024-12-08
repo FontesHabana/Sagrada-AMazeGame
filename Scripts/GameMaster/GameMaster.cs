@@ -32,7 +32,7 @@ namespace LogicGame
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], 10, 3);
+                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], 10, 3, 3);
                 players.Add(Player);
             }
             Random rand = new Random();
@@ -131,7 +131,7 @@ namespace LogicGame
 
                 }
 
-                //MazeCanvas.RefreshMaze();
+
                 if (VictoryCondition() > 0)
                 {
                     Victory(VictoryCondition());
@@ -145,6 +145,11 @@ namespace LogicGame
 
         private static void NextTurn()
         {
+            Player.Power += Player.PowerIncrease;
+            if (Player.Power > 10)
+            {
+                Player.Power = 10;
+            }
             turn++;
             turn %= playeramount;
         }

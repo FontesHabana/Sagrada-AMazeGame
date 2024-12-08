@@ -19,7 +19,7 @@ namespace MazeBuilder
         {
             Coordenada = (x, y);
             Visited = true;
-
+            //Establece el efecto de la trampa
             Random rnd = new Random();
             int effect = rnd.Next(0, 3);
             switch (effect)
@@ -41,7 +41,7 @@ namespace MazeBuilder
 
 
         }
-
+        //Sobrescribe el poder que no aplica una celda para que lo ejecute la trampa
         public override void ApplyEffect()
         {
             switch (Effect)
@@ -62,19 +62,12 @@ namespace MazeBuilder
         }
 
         //Genera un nuevo laberinto sobre el cual juegan los personajes
+        //Pensar como modificar el código para que no imprima el laberinto en la lógica
         private static void NewMaze()
         {
 
             //Genera el laberinto
             Maze.MainMaze();
-            //Imprime el laberinto
-            MazeCanvas.PrintMaze();
-            for (int i = 0; i < GameMaster.playeramount; i++)
-            {
-                Maze.mainMaze[GameMaster.players[i].Position.Item1, GameMaster.players[i].Position.Item2].Occuped = true;
-                MazeCanvas.AddTile(GameMaster.players[i]);
-            }
-            MazeCanvas.AddTile(GameMaster.mainFlag);
 
         }
         private static bool Teletransportation()
@@ -82,7 +75,6 @@ namespace MazeBuilder
             Random rnd = new Random();
             int newX;
             int newY;
-            MazeCanvas.RemoveTile(GameMaster.Player);
             //Establece una posición de la x en el borde del lado opuesto del tablero
             if (GameMaster.Player.Position.Item1 < 6)
             {
@@ -112,11 +104,11 @@ namespace MazeBuilder
                 Teletransportation();
                 return true;
             }
-            MazeCanvas.AddTile(GameMaster.Player);
+
             if (GameMaster.Player.haveFlag)
             {
                 GameMaster.mainFlag.Position = GameMaster.Player.Position;
-                MazeCanvas.AddTile(GameMaster.mainFlag);
+
             }
             System.Console.WriteLine("Teletransportation");
             return true;
