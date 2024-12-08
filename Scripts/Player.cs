@@ -61,15 +61,15 @@ namespace Tiles
                                     GameMaster.players[j].Life -= Attack;
                                 }
                             }
-                            Power -= 4;
-                            if (Power < 0)
-                            {
-                                Power = 0;
-                            }
-                            return true;
                         }
                     }
                 }
+                Power -= 4;
+                if (Power < 0)
+                {
+                    Power = 0;
+                }
+                return true;
             }
             return false;
         }

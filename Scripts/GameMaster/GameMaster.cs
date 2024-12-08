@@ -100,6 +100,12 @@ namespace LogicGame
                                         players[i].Respawn(players[i]);
                                     }
                                 }
+
+                                Player.Power -= 4;
+                                if (Player.Power < 0)
+                                {
+                                    Player.Power = 0;
+                                }
                             }
 
                             break;
