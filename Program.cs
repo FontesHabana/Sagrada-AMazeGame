@@ -12,6 +12,10 @@ public class Program
 
     public static void Main(string[] args)
     {
+
+
+
+
         //Presentación del juego
 
         //Menú de inicio

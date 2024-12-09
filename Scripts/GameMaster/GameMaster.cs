@@ -32,7 +32,7 @@ namespace LogicGame
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], 10, 3, 3);
+                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.JumpWall, 10, 3, 3);
                 players.Add(Player);
             }
             Random rand = new Random();
@@ -118,6 +118,24 @@ namespace LogicGame
                             MazeCanvas.RefreshMaze();
                             break;
                         case 2:
+                            //Aquí deberías haver un array con los posibles poderes, así será más facil referenciar a la hora de llamarlo
+                            switch (Player.SpecialPower)
+                            {
+                                case PowerEnum.JumpWall:
+                                    Power.JumpWall(Console.ReadKey(), Player);
+                                    break;
+
+                                case PowerEnum.IncreaseLife:
+                                    Power.IncreaseLife(3);
+                                    break;
+
+                                case PowerEnum.IncreaseSpeed:
+                                    Power.IncreaseSpeed(4);
+                                    break;
+
+                                default:
+                                    break;
+                            }
 
                             Console.WriteLine("estoy viendo mi poder");
                             break;

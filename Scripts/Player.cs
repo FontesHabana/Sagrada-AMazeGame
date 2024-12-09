@@ -4,6 +4,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Security;
 using LogicGame;
 using MazeBuilder;
+using Microsoft.VisualBasic;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 using UserInterface;
@@ -16,17 +17,19 @@ namespace Tiles
         public int Life { get; set; }
         public int Speed { get; set; }
         public int Attack { get; set; }
+        public PowerEnum SpecialPower { get; set; }
         public int Power { get; set; }
         public int PowerIncrease { get; set; }
         public bool haveFlag { get; set; }
 
 
 
-        public Character((int, int) position, Color appearance, string name, int life, int speed, int power, int powerincrease, int attack) : base(position, appearance)
+        public Character((int, int) position, Color appearance, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
         {
             Name = name;
             Life = life;
             Speed = speed;
+            SpecialPower = specialpower;
             Power = power;
             PowerIncrease = powerincrease;
             Attack = attack;
@@ -64,11 +67,7 @@ namespace Tiles
                         }
                     }
                 }
-                Power -= 4;
-                if (Power < 0)
-                {
-                    Power = 0;
-                }
+
                 return true;
             }
             return false;
@@ -112,10 +111,25 @@ namespace Tiles
         }
 
     }
-
-    static class Power
+    public enum PowerEnum
     {
+        JumpWall,
+        IncreaseSpeed,
+        IncreaseLife,
+
+    }
+    static class Power
+    {   //Detener turno, es poner un contador a caada player
+        //Ataque con distancia?
+        //Pasar por encima de una trampa
+        //Destruir una trampa
+
+        //Aquí también hay que revisar la mezcla con la parte visual
+
+
         //Atravesar paredes
+        //Hay mucho que cambiar en este código
+        //Revisar que cuando se mueva a un lugar legal devuelva false
         public static bool JumpWall(ConsoleKeyInfo keyInput, Character player)
         {
             Tile tile = new Tile(player.Position, player.Appearance);
