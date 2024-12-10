@@ -83,12 +83,30 @@ namespace UserInterface
 
 
             layout["GameOption"].Update(
-                table
+                Align.Center(table)
             );
 
+        }
+        public static void SwitchMenu()
+        {
+            var table = new Table();
+            table.AddColumn("Options");
+            foreach (var item in GameMaster.pswitch)
+            {
+                if (item.Item1)
+                {
+                    table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
+                }
+                else
+                {
+                    table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
+                }
+            }
 
 
+            layout["GameOption"].Update(
+                Align.Center(table)
+            );
         }
     }
 }
-

@@ -11,8 +11,11 @@ using UserInterface;
 
 namespace Tiles
 {
+    #region player
     class Character : Tile
-    {   //Propiedades del jugador
+    {
+        #region  Properties
+        //Propiedades del jugador
         public string Name { get; set; }
         public int Life { get; set; }
         public int Speed { get; set; }
@@ -21,7 +24,7 @@ namespace Tiles
         public int Power { get; set; }
         public int PowerIncrease { get; set; }
         public bool haveFlag { get; set; }
-
+        #endregion
 
 
         public Character((int, int) position, Color appearance, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
@@ -111,11 +114,15 @@ namespace Tiles
         }
 
     }
+    #endregion
+
+    #region power
     public enum PowerEnum
     {
         JumpWall,
         IncreaseSpeed,
         IncreaseLife,
+        SwitchPlayer,
 
     }
     static class Power
@@ -130,62 +137,33 @@ namespace Tiles
         //Atravesar paredes
         //Hay mucho que cambiar en este código
         //Revisar que cuando se mueva a un lugar legal devuelva false
-        public static bool JumpWall(ConsoleKeyInfo keyInput, Character player)
+        public static bool JumpWall(ConsoleKeyInfo keyInput)
         {
-            Tile tile = new Tile(player.Position, player.Appearance);
-            //Hacia arriba
-            if (player.Power > 5)
+
+
+            if (GameMaster.Player.Power > 5)
             {
-                if (keyInput.Key == ConsoleKey.W && player.Position.Item2 != 0
-                                 && Maze.mainMaze[player.Position.Item1, player.Position.Item2 - 1].Occuped == false)
+                (int, int)[] direction = { (0, -1), (1, 0), (0, 1), (-1, 0) };
+                ConsoleKey[] key = { ConsoleKey.W, ConsoleKey.D, ConsoleKey.S, ConsoleKey.A };
+                for (int i = 0; i < 4; i++)
                 {
-                    MazeCanvas.RemoveTile(tile);
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
-                    player.Position = (player.Position.Item1, player.Position.Item2 - 1);
-                    tile.Position = player.Position;
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
-                    MazeCanvas.AddTile(tile);
-                    player.Power -= 5;
-                    return true;
-                }
-                //Hacia derecha
-                if (keyInput.Key == ConsoleKey.D && player.Position.Item1 != (Maze.mainWidth + 1)
-                                                          && Maze.mainMaze[player.Position.Item1 + 1, player.Position.Item2].Occuped == false)
-                {
-                    MazeCanvas.RemoveTile(tile);
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
-                    player.Position = (player.Position.Item1 + 1, player.Position.Item2);
-                    tile.Position = player.Position;
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
-                    MazeCanvas.AddTile(tile);
-                    player.Power -= 5;
-                    return true;
-                }
-                //Hacia izquierda
-                if (keyInput.Key == ConsoleKey.A && player.Position.Item1 != 0
-                                                         && Maze.mainMaze[player.Position.Item1 - 1, player.Position.Item2].Occuped == false)
-                {
-                    MazeCanvas.RemoveTile(tile);
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
-                    player.Position = (player.Position.Item1 - 1, player.Position.Item2);
-                    tile.Position = player.Position;
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
-                    MazeCanvas.AddTile(tile);
-                    player.Power -= 5;
-                    return true;
-                }
-                //Hacia abajo
-                if (keyInput.Key == ConsoleKey.S && player.Position.Item2 != (Maze.mainHeight - 1)
-                                                         && Maze.mainMaze[player.Position.Item1, player.Position.Item2 + 1].Occuped == false)
-                {
-                    MazeCanvas.RemoveTile(tile);
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
-                    player.Position = (player.Position.Item1, player.Position.Item2 + 1);
-                    tile.Position = player.Position;
-                    Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
-                    MazeCanvas.AddTile(tile);
-                    player.Power -= 5;
-                    return true;
+                    if (keyInput.Key == key[i]
+                                && GameMaster.Player.Position.Item1 + direction[i].Item1 >= 0 && GameMaster.Player.Position.Item1 + direction[i].Item1 < Maze.mainWidth
+                                && GameMaster.Player.Position.Item2 + direction[i].Item2 >= 0 && GameMaster.Player.Position.Item2 + direction[i].Item2 < Maze.mainHeight
+                                && Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Wall[i]
+                                && !Maze.mainMaze[GameMaster.Player.Position.Item1 + direction[i].Item1, GameMaster.Player.Position.Item2 + direction[i].Item2].Occuped)
+                    {
+
+                        Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = false;
+                        GameMaster.Player.Position = (GameMaster.Player.Position.Item1 + direction[i].Item1, GameMaster.Player.Position.Item2 + direction[i].Item2);
+                        Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = true;
+                        GameMaster.Player.Power -= 4;
+                        if (GameMaster.Player.Power < 0)
+                        {
+                            GameMaster.Player.Power = 0;
+                        }
+                        return true;
+                    }
                 }
             }
 
@@ -195,18 +173,41 @@ namespace Tiles
         public static bool IncreaseSpeed(int speed)
         {
             GameMaster.playerspeed += speed;
+            GameMaster.Player.Power -= 4;
+            if (GameMaster.Player.Power < 0)
+            {
+                GameMaster.Player.Power = 0;
+            }
             return true;
         }
         //Aumentar vida FALTAN COSAS POR HACER
         public static bool IncreaseLife(int life)
         {
             GameMaster.Player.Life += life;
-            //Cuando se generen la lista de jugadores que la vida no supere la vida original del jugador
+            GameMaster.Player.Power -= 4;
+            if (GameMaster.Player.Power < 0)
+            {
+                GameMaster.Player.Power = 0;
+            }
             return true;
         }
         //Teletransportación
+        public static bool SwitchPlayer(Character player)
+        {
 
+            (int, int) aux = GameMaster.Player.Position;
+            GameMaster.Player.Position = player.Position;
+            player.Position = aux;
+
+            GameMaster.Player.Power -= 5;
+            if (GameMaster.Player.Power < 0)
+            {
+                GameMaster.Player.Power = 0;
+            }
+            return true;
+        }
         //
     }
+    #endregion
 
 }

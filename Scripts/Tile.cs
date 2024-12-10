@@ -26,7 +26,7 @@ namespace Tiles
                 if (keyInput.Key == key[i]
                             && Position.Item1 + direction[i].Item1 >= 0 && Position.Item1 + direction[i].Item1 < Maze.mainWidth
                             && Position.Item2 + direction[i].Item2 >= 0 && Position.Item2 + direction[i].Item2 < Maze.mainHeight
-                            && Maze.mainMaze[Position.Item1, Position.Item2].Wall[i] == false
+                            && !Maze.mainMaze[Position.Item1, Position.Item2].Wall[i]
                             && !Maze.mainMaze[Position.Item1 + direction[i].Item1, Position.Item2 + direction[i].Item2].Occuped)
                 {
 

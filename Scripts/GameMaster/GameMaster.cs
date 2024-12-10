@@ -18,8 +18,8 @@ namespace LogicGame
         public static Character Player { get; set; }
         public static int playerspeed = 0;
         public static Flag mainFlag = new Flag((6, 6), Color.DarkMagenta);
-        public static List<(bool, string)> gameOption = new List<(bool, string)> { (true, "Attack"), (false, "Show Traps"), (false, "Special Effect"), (false, "Next Turn") };
-
+        public static List<(bool, string)> gameOption = new List<(bool, string)> { (false, "Attack"), (false, "Show Traps"), (false, "Special Effect"), (true, "Next Turn") };
+        public static List<(bool, string)> pswitch = new List<(bool, string)>();
 
 
 
@@ -32,7 +32,7 @@ namespace LogicGame
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.JumpWall, 10, 3, 3);
+                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.SwitchPlayer, 10, 3, 3);
                 players.Add(Player);
             }
             Random rand = new Random();
@@ -76,6 +76,8 @@ namespace LogicGame
                 }
 
 
+
+                //Resetea el menu
                 Menu(gameOption, key);
                 //Guardar este menu como un metodo independiente
                 if (key.Key == ConsoleKey.Enter)
@@ -122,7 +124,7 @@ namespace LogicGame
                             switch (Player.SpecialPower)
                             {
                                 case PowerEnum.JumpWall:
-                                    Power.JumpWall(Console.ReadKey(), Player);
+                                    Power.JumpWall(Console.ReadKey());
                                     break;
 
                                 case PowerEnum.IncreaseLife:
@@ -131,6 +133,49 @@ namespace LogicGame
 
                                 case PowerEnum.IncreaseSpeed:
                                     Power.IncreaseSpeed(4);
+                                    break;
+                                case PowerEnum.SwitchPlayer:
+
+                                    List<Character> p = new List<Character>();
+                                    pswitch.Clear();
+                                    //Crea la lista del menu y la lista del player
+                                    for (int i = 0; i < players.Count; i++)
+                                    {
+                                        if (players[i] != Player)
+                                        {
+                                            pswitch.Add((false, players[i].Name));
+                                            p.Add(players[i]);
+                                        }
+                                    }
+                                    //Actualiza el menú para que la primera opción sea 1
+                                    pswitch[0] = (true, pswitch[0].Item2);
+
+                                    bool a = true;
+                                    while (a)
+                                    {
+                                        GameDisplay.SwitchMenu();
+                                        AnsiConsole.Write(GameDisplay.layout);
+                                        ConsoleKeyInfo k = Console.ReadKey();
+                                        Menu(pswitch, k);
+                                        int playerselected = 0;
+                                        if (k.Key == ConsoleKey.Enter)
+                                        {
+
+                                            foreach (var item in pswitch)
+                                            {
+                                                if (item.Item1)
+                                                {
+                                                    playerselected = pswitch.IndexOf(item);
+                                                }
+                                            }
+
+                                            Power.SwitchPlayer(p[playerselected]);
+
+                                            a = false;
+                                        }
+
+                                    }
+
                                     break;
 
                                 default:
