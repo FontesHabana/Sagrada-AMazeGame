@@ -225,23 +225,14 @@ namespace LogicGame
 
         public static int VictoryCondition()
         {
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (mainFlag.Position == position[i] && players[i].HaveFlag())
+                {
+                    return i + 1;
+                }
+            }
 
-            if (mainFlag.Position == position[0])
-            {
-                return 1;
-            }
-            if (mainFlag.Position == position[1])
-            {
-                return 2;
-            }
-            if (mainFlag.Position == position[2])
-            {
-                return 3;
-            }
-            if (mainFlag.Position == position[3])
-            {
-                return 4;
-            }
             return 0;
         }
 

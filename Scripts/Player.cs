@@ -24,6 +24,7 @@ namespace Tiles
         public int Power { get; set; }
         public int PowerIncrease { get; set; }
         public bool haveFlag { get; set; }
+        public (int, int) InitialPosition { get; set; }
         #endregion
 
 
@@ -37,6 +38,7 @@ namespace Tiles
             PowerIncrease = powerincrease;
             Attack = attack;
             haveFlag = false;
+            InitialPosition = position;
 
         }
 
@@ -97,14 +99,16 @@ namespace Tiles
         //Check if a player have a flag
         public bool HaveFlag()
         {
-            if (haveFlag)
-            {
-                GameMaster.mainFlag.Position = Position;
-            }
+
             if (Position == GameMaster.mainFlag.Position)
             {
                 haveFlag = true;
                 GameMaster.mainFlag.IsCaptured = true;
+                return true;
+            }
+            if (haveFlag)
+            {
+                GameMaster.mainFlag.Position = Position;
                 return true;
             }
 
@@ -198,8 +202,11 @@ namespace Tiles
             (int, int) aux = GameMaster.Player.Position;
             GameMaster.Player.Position = player.Position;
             player.Position = aux;
+            player.HaveFlag();
+            GameMaster.Player.HaveFlag();
 
-            GameMaster.Player.Power -= 5;
+            //Poner q reste
+            GameMaster.Player.Power += 5;
             if (GameMaster.Player.Power < 0)
             {
                 GameMaster.Player.Power = 0;
