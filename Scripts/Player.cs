@@ -127,6 +127,7 @@ namespace Tiles
         IncreaseSpeed,
         IncreaseLife,
         SwitchPlayer,
+        DestroyTrap,
 
     }
     static class Power
@@ -213,8 +214,29 @@ namespace Tiles
             }
             return true;
         }
-        //
-    }
-    #endregion
+        //Destroy a trap
+        public static bool DestroyTrap(Character player)
+        {
 
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (player.Position.Item1 + player.direction[i].Item1 >= 0 && player.Position.Item1 + player.direction[i].Item1 < Maze.mainWidth
+                 && player.Position.Item2 + player.direction[i].Item2 >= 0 && player.Position.Item2 + player.direction[i].Item2 < Maze.mainHeight)
+                {
+                    if (!Maze.mainMaze[player.Position.Item1, player.Position.Item2].Wall[i])
+                    {
+                        Cell cell = new Cell(player.Position.Item1 + player.direction[i].Item1, player.Position.Item2 + player.direction[i].Item2);
+                        cell.Visited = true;
+                        cell.Wall = Maze.mainMaze[player.Position.Item1 + player.direction[i].Item1, player.Position.Item2 + player.direction[i].Item2].Wall;
+                        Maze.mainMaze[player.Position.Item1 + player.direction[i].Item1, player.Position.Item2 + player.direction[i].Item2] = cell;
+
+                    }
+                }
+            }
+            return true;
+        }
+        #endregion
+
+    }
 }

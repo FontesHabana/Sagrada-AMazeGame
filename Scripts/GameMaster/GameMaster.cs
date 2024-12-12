@@ -32,7 +32,7 @@ namespace LogicGame
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.SwitchPlayer, 10, 3, 3);
+                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.DestroyTrap, 10, 3, 3);
                 players.Add(Player);
             }
             Random rand = new Random();
@@ -126,11 +126,9 @@ namespace LogicGame
                                 case PowerEnum.JumpWall:
                                     Power.JumpWall(Console.ReadKey());
                                     break;
-
                                 case PowerEnum.IncreaseLife:
                                     Power.IncreaseLife(3);
                                     break;
-
                                 case PowerEnum.IncreaseSpeed:
                                     Power.IncreaseSpeed(4);
                                     break;
@@ -177,7 +175,9 @@ namespace LogicGame
                                     }
 
                                     break;
-
+                                case PowerEnum.DestroyTrap:
+                                    Power.DestroyTrap(Player);
+                                    break;
                                 default:
                                     break;
                             }
