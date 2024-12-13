@@ -73,6 +73,7 @@ namespace Tiles
                     }
                 }
 
+
                 return true;
             }
             return false;
@@ -81,7 +82,7 @@ namespace Tiles
         public bool ShowTrap()
         {
             if (Power > 0)
-            {
+            {  //Meter esto en un método
                 Power -= 3;
                 if (Power < 3)
                 {
@@ -128,20 +129,15 @@ namespace Tiles
         IncreaseLife,
         SwitchPlayer,
         DestroyTrap,
+        NewTurn,
 
     }
     static class Power
     {   //Detener turno, es poner un contador a caada player
         //Ataque con distancia?
-        //Pasar por encima de una trampa
-        //Destruir una trampa
-
-        //Aquí también hay que revisar la mezcla con la parte visual
 
 
-        //Atravesar paredes
-        //Hay mucho que cambiar en este código
-        //Revisar que cuando se mueva a un lugar legal devuelva false
+        //Atravesar paredes y trampas
         public static bool JumpWall(ConsoleKeyInfo keyInput)
         {
 
@@ -162,11 +158,8 @@ namespace Tiles
                         Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = false;
                         GameMaster.Player.Position = (GameMaster.Player.Position.Item1 + direction[i].Item1, GameMaster.Player.Position.Item2 + direction[i].Item2);
                         Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = true;
-                        GameMaster.Player.Power -= 4;
-                        if (GameMaster.Player.Power < 0)
-                        {
-                            GameMaster.Player.Power = 0;
-                        }
+
+                        DecreasePower(4);
                         return true;
                     }
                 }
@@ -177,66 +170,89 @@ namespace Tiles
         //Aumentar velocidad
         public static bool IncreaseSpeed(int speed)
         {
-            GameMaster.playerspeed += speed;
-            GameMaster.Player.Power -= 4;
-            if (GameMaster.Player.Power < 0)
+            if (GameMaster.Player.Power > 4)
             {
-                GameMaster.Player.Power = 0;
+                GameMaster.playerspeed += speed;
+                DecreasePower(3);
+                return true;
             }
-            return true;
+            return false;
         }
         //Aumentar vida FALTAN COSAS POR HACER
         public static bool IncreaseLife(int life)
         {
-            GameMaster.Player.Life += life;
-            GameMaster.Player.Power -= 4;
-            if (GameMaster.Player.Power < 0)
+            if (GameMaster.Player.Power > 4)
             {
-                GameMaster.Player.Power = 0;
+                GameMaster.Player.Life += life;
+                DecreasePower(4);
+                return true;
             }
-            return true;
+            return false;
         }
         //Teletransportación
         public static bool SwitchPlayer(Character player)
         {
-
-            (int, int) aux = GameMaster.Player.Position;
-            GameMaster.Player.Position = player.Position;
-            player.Position = aux;
-            player.HaveFlag();
-            GameMaster.Player.HaveFlag();
-
-            //Poner q reste
-            GameMaster.Player.Power += 5;
-            if (GameMaster.Player.Power < 0)
+            if (GameMaster.Player.Power > 4)
             {
-                GameMaster.Player.Power = 0;
+                (int, int) aux = GameMaster.Player.Position;
+                GameMaster.Player.Position = player.Position;
+                player.Position = aux;
+                player.HaveFlag();
+                GameMaster.Player.HaveFlag();
+
+                DecreasePower(5);
+                return true;
             }
             return true;
         }
         //Destroy a trap
-        public static bool DestroyTrap(Character player)
+        public static bool DestroyTrap()
         {
 
-
-            for (int i = 0; i < 4; i++)
+            if (GameMaster.Player.Power > 4)
             {
-                if (player.Position.Item1 + player.direction[i].Item1 >= 0 && player.Position.Item1 + player.direction[i].Item1 < Maze.mainWidth
-                 && player.Position.Item2 + player.direction[i].Item2 >= 0 && player.Position.Item2 + player.direction[i].Item2 < Maze.mainHeight)
+                for (int i = 0; i < 4; i++)
                 {
-                    if (!Maze.mainMaze[player.Position.Item1, player.Position.Item2].Wall[i])
+                    if (GameMaster.Player.Position.Item1 + GameMaster.Player.direction[i].Item1 >= 0 && GameMaster.Player.Position.Item1 + GameMaster.Player.direction[i].Item1 < Maze.mainWidth
+                     && GameMaster.Player.Position.Item2 + GameMaster.Player.direction[i].Item2 >= 0 && GameMaster.Player.Position.Item2 + GameMaster.Player.direction[i].Item2 < Maze.mainHeight)
                     {
-                        Cell cell = new Cell(player.Position.Item1 + player.direction[i].Item1, player.Position.Item2 + player.direction[i].Item2);
-                        cell.Visited = true;
-                        cell.Wall = Maze.mainMaze[player.Position.Item1 + player.direction[i].Item1, player.Position.Item2 + player.direction[i].Item2].Wall;
-                        Maze.mainMaze[player.Position.Item1 + player.direction[i].Item1, player.Position.Item2 + player.direction[i].Item2] = cell;
+                        if (!Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Wall[i])
+                        {
+                            Cell cell = new Cell(GameMaster.Player.Position.Item1 + GameMaster.Player.direction[i].Item1, GameMaster.Player.Position.Item2 + GameMaster.Player.direction[i].Item2);
+                            cell.Visited = true;
+                            cell.Wall = Maze.mainMaze[GameMaster.Player.Position.Item1 + GameMaster.Player.direction[i].Item1, GameMaster.Player.Position.Item2 + GameMaster.Player.direction[i].Item2].Wall;
+                            Maze.mainMaze[GameMaster.Player.Position.Item1 + GameMaster.Player.direction[i].Item1, GameMaster.Player.Position.Item2 + GameMaster.Player.direction[i].Item2] = cell;
 
+                        }
                     }
                 }
+                DecreasePower(4);
+                return true;
             }
-            return true;
+            return false;
         }
-        #endregion
 
+        public static bool NewTurn()
+        {
+            if (GameMaster.Player.Power > 4)
+            {
+                DecreasePower(6);
+                GameMaster.Turn();
+
+                GameMaster.turn--;
+                return true;
+            }
+            return false;
+        }
+
+        #endregion
+        private static void DecreasePower(int decrease)
+        {
+            GameMaster.Player.Power -= decrease;
+            if (GameMaster.Player.Power < 0)
+            {
+                GameMaster.Player.Power = 0;
+            }
+        }
     }
 }

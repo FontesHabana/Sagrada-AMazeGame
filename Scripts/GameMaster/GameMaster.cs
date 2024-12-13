@@ -32,7 +32,7 @@ namespace LogicGame
             for (int i = 0; i < playeramount; i++)
             {
                 System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.DestroyTrap, 10, 3, 3);
+                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.NewTurn, 10, 3, 3);
                 players.Add(Player);
             }
             Random rand = new Random();
@@ -58,6 +58,7 @@ namespace LogicGame
         {
             Player = players[turn];
             playerspeed = Player.Speed;
+            Player.Power += Player.PowerIncrease;
 
             while (true)
             {
@@ -176,13 +177,14 @@ namespace LogicGame
 
                                     break;
                                 case PowerEnum.DestroyTrap:
-                                    Power.DestroyTrap(Player);
+                                    Power.DestroyTrap();
+                                    break;
+                                case PowerEnum.NewTurn:
+                                    Power.NewTurn();
                                     break;
                                 default:
                                     break;
                             }
-
-                            Console.WriteLine("estoy viendo mi poder");
                             break;
                         default:
                             break;
@@ -192,12 +194,6 @@ namespace LogicGame
 
                         break;
                     }
-
-
-
-
-
-
                 }
 
 
@@ -214,7 +210,7 @@ namespace LogicGame
 
         private static void NextTurn()
         {
-            Player.Power += Player.PowerIncrease;
+
             if (Player.Power > 10)
             {
                 Player.Power = 10;
