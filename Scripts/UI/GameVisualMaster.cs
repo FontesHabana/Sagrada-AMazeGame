@@ -5,10 +5,18 @@ using LogicGame;
 using System.ComponentModel;
 namespace UserInterface
 {
+    public enum MenuGame
+    {
+        menuG,
+        menuS,
+    }
     class GameDisplay
     {
 
         public static Layout layout;
+        public static MenuGame showmenu = MenuGame.menuG;
+
+
 
 
         public static void GameScreen()
@@ -65,11 +73,22 @@ namespace UserInterface
 
         }
 
-        public static void GameMenu()
+        public static void VerticalMenu(MenuGame showmenu)
         {
             var table = new Table();
             table.AddColumn("Options");
-            foreach (var item in GameMaster.gameOption)
+            List<(bool, string)> m = new List<(bool, string)>();
+            if (showmenu == MenuGame.menuG)
+            {
+                m = GameMaster.GameMenu.GetList();
+            }
+            if (showmenu == MenuGame.menuS)
+            {
+                m = GameMaster.SwitchMenu.GetList();
+            }
+
+
+            foreach (var item in m)
             {
                 if (item.Item1)
                 {
@@ -87,26 +106,52 @@ namespace UserInterface
             );
 
         }
-        public static void SwitchMenu()
+        /* public static void SwitchMenu()
+         {
+             var table = new Table();
+             table.AddColumn("Options");
+             foreach (var item in GameMaster.pswitch)
+             {
+                 if (item.Item1)
+                 {
+                     table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
+                 }
+                 else
+                 {
+                     table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
+                 }
+             }
+
+
+             layout["GameOption"].Update(
+                 Align.Center(table)
+             );
+         }*/
+        public static void RefreshMaze()
         {
-            var table = new Table();
-            table.AddColumn("Options");
-            foreach (var item in GameMaster.pswitch)
+            MazeCanvas.PrintMaze();
+            for (int i = 0; i < GameMaster.players.Count; i++)
             {
-                if (item.Item1)
-                {
-                    table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
-                }
-                else
-                {
-                    table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
-                }
+                MazeCanvas.AddTile(GameMaster.players[i]);
             }
+            MazeCanvas.AddTile(GameMaster.mainFlag);
 
 
-            layout["GameOption"].Update(
-                Align.Center(table)
+
+            layout["MazeContainer"].Update(
+                new Panel(Align.Center(MazeCanvas.canvas))
             );
+            PlayerStatus();
+            VerticalMenu(showmenu);
+
+
+            Console.WriteLine();
+            AnsiConsole.Clear();
+
+            AnsiConsole.Write(layout);
+
+            ///AnsiConsole.Clear();
+            //AnsiConsole.Write(canvas);
         }
     }
 }

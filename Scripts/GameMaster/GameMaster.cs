@@ -18,23 +18,51 @@ namespace LogicGame
         public static Character Player { get; set; }
         public static int playerspeed = 0;
         public static Flag mainFlag = new Flag((6, 6), Color.DarkMagenta);
-        public static List<(bool, string)> gameOption = new List<(bool, string)> { (false, "Attack"), (false, "Show Traps"), (false, "Special Effect"), (true, "Next Turn") };
-        public static List<(bool, string)> pswitch = new List<(bool, string)>();
+        //Listas para ejecutar los menus
+        public static Menu GameMenu = new Menu(Menu.gamemenu, Menu.action);
+        public static Menu SwitchMenu = new Menu(Menu.pswitch, Menu.change);
+
 
 
 
 
         //Variable speed modificar más adelante
-
+        public static void Game()
+        {
+            GameDisplay.GameScreen();
+            InitGame();
+            //MazeCanvas.RefreshMaze();
+            while (VictoryCondition() == 0)
+            {
+                Turn();
+            }
+        }
         public static bool InitGame()
         {   //Declarar jugadores. Más adelante esto será elegible
             playeramount = 4;
-            for (int i = 0; i < playeramount; i++)
-            {
-                System.Console.WriteLine("Inserte su nombre");
-                Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.NewTurn, 10, 3, 3);
-                players.Add(Player);
-            }
+            players.Clear();
+
+            //------------------
+            //Estos son personajes temporales 
+            System.Console.WriteLine("Inserte su nombre");
+            players.Add(new Character(position[0], appearance[0], Console.ReadLine(), 10, speed[0], PowerEnum.NewTurn, 10, 3, 3));
+            System.Console.WriteLine("Inserte su nombre");
+            players.Add(new Character(position[1], appearance[1], Console.ReadLine(), 10, speed[1], PowerEnum.DestroyTrap, 10, 3, 3));
+            System.Console.WriteLine("Inserte su nombre");
+            players.Add(new Character(position[2], appearance[2], Console.ReadLine(), 10, speed[2], PowerEnum.JumpWall, 10, 3, 3));
+            System.Console.WriteLine("Inserte su nombre");
+            players.Add(new Character(position[3], appearance[3], Console.ReadLine(), 10, speed[3], PowerEnum.SwitchPlayer, 10, 3, 3));
+
+
+
+
+            //
+            /* for (int i = 0; i < playeramount; i++)
+             {
+                 System.Console.WriteLine("Inserte su nombre");
+                 Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.NewTurn, 10, 3, 3);
+                 players.Add(Player);
+             }*/
             Random rand = new Random();
             turn = rand.Next(0, playeramount);
 
@@ -59,13 +87,18 @@ namespace LogicGame
             Player = players[turn];
             playerspeed = Player.Speed;
             Player.Power += Player.PowerIncrease;
+            Normalize();
 
             while (true)
             {
 
+                //Print the display game
+                GameDisplay.RefreshMaze();
 
-                MazeCanvas.RefreshMaze();
+                //Read a key for a action
                 ConsoleKeyInfo key = Console.ReadKey();
+
+                //Move action
                 if (playerspeed > 0)
                 {
                     if (Player.Movement(key))
@@ -75,128 +108,16 @@ namespace LogicGame
                         Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
                     }
                 }
+                //Change menu option
 
-
-
-                //Resetea el menu
-                Menu(gameOption, key);
-                //Guardar este menu como un metodo independiente
-                if (key.Key == ConsoleKey.Enter)
+                GameMenu.ChangeOption(key);
+                if (GameMenu.actionMenu(key))
                 {
-                    int option = 0;
-                    foreach (var item in gameOption)
+                    if (GameMenu.GetList()[3].Item1)
                     {
-                        if (item.Item1)
-                        {
-                            option = gameOption.IndexOf(item);
-                        }
-                    }
-                    switch (option)
-                    {
-                        case 0:
-                            if (Player.AttackTo())
-                            {
-                                for (int i = 0; i < players.Count; i++)
-                                {
-                                    if (players[i].Life <= 0)
-                                    {
-                                        players[i].Respawn(players[i]);
-                                    }
-                                }
-
-                                Player.Power -= 4;
-                                if (Player.Power < 0)
-                                {
-                                    Player.Power = 0;
-                                }
-                            }
-
-                            break;
-                        case 1:
-                            if (Player.ShowTrap())
-                            {
-                                MazeCanvas.ShowTrap();
-                                Thread.Sleep(1000);
-                            }
-                            MazeCanvas.RefreshMaze();
-                            break;
-                        case 2:
-                            //Aquí deberías haver un array con los posibles poderes, así será más facil referenciar a la hora de llamarlo
-                            switch (Player.SpecialPower)
-                            {
-                                case PowerEnum.JumpWall:
-                                    Power.JumpWall(Console.ReadKey());
-                                    break;
-                                case PowerEnum.IncreaseLife:
-                                    Power.IncreaseLife(3);
-                                    break;
-                                case PowerEnum.IncreaseSpeed:
-                                    Power.IncreaseSpeed(4);
-                                    break;
-                                case PowerEnum.SwitchPlayer:
-
-                                    List<Character> p = new List<Character>();
-                                    pswitch.Clear();
-                                    //Crea la lista del menu y la lista del player
-                                    for (int i = 0; i < players.Count; i++)
-                                    {
-                                        if (players[i] != Player)
-                                        {
-                                            pswitch.Add((false, players[i].Name));
-                                            p.Add(players[i]);
-                                        }
-                                    }
-                                    //Actualiza el menú para que la primera opción sea 1
-                                    pswitch[0] = (true, pswitch[0].Item2);
-
-                                    bool a = true;
-                                    while (a)
-                                    {
-                                        GameDisplay.SwitchMenu();
-                                        AnsiConsole.Write(GameDisplay.layout);
-                                        ConsoleKeyInfo k = Console.ReadKey();
-                                        Menu(pswitch, k);
-                                        int playerselected = 0;
-                                        if (k.Key == ConsoleKey.Enter)
-                                        {
-
-                                            foreach (var item in pswitch)
-                                            {
-                                                if (item.Item1)
-                                                {
-                                                    playerselected = pswitch.IndexOf(item);
-                                                }
-                                            }
-
-                                            Power.SwitchPlayer(p[playerselected]);
-
-                                            a = false;
-                                        }
-
-                                    }
-
-                                    break;
-                                case PowerEnum.DestroyTrap:
-                                    Power.DestroyTrap();
-                                    break;
-                                case PowerEnum.NewTurn:
-                                    Power.NewTurn();
-                                    break;
-                                default:
-                                    break;
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                    if (gameOption[3].Item1)
-                    {
-
                         break;
                     }
                 }
-
-
                 if (VictoryCondition() > 0)
                 {
                     Victory(VictoryCondition());
@@ -262,57 +183,69 @@ namespace LogicGame
 
         }
 
-        public static bool Menu(List<(bool, string)> menu, ConsoleKeyInfo key)
+        /*  public static bool Menu(List<(bool, string)> menu, ConsoleKeyInfo key)
+          {
+              if (key.Key == ConsoleKey.UpArrow)
+              {
+                  for (var i = 0; i < menu.Count; i++)
+                  {
+                      if (menu[i].Item1)
+                      {
+                          menu[i] = (false, menu[i].Item2);
+                          if (i == 0)
+                          {
+                              menu[menu.Count - 1] = (true, menu[menu.Count - 1].Item2);
+                              return true;
+                          }
+                          else
+                          {
+                              menu[i - 1] = (true, menu[i - 1].Item2);
+                              return true;
+                          }
+                      }
+                  }
+
+
+
+              }
+
+              if (key.Key == ConsoleKey.DownArrow)
+              {
+                  for (int i = 0; i < menu.Count; i++)
+                  {
+                      if (menu[i].Item1)
+                      {
+                          menu[i] = (false, menu[i].Item2);
+                          if (i == menu.Count - 1)
+                          {
+                              menu[0] = (true, menu[0].Item2);
+                              return true;
+                          }
+                          else
+                          {
+                              menu[i + 1] = (true, menu[i + 1].Item2);
+                              return true;
+                          }
+                      }
+
+                  }
+              }
+
+
+              return false;
+          }*/
+
+        public static void Normalize()
         {
-            if (key.Key == ConsoleKey.UpArrow)
+            if (Player.Power > Player.MaxPower)
             {
-                for (var i = 0; i < menu.Count; i++)
-                {
-                    if (menu[i].Item1)
-                    {
-                        menu[i] = (false, menu[i].Item2);
-                        if (i == 0)
-                        {
-                            menu[menu.Count - 1] = (true, menu[menu.Count - 1].Item2);
-                            return true;
-                        }
-                        else
-                        {
-                            menu[i - 1] = (true, menu[i - 1].Item2);
-                            return true;
-                        }
-                    }
-                }
-
-
-
+                Player.Power = Player.MaxPower;
             }
 
-            if (key.Key == ConsoleKey.DownArrow)
+            if (Player.Life > Player.MaxLife)
             {
-                for (int i = 0; i < menu.Count; i++)
-                {
-                    if (menu[i].Item1)
-                    {
-                        menu[i] = (false, menu[i].Item2);
-                        if (i == menu.Count - 1)
-                        {
-                            menu[0] = (true, menu[0].Item2);
-                            return true;
-                        }
-                        else
-                        {
-                            menu[i + 1] = (true, menu[i + 1].Item2);
-                            return true;
-                        }
-                    }
-
-                }
+                Player.Life = Player.MaxLife;
             }
-
-
-            return false;
         }
-
     }
 }

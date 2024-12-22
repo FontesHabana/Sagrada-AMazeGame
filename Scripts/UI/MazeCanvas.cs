@@ -138,42 +138,7 @@ namespace UserInterface
             ;
         }
         //Esto no va aquí esto va en un generico de la pantalla
-        public static void RefreshMaze()
-        {
-            /* for (int x = 0; x < Maze.mainWidth; x++)
-             {
-                 for (int y = 0; y < Maze.mainHeight; y++)
-                 {
-                     if (Maze.mainMaze[x, y] is Trap)
-                     {
-                         AddCell(x, y, Maze.mainMaze, canvas);
-                     }
-                 }
-             }*/
-            PrintMaze();
-            for (int i = 0; i < GameMaster.players.Count; i++)
-            {
-                AddTile(GameMaster.players[i]);
-            }
-            AddTile(GameMaster.mainFlag);
 
-
-
-            GameDisplay.layout["MazeContainer"].Update(
-                new Panel(Align.Center(canvas))
-            );
-            GameDisplay.PlayerStatus();
-            GameDisplay.GameMenu();
-
-
-            Console.WriteLine();
-            AnsiConsole.Clear();
-
-            AnsiConsole.Write(GameDisplay.layout);
-
-            ///AnsiConsole.Clear();
-            //AnsiConsole.Write(canvas);
-        }
         public static void ShowTrap()
         {
             for (int x = 0; x < Maze.mainWidth; x++)

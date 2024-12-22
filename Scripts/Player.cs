@@ -5,6 +5,7 @@ using System.Security;
 using LogicGame;
 using MazeBuilder;
 using Microsoft.VisualBasic;
+using SixLabors.ImageSharp.PixelFormats;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 using UserInterface;
@@ -18,10 +19,12 @@ namespace Tiles
         //Propiedades del jugador
         public string Name { get; set; }
         public int Life { get; set; }
+        public int MaxLife { get; set; }
         public int Speed { get; set; }
         public int Attack { get; set; }
         public PowerEnum SpecialPower { get; set; }
         public int Power { get; set; }
+        public int MaxPower { get; set; }
         public int PowerIncrease { get; set; }
         public bool haveFlag { get; set; }
         public (int, int) InitialPosition { get; set; }
@@ -31,10 +34,12 @@ namespace Tiles
         public Character((int, int) position, Color appearance, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
         {
             Name = name;
+            MaxLife = life;
             Life = life;
             Speed = speed;
             SpecialPower = specialpower;
             Power = power;
+            MaxPower = power;
             PowerIncrease = powerincrease;
             Attack = attack;
             haveFlag = false;
@@ -81,14 +86,9 @@ namespace Tiles
 
         public bool ShowTrap()
         {
-            if (Power > 0)
+            if (Power > 3)
             {  //Meter esto en un método
                 Power -= 3;
-                if (Power < 3)
-                {
-                    Power = 0;
-                }
-
                 return true;
             }
 
@@ -117,7 +117,6 @@ namespace Tiles
             GameMaster.mainFlag.IsCaptured = false;
             return false;
         }
-
     }
     #endregion
 
@@ -159,7 +158,9 @@ namespace Tiles
                         GameMaster.Player.Position = (GameMaster.Player.Position.Item1 + direction[i].Item1, GameMaster.Player.Position.Item2 + direction[i].Item2);
                         Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = true;
 
-                        DecreasePower(4);
+                        DecreasePower(5);
+                        GameMaster.Player.HaveFlag();
+                        Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].ApplyEffect();
                         return true;
                     }
                 }
@@ -249,10 +250,6 @@ namespace Tiles
         private static void DecreasePower(int decrease)
         {
             GameMaster.Player.Power -= decrease;
-            if (GameMaster.Player.Power < 0)
-            {
-                GameMaster.Player.Power = 0;
-            }
         }
     }
 }
