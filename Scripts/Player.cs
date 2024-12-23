@@ -5,7 +5,6 @@ using System.Security;
 using LogicGame;
 using MazeBuilder;
 using Microsoft.VisualBasic;
-using SixLabors.ImageSharp.PixelFormats;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 using UserInterface;
@@ -17,6 +16,7 @@ namespace Tiles
     {
         #region  Properties
         //Propiedades del jugador
+        public ImageReference Reference { get; set; }
         public string Name { get; set; }
         public int Life { get; set; }
         public int MaxLife { get; set; }
@@ -28,10 +28,13 @@ namespace Tiles
         public int PowerIncrease { get; set; }
         public bool haveFlag { get; set; }
         public (int, int) InitialPosition { get; set; }
+
+
+        public CanvasImage Image { get; set; }
         #endregion
 
 
-        public Character((int, int) position, Color appearance, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
+        public Character(ImageReference reference, (int, int) position, Color appearance, CanvasImage image, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
         {
             Name = name;
             MaxLife = life;
@@ -44,6 +47,9 @@ namespace Tiles
             Attack = attack;
             haveFlag = false;
             InitialPosition = position;
+            Image = image;
+            Reference = reference;
+
 
         }
 

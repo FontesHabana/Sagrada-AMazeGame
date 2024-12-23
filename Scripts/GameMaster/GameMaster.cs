@@ -9,6 +9,7 @@ namespace LogicGame
 {
     class GameMaster
     {
+
         public static List<Character> players = new List<Character>();
         public static int turn;
         public static int playeramount;
@@ -21,8 +22,13 @@ namespace LogicGame
         //Listas para ejecutar los menus
         public static Menu GameMenu = new Menu(Menu.gamemenu, Menu.action);
         public static Menu SwitchMenu = new Menu(Menu.pswitch, Menu.change);
-
-
+        //Mis jugadores
+        static Character[] CharacterOption = { new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
+                                               new Character(ImageReference.a,position[0], appearance[2],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 8, 5, PowerEnum.IncreaseSpeed, 6, 2, 3),
+                                               new Character(ImageReference.a,position[0], appearance[3],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 12, 2, PowerEnum.IncreaseLife, 10, 3, 5),
+                                               new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
+                                               new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
+                                               new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3)};
 
 
 
@@ -42,17 +48,22 @@ namespace LogicGame
             playeramount = 4;
             players.Clear();
 
+
             //------------------
             //Estos son personajes temporales 
             System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(position[0], appearance[0], Console.ReadLine(), 10, speed[0], PowerEnum.NewTurn, 10, 3, 3));
+            players.Add(new Character(ImageReference.a, position[0], appearance[0], new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), Console.ReadLine(), 10, speed[0], PowerEnum.NewTurn, 10, 3, 3));
             System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(position[1], appearance[1], Console.ReadLine(), 10, speed[1], PowerEnum.DestroyTrap, 10, 3, 3));
+            players.Add(new Character(ImageReference.b, position[1], appearance[1], new CanvasImage("Assets/C1-removebg-preview.png"), Console.ReadLine(), 10, speed[1], PowerEnum.DestroyTrap, 10, 3, 3));
             System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(position[2], appearance[2], Console.ReadLine(), 10, speed[2], PowerEnum.JumpWall, 10, 3, 3));
+            players.Add(new Character(ImageReference.c, position[2], appearance[2], new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), Console.ReadLine(), 10, speed[2], PowerEnum.JumpWall, 10, 3, 3));
             System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(position[3], appearance[3], Console.ReadLine(), 10, speed[3], PowerEnum.SwitchPlayer, 10, 3, 3));
+            players.Add(new Character(ImageReference.d, position[3], appearance[3], new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), Console.ReadLine(), 10, speed[3], PowerEnum.SwitchPlayer, 10, 3, 3));
 
+            //Aqui se generan sus imagenes segun el color
+            GameDisplay.GenerateCharacter();
+
+            //Asignaer imagen
 
 
 

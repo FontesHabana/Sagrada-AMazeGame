@@ -3,6 +3,9 @@ using MazeBuilder;
 using Tiles;
 using LogicGame;
 using System.ComponentModel;
+using NAudio.Wave.SampleProviders;
+using System.CodeDom.Compiler;
+using Spectre.Console.Extensions;
 namespace UserInterface
 {
     public enum MenuGame
@@ -10,12 +13,28 @@ namespace UserInterface
         menuG,
         menuS,
     }
+    //Asignar nombre de cada personaje
+    public enum ImageReference
+    {
+        a,
+        b,
+        c,
+        d,
+        e,
+        f,
+    }
     class GameDisplay
     {
 
         public static Layout layout;
         public static MenuGame showmenu = MenuGame.menuG;
 
+        public static Canvas[] playercanvas = new Canvas[]{new Canvas(16,20),
+         new Canvas(15,20),
+         new Canvas(15,20),
+         new Canvas(15,20),
+         new Canvas(15,20),
+         new Canvas(15,20),};
 
 
 
@@ -28,7 +47,9 @@ namespace UserInterface
                          .SplitRows(
                              new Layout("top")
                              .SplitColumns(
-                                 new Layout("CharacterContainer"),
+                                 new Layout("CharacterContainer")
+                                 .SplitRows(new Layout("Character name"),
+                                 new Layout("Character Image")),
                                  new Layout("TopRigth")
                                  .SplitRows(
                                     new Layout("Character Status"),
@@ -41,17 +62,24 @@ namespace UserInterface
 
             layout["MazeContainer"].MinimumSize(85);
             layout["top"].Ratio(3);
+            layout["Character Image"].Ratio(5);
 
         }
 
+
         public static void PlayerStatus()
         {
-            layout["CharacterContainer"].Update(
+
+
+            layout["Character Image"].Update(
+                    new Panel(
+                Align.Center(GameMaster.Player.Image).MiddleAligned()).Border(BoxBorder.Double).BorderColor(GameMaster.Player.Appearance).Expand());
+            layout["Character name"].Update(
                 new Panel(
             Align.Center(
             new Markup($"{GameMaster.Player.Name} [blue]Is your turn![/]"),
             VerticalAlignment.Middle))
-            .Expand());
+            .Expand().BorderColor(GameMaster.Player.Appearance));
 
 
 
@@ -66,8 +94,7 @@ namespace UserInterface
                     .AddItem("Speed", GameMaster.playerspeed, Color.Green)
                     .AddItem("Power", GameMaster.Player.Power, Color.Blue)
                     .AddItem("Attack", GameMaster.Player.Attack, Color.Purple), VerticalAlignment.Middle)
-                      ).Expand()
-                  );
+                      ).Expand().BorderColor(GameMaster.Player.Appearance));
 
 
 
@@ -76,7 +103,7 @@ namespace UserInterface
         public static void VerticalMenu(MenuGame showmenu)
         {
             var table = new Table();
-            table.AddColumn("Options");
+            table.AddColumn(new TableColumn("Options").Centered());
             List<(bool, string)> m = new List<(bool, string)>();
             if (showmenu == MenuGame.menuG)
             {
@@ -99,10 +126,15 @@ namespace UserInterface
                     table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
                 }
             }
+            table.Border = TableBorder.HeavyHead;
+            table.BorderColor(GameMaster.Player.Appearance);
+            table.Expand();
+
+
 
 
             layout["GameOption"].Update(
-                Align.Center(table)
+                Align.Center(table).VerticalAlignment(VerticalAlignment.Middle)
             );
 
         }
@@ -153,5 +185,20 @@ namespace UserInterface
             ///AnsiConsole.Clear();
             //AnsiConsole.Write(canvas);
         }
+
+
+        public static void GenerateCharacter()
+        {
+            for (int i = 0; i < GameMaster.players.Count; i++)
+            {
+                GameMaster.players[i].Image.MaxWidth(16);
+            }
+        }
+
+
+
     }
+
+
+
 }
