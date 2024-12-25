@@ -6,41 +6,30 @@ using System.ComponentModel;
 using NAudio.Wave.SampleProviders;
 using System.CodeDom.Compiler;
 using Spectre.Console.Extensions;
+using System.Runtime;
 namespace UserInterface
 {
     public enum MenuGame
     {
         menuG,
         menuS,
+
     }
     //Asignar nombre de cada personaje
-    public enum ImageReference
-    {
-        a,
-        b,
-        c,
-        d,
-        e,
-        f,
-    }
+    //Creo que estas referencias no serna necesarias 
+
     class GameDisplay
     {
 
-        public static Layout layout;
+        public static Layout layoutGame;
+        public static Layout layoutInit;
+
         public static MenuGame showmenu = MenuGame.menuG;
-
-        public static Canvas[] playercanvas = new Canvas[]{new Canvas(16,20),
-         new Canvas(15,20),
-         new Canvas(15,20),
-         new Canvas(15,20),
-         new Canvas(15,20),
-         new Canvas(15,20),};
-
 
 
         public static void GameScreen()
         {
-            layout = new Layout("GameScreen")
+            layoutGame = new Layout("GameScreen")
                      .SplitColumns(
                          new Layout("MazeContainer"),
                          new Layout("Rigth")
@@ -60,9 +49,9 @@ namespace UserInterface
                          )
                      );
 
-            layout["MazeContainer"].MinimumSize(85);
-            layout["top"].Ratio(3);
-            layout["Character Image"].Ratio(5);
+            layoutGame["MazeContainer"].MinimumSize(85);
+            layoutGame["top"].Ratio(3);
+            layoutGame["Character Image"].Ratio(5);
 
         }
 
@@ -71,10 +60,10 @@ namespace UserInterface
         {
 
 
-            layout["Character Image"].Update(
+            layoutGame["Character Image"].Update(
                     new Panel(
                 Align.Center(GameMaster.Player.Image).MiddleAligned()).Border(BoxBorder.Double).BorderColor(GameMaster.Player.Appearance).Expand());
-            layout["Character name"].Update(
+            layoutGame["Character name"].Update(
                 new Panel(
             Align.Center(
             new Markup($"{GameMaster.Player.Name} [blue]Is your turn![/]"),
@@ -83,7 +72,7 @@ namespace UserInterface
 
 
 
-            layout["Character Status"].Update(
+            layoutGame["Character Status"].Update(
                 new Panel(
                     Align.Left(
                     new BarChart()
@@ -133,7 +122,7 @@ namespace UserInterface
 
 
 
-            layout["GameOption"].Update(
+            layoutGame["GameOption"].Update(
                 Align.Center(table).VerticalAlignment(VerticalAlignment.Middle)
             );
 
@@ -170,7 +159,7 @@ namespace UserInterface
 
 
 
-            layout["MazeContainer"].Update(
+            layoutGame["MazeContainer"].Update(
                 new Panel(Align.Center(MazeCanvas.canvas))
             );
             PlayerStatus();
@@ -180,25 +169,246 @@ namespace UserInterface
             Console.WriteLine();
             AnsiConsole.Clear();
 
-            AnsiConsole.Write(layout);
+            AnsiConsole.Write(layoutGame);
 
             ///AnsiConsole.Clear();
             //AnsiConsole.Write(canvas);
         }
 
 
-        public static void GenerateCharacter()
+        public static void GenerateCharacter(int size)
         {
-            for (int i = 0; i < GameMaster.players.Count; i++)
+            for (int i = 0; i < GameMaster.CharacterOption.Count; i++)
             {
-                GameMaster.players[i].Image.MaxWidth(16);
+                GameMaster.CharacterOption[i].Image.MaxWidth(size);
             }
         }
 
 
+        #region  InitGameMenus
+        public static Table VerticalMenuInit(Menu menu)
+        {
+            var table = new Table();
+            table.AddColumn(new TableColumn("MENU").Centered());
+            List<(bool, string)> m = menu.GetList();
+
+
+
+            foreach (var item in m)
+            {
+                if (item.Item1)
+                {
+                    table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
+                }
+                else
+                {
+                    table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
+                }
+            }
+            table.Border = TableBorder.Minimal;
+            //table.Expand();
+
+            return table;
+        }
+
+
+
+        public static void InitLayout()
+        {
+            layoutInit = new Layout("Init")
+                     .SplitRows(
+                         new Layout("Menu"),
+                         new Layout("Visual")
+                         .SplitColumns(
+                                 new Layout("CharacterImage"),
+                                 new Layout("CharacterSpecification")
+                                 .SplitRows(
+                                    new Layout("Items"),
+                                    new Layout("Information")
+                                 ))
+                     );
+
+            // layoutInit["CharacterSpecification"].Ratio(40);
+            // layoutInit["CharacterImage"].Ratio(40);
+            layoutInit["Menu"].Size(8);
+            layoutInit["Items"].Size(12);
+            //
+
+
+        }
+
+
+        public static Table HorizontalMenu(Menu menu, string title)
+        {
+            var table = new Table();
+            table.AddColumn(new TableColumn(title).Centered());
+            List<(bool, string)> m = menu.GetList();
+
+
+
+            foreach (var item in m)
+            {
+                if (item.Item1)
+                {
+                    table.AddRow(new Markup($"[blue] < {item.Item2} > [/]"));
+                }
+            }
+            table.Border = TableBorder.Minimal;
+            table.Expand();
+
+            return table;
+        }
+
+        public static void PrintSelectionMenu(Menu menu, string title)
+        {
+            Console.Clear();
+            layoutInit["Menu"].Update(
+               new Panel(Align.Center(HorizontalMenu(menu, title))).NoBorder()
+           );
+            string Sreference = "";
+
+
+
+
+            foreach (var item in menu.MenuOption)
+            {
+                if (item.Item1)
+                {
+                    Sreference = item.Item2;
+                }
+            }
+
+
+            #region referencia según string
+            if (Sreference == "Vision Of Light")
+            {
+                layoutInit["CharacterImage"].Update(
+           new Panel(Align.Center(GameMaster.CharacterOption[0].Image)).BorderColor(GameMaster.CharacterOption[0].Appearance).HeavyBorder()
+       );
+
+                layoutInit["Items"].Update(
+                    new Panel(
+                        Align.Left(
+                        new BarChart()
+                        .Width(30)
+                        .Label("[blue bold underline]PLAYER Information[/]")
+                        .CenterLabel()
+                        .AddItem("Life", GameMaster.CharacterOption[0].Life, Color.Red)
+                        .AddItem("Speed", GameMaster.CharacterOption[0].Speed, Color.Green)
+                        .AddItem("Power", GameMaster.CharacterOption[0].Power, Color.Blue)
+                        .AddItem("Attack", GameMaster.CharacterOption[0].Attack, Color.Purple), VerticalAlignment.Middle)
+                          ).NoBorder().Expand());
+            }
+
+            if (Sreference == "Creative Wind")
+            {
+                layoutInit["CharacterImage"].Update(
+         new Panel(Align.Center(GameMaster.CharacterOption[1].Image)).BorderColor(GameMaster.CharacterOption[1].Appearance).HeavyBorder()
+     );
+                layoutInit["Items"].Update(
+                                        new Panel(
+                                            Align.Left(
+                                            new BarChart()
+                                            .Width(30)
+                                            .Label("[blue bold underline]PLAYER Information[/]")
+                                            .CenterLabel()
+                                            .AddItem("Life", GameMaster.CharacterOption[1].Life, Color.Red)
+                                            .AddItem("Speed", GameMaster.CharacterOption[1].Speed, Color.Green)
+                                            .AddItem("Power", GameMaster.CharacterOption[1].Power, Color.Blue)
+                                            .AddItem("Attack", GameMaster.CharacterOption[1].Attack, Color.Purple), VerticalAlignment.Middle)
+                                              ).NoBorder().Expand());
+            }
+
+            if (Sreference == "Idea Mimetist")
+            {
+                layoutInit["CharacterImage"].Update(
+           new Panel(Align.Center(GameMaster.CharacterOption[3].Image)).BorderColor(GameMaster.CharacterOption[3].Appearance).HeavyBorder()
+       );
+                layoutInit["Items"].Update(
+                                        new Panel(
+                                            Align.Left(
+                                            new BarChart()
+                                            .Width(30)
+                                            .Label("[blue bold underline]PLAYER Information[/]")
+                                            .CenterLabel()
+                                            .AddItem("Life", GameMaster.CharacterOption[3].Life, Color.Red)
+                                            .AddItem("Speed", GameMaster.CharacterOption[3].Speed, Color.Green)
+                                            .AddItem("Power", GameMaster.CharacterOption[3].Power, Color.Blue)
+                                            .AddItem("Attack", GameMaster.CharacterOption[3].Attack, Color.Purple), VerticalAlignment.Middle)
+                                              ).NoBorder().Expand());
+            }
+
+            if (Sreference == "Mirror Of Time")
+            {
+                layoutInit["CharacterImage"].Update(
+           new Panel(Align.Center(GameMaster.CharacterOption[5].Image)).BorderColor(GameMaster.CharacterOption[5].Appearance).HeavyBorder()
+       );
+                layoutInit["Items"].Update(
+                             new Panel(
+                                 Align.Left(
+                                 new BarChart()
+                                 .Width(30)
+                                 .Label("[blue bold underline]PLAYER Information[/]")
+                                 .CenterLabel()
+                                 .AddItem("Life", GameMaster.CharacterOption[5].Life, Color.Red)
+                                 .AddItem("Speed", GameMaster.CharacterOption[5].Speed, Color.Green)
+                                 .AddItem("Power", GameMaster.CharacterOption[5].Power, Color.Blue)
+                                 .AddItem("Attack", GameMaster.CharacterOption[5].Attack, Color.Purple), VerticalAlignment.Middle)
+                                   ).NoBorder().Expand());
+
+            }
+
+            if (Sreference == "Natural Breaker")
+            {
+                layoutInit["CharacterImage"].Update(
+           new Panel(Align.Center(GameMaster.CharacterOption[4].Image)).BorderColor(GameMaster.CharacterOption[4].Appearance).HeavyBorder()
+       );
+                layoutInit["Items"].Update(
+                             new Panel(
+                                 Align.Left(
+                                 new BarChart()
+                                 .Width(30)
+                                 .Label("[blue bold underline]PLAYER Information[/]")
+                                 .CenterLabel()
+                                 .AddItem("Life", GameMaster.CharacterOption[4].Life, Color.Red)
+                                 .AddItem("Speed", GameMaster.CharacterOption[4].Speed, Color.Green)
+                                 .AddItem("Power", GameMaster.CharacterOption[4].Power, Color.Blue)
+                                 .AddItem("Attack", GameMaster.CharacterOption[4].Attack, Color.Purple), VerticalAlignment.Middle)
+                                   ).NoBorder().Expand());
+
+            }
+
+            if (Sreference == "Vital Soul")
+            {
+                layoutInit["CharacterImage"].Update(
+           new Panel(Align.Center(GameMaster.CharacterOption[2].Image)).BorderColor(GameMaster.CharacterOption[2].Appearance).HeavyBorder()
+       );
+                layoutInit["Items"].Update(
+                             new Panel(
+                                 Align.Left(
+                                 new BarChart()
+                                 .Width(30)
+                                 .Label("[blue bold underline]PLAYER Information[/]")
+                                 .CenterLabel()
+                                 .AddItem("Life", GameMaster.CharacterOption[2].Life, Color.Red)
+                                 .AddItem("Speed", GameMaster.CharacterOption[2].Speed, Color.Green)
+                                 .AddItem("Power", GameMaster.CharacterOption[2].Power, Color.Blue)
+                                 .AddItem("Attack", GameMaster.CharacterOption[2].Attack, Color.Purple), VerticalAlignment.Middle)
+                                   ).NoBorder().Expand());
+
+            }
+            #endregion
+
+
+            AnsiConsole.Write(layoutInit);
+
+        }
 
     }
 
-
-
+    #endregion
 }
+
+
+
+

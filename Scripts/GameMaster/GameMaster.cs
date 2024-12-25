@@ -13,8 +13,8 @@ namespace LogicGame
         public static List<Character> players = new List<Character>();
         public static int turn;
         public static int playeramount;
-        public static (int, int)[] position = [(0, 0), (Maze.mainWidth - 1, 0), (Maze.mainWidth - 1, Maze.mainHeight - 1), (0, Maze.mainHeight - 1)];
-        private static Color[] appearance = [Color.Blue, Color.Red, Color.Green, Color.Yellow];
+        public static (int, int)[] position = [(0, 0), (Maze.mainWidth - 1, Maze.mainHeight - 1), (Maze.mainWidth - 1, 0), (0, Maze.mainHeight - 1)];
+        //private static List<Color> appearance = [Color.Blue, Color.Red, Color.Green, Color.Yellow, Color.Orange1, Color.Black, Color.DeepPink1];
         private static int[] speed = [5, 5, 5, 5];
         public static Character Player { get; set; }
         public static int playerspeed = 0;
@@ -22,13 +22,16 @@ namespace LogicGame
         //Listas para ejecutar los menus
         public static Menu GameMenu = new Menu(Menu.gamemenu, Menu.action);
         public static Menu SwitchMenu = new Menu(Menu.pswitch, Menu.change);
+        public static Menu CharacterSelection = new Menu(Menu.characters, Menu.charactersaction);
+        public static Menu NumberOfPlayers = new Menu(Menu.numberofplayer, Menu.numberofplayeraction);
         //Mis jugadores
-        static Character[] CharacterOption = { new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
-                                               new Character(ImageReference.a,position[0], appearance[2],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 8, 5, PowerEnum.IncreaseSpeed, 6, 2, 3),
-                                               new Character(ImageReference.a,position[0], appearance[3],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 12, 2, PowerEnum.IncreaseLife, 10, 3, 5),
-                                               new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
-                                               new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
-                                               new Character(ImageReference.a,position[0], appearance[0],new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3)};
+        //Creo que la referencia no se usa
+        public static List<Character> CharacterOption = [ new Character(CharacterReference.VisionOfLight,position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
+                                               new Character(CharacterReference.CreativeWind,position[0], Color.Red,new CanvasImage("Assets/pxjs3trcyyv71-06-removebg-preview.png"), "", 8, 5, PowerEnum.IncreaseSpeed, 6, 2, 3),
+                                               new Character(CharacterReference.VitalSoul,position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 12, 2, PowerEnum.IncreaseLife, 10, 3, 5),
+                                               new Character(CharacterReference.IdeaMimetist,position[0], Color.Green,new CanvasImage("Assets/pxjs3trcyyv71-05-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
+                                               new Character(CharacterReference.NaturalBreaker,position[0], Color.Pink1,new CanvasImage("Assets/pxjs3trcyyv71-08-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
+                                               new Character(CharacterReference.MirrorOfTime,position[0], Color.Orange1,new CanvasImage("Assets/pxjs3trcyyv71-07-removebg-preview(1).png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3)];
 
 
 
@@ -45,35 +48,68 @@ namespace LogicGame
         }
         public static bool InitGame()
         {   //Declarar jugadores. Más adelante esto será elegible
-            playeramount = 4;
+            //List<Color> gamecolor = appearance;
+            List<Character> characters = CharacterOption;
+            Menu charactersmenu = CharacterSelection;
+            GameDisplay.InitLayout();
+            GameDisplay.GenerateCharacter(30);
+            // playeramount = 4;
             players.Clear();
+            //Cuantos jugadores menu
+
+            while (true)
+            {
+                Console.Clear();
+                AnsiConsole.Write(GameDisplay.HorizontalMenu(NumberOfPlayers, "Number of Players"));
+
+                ConsoleKeyInfo key = Console.ReadKey();
+                NumberOfPlayers.ChangeOption(key);
+
+                if (NumberOfPlayers.actionMenu(key))
+                {
+                    break;
+                }
+
+            }
+            for (int i = 0; i < playeramount; i++)
+            {
+                //Escribe tu nombre
+                Console.Clear();
+                AnsiConsole.Write(new Markup("Insert your name").Centered());
+                //Hacer que el nombre sea válido;
+                string? name = Console.ReadLine();
+                while (ValidateName(name))
+                {
+                    Console.Clear();
+                    AnsiConsole.Write(new Markup("Insert your name").Centered());
+                    name = Console.ReadLine();
+                }
 
 
-            //------------------
-            //Estos son personajes temporales 
-            System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(ImageReference.a, position[0], appearance[0], new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), Console.ReadLine(), 10, speed[0], PowerEnum.NewTurn, 10, 3, 3));
-            System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(ImageReference.b, position[1], appearance[1], new CanvasImage("Assets/C1-removebg-preview.png"), Console.ReadLine(), 10, speed[1], PowerEnum.DestroyTrap, 10, 3, 3));
-            System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(ImageReference.c, position[2], appearance[2], new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), Console.ReadLine(), 10, speed[2], PowerEnum.JumpWall, 10, 3, 3));
-            System.Console.WriteLine("Inserte su nombre");
-            players.Add(new Character(ImageReference.d, position[3], appearance[3], new CanvasImage("D:/01_proyectos/Programación/Maze Runners/Picasso's Dream/Assets/C2-removebg-preview.png"), Console.ReadLine(), 10, speed[3], PowerEnum.SwitchPlayer, 10, 3, 3));
 
-            //Aqui se generan sus imagenes segun el color
-            GameDisplay.GenerateCharacter();
+                //Selecciona tu personaje
 
-            //Asignaer imagen
+                while (true)
+                {
+                    GameDisplay.PrintSelectionMenu(CharacterSelection, "Select your character");
 
+                    ConsoleKeyInfo key = Console.ReadKey();
+                    CharacterSelection.ChangeOption(key);
 
+                    if (CharacterSelection.actionMenu(key))
+                    {
+                        break;
+                    }
 
-            //
-            /* for (int i = 0; i < playeramount; i++)
-             {
-                 System.Console.WriteLine("Inserte su nombre");
-                 Character Player = new Character(position[i], appearance[i], Console.ReadLine(), 10, speed[i], PowerEnum.NewTurn, 10, 3, 3);
-                 players.Add(Player);
-             }*/
+                }
+                players[i].Name = name;
+                players[i].Position = position[i];
+
+            }
+            //Falta la asignación de colores
+            CharacterOption = characters;
+            CharacterSelection = charactersmenu;
+            GameDisplay.GenerateCharacter(16);
             Random rand = new Random();
             turn = rand.Next(0, playeramount);
 
@@ -98,11 +134,11 @@ namespace LogicGame
             Player = players[turn];
             playerspeed = Player.Speed;
             Player.Power += Player.PowerIncrease;
-            Normalize();
+
 
             while (true)
             {
-
+                Normalize();
                 //Print the display game
                 GameDisplay.RefreshMaze();
 
@@ -143,10 +179,6 @@ namespace LogicGame
         private static void NextTurn()
         {
 
-            if (Player.Power > 10)
-            {
-                Player.Power = 10;
-            }
             turn++;
             turn %= playeramount;
         }
@@ -258,5 +290,16 @@ namespace LogicGame
                 Player.Life = Player.MaxLife;
             }
         }
+        static bool ValidateName(string s)
+        {
+
+
+            if (string.IsNullOrEmpty(s))
+            {
+                return true;
+            }
+            return false;
+        }
+
     }
 }

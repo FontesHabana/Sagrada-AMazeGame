@@ -8,9 +8,11 @@ using System.Runtime.CompilerServices;
 using LogicGame;
 using NAudio.Wave;
 
-public class Program
+class Program
 {
     private static bool isPlaying = true; // Variable para controlar la reproducción
+    public static Menu InitMenu = new Menu(Menu.initmenu, Menu.initaction);
+
     public static void Main(string[] args)
     {
 
@@ -19,45 +21,41 @@ public class Program
         Thread audioThread = new Thread(Audio.PlayAudio);
         audioThread.Start();
 
+        CanvasImage sagrada = new CanvasImage("Assets/images_2_-01-removebg-preview.png");
+
+        AnsiConsole.Clear();
+
         while (true)
         {
             Console.Clear();
-            System.Console.WriteLine(Menu.gamemenu[0]);
-            System.Console.WriteLine(GameMaster.GameMenu.GetList()[0].Item2);
+
             //Presentación del juego
 
             //Menú de inicio
+            System.Console.WriteLine("\n \n \n");
             AnsiConsole.Write(
-                new FigletText("Picasso`s Dream")
+                new FigletText("Sagrada")
                 .LeftJustified()
                 .Color(Color.Blue)
                 .Centered()
             );
-            //Switch con opciones del menú de inicio?
 
-            var option = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                .PageSize(10)
-                .AddChoices(new[] { "New Game", "Option", "Credits", "Exit" })
-            );
+            AnsiConsole.Write(GameDisplay.VerticalMenuInit(InitMenu).Centered().Expand());
 
-            if (option == "New Game")
-            {
-                GameMaster.Game();
-                Thread.Sleep(1000);
-            }
-            if (option == "Option")
-            {
+            AnsiConsole.Write(sagrada);
 
-            }
-            if (option == "Exit")
+
+            ConsoleKeyInfo key = Console.ReadKey();
+            InitMenu.ChangeOption(key);
+            if (!InitMenu.actionMenu(key))
             {
                 break;
             }
-        }
 
+        }
         Audio.isPlaying = false;
         audioThread.Join();
     }
+
 
 }

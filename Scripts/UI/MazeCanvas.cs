@@ -152,11 +152,11 @@ namespace UserInterface
                 }
             }
 
-            GameDisplay.layout["MazeContainer"].Update(
+            GameDisplay.layoutGame["MazeContainer"].Update(
                 new Panel(Align.Center(canvas))
             );
 
-            AnsiConsole.Write(GameDisplay.layout);
+            AnsiConsole.Write(GameDisplay.layoutGame);
 
             ///AnsiConsole.Clear();
             //AnsiConsole.Write(canvas);

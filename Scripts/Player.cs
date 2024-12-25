@@ -5,18 +5,28 @@ using System.Security;
 using LogicGame;
 using MazeBuilder;
 using Microsoft.VisualBasic;
+using NAudio.Wave;
 using Spectre.Console;
 using Spectre.Console.Rendering;
 using UserInterface;
 
 namespace Tiles
 {
+    public enum CharacterReference
+    {
+        VisionOfLight,
+        NaturalBreaker,
+        MirrorOfTime,
+        VitalSoul,
+        CreativeWind,
+        IdeaMimetist,
+    }
     #region player
     class Character : Tile
     {
         #region  Properties
         //Propiedades del jugador
-        public ImageReference Reference { get; set; }
+        public CharacterReference Reference { get; set; }
         public string Name { get; set; }
         public int Life { get; set; }
         public int MaxLife { get; set; }
@@ -34,7 +44,7 @@ namespace Tiles
         #endregion
 
 
-        public Character(ImageReference reference, (int, int) position, Color appearance, CanvasImage image, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
+        public Character(CharacterReference reference, (int, int) position, Color appearance, CanvasImage image, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
         {
             Name = name;
             MaxLife = life;
@@ -55,7 +65,7 @@ namespace Tiles
 
         public void Respawn(Character player)
         {
-            player.Life = 10;
+            player.Life = player.MaxLife;
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
             Position = GameMaster.position[GameMaster.players.IndexOf(player)];
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
@@ -64,7 +74,7 @@ namespace Tiles
 
         public bool AttackTo()
         {
-            if (Power >= 4)
+            if (Power >= 2)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -78,6 +88,7 @@ namespace Tiles
                                 if (GameMaster.players[j].Position == (Position.Item1 + direction[i].Item1, Position.Item2 + direction[i].Item2))
                                 {
                                     GameMaster.players[j].Life -= Attack;
+                                    GameMaster.Player.Power -= 2;
                                 }
                             }
                         }
@@ -147,7 +158,7 @@ namespace Tiles
         {
 
 
-            if (GameMaster.Player.Power > 5)
+            if (GameMaster.Player.Power >= 5)
             {
                 (int, int)[] direction = { (0, -1), (1, 0), (0, 1), (-1, 0) };
                 ConsoleKey[] key = { ConsoleKey.W, ConsoleKey.D, ConsoleKey.S, ConsoleKey.A };
@@ -170,6 +181,7 @@ namespace Tiles
                         return true;
                     }
                 }
+                GameMaster.Player.HaveFlag();
             }
 
             return false;
@@ -177,7 +189,7 @@ namespace Tiles
         //Aumentar velocidad
         public static bool IncreaseSpeed(int speed)
         {
-            if (GameMaster.Player.Power > 4)
+            if (GameMaster.Player.Power >= 3)
             {
                 GameMaster.playerspeed += speed;
                 DecreasePower(3);
@@ -188,7 +200,7 @@ namespace Tiles
         //Aumentar vida FALTAN COSAS POR HACER
         public static bool IncreaseLife(int life)
         {
-            if (GameMaster.Player.Power > 4)
+            if (GameMaster.Player.Power >= 4)
             {
                 GameMaster.Player.Life += life;
                 DecreasePower(4);
@@ -199,13 +211,21 @@ namespace Tiles
         //Teletransportación
         public static bool SwitchPlayer(Character player)
         {
-            if (GameMaster.Player.Power > 4)
+            if (GameMaster.Player.Power >= 5)
             {
                 (int, int) aux = GameMaster.Player.Position;
                 GameMaster.Player.Position = player.Position;
                 player.Position = aux;
-                player.HaveFlag();
-                GameMaster.Player.HaveFlag();
+                if (player.haveFlag)
+                {
+                    player.HaveFlag();
+                }
+                if (GameMaster.Player.haveFlag)
+                {
+                    GameMaster.Player.HaveFlag();
+                }
+
+
 
                 DecreasePower(5);
                 return true;
@@ -216,7 +236,7 @@ namespace Tiles
         public static bool DestroyTrap()
         {
 
-            if (GameMaster.Player.Power > 4)
+            if (GameMaster.Player.Power >= 4)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -241,9 +261,9 @@ namespace Tiles
 
         public static bool NewTurn()
         {
-            if (GameMaster.Player.Power > 4)
+            if (GameMaster.Player.Power >= 5)
             {
-                DecreasePower(6);
+                DecreasePower(5);
                 GameMaster.Turn();
 
                 GameMaster.turn--;

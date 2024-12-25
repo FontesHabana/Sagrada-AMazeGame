@@ -1,12 +1,13 @@
 using UserInterface;
 using Tiles;
 using Spectre.Console;
+using System.Security;
 namespace LogicGame
 {
 
     class Menu
     {  //General 
-        List<(bool, string)> MenuOption { get; set; }
+        public List<(bool, string)> MenuOption { get; set; }
         //Create a delegate
         public delegate bool ActionMenu(ConsoleKeyInfo key);
         //Variable delegate
@@ -21,7 +22,17 @@ namespace LogicGame
         //Menu Principal
         public static List<(bool, string)> pswitch = new List<(bool, string)>();
         public static ActionMenu change = SwitchMenu;
+        //Menu de inicio
+        public static List<(bool, string)> initmenu = new List<(bool, string)> { (true, "New Game"), (false, "Instruction"), (false, "Credits"), (false, "Exit") };
+        public static ActionMenu initaction = InitAction;
+        //Number of players
+        public static List<(bool, string)> numberofplayer = new List<(bool, string)> { (true, "2"), (false, "3"), (false, "4") };
+        public static ActionMenu numberofplayeraction = NumberOfPlayerAction;
 
+
+        //Select player list
+        public static List<(bool, string)> characters = new List<(bool, string)> { (false, "Vision Of Light"), (false, "Creative Wind"), (true, "Vital Soul"), (false, "Idea Mimetist"), (false, "Natural Breaker"), (false, "Mirror Of Time") };
+        public static ActionMenu charactersaction = CharacterSelection;
 
         public Menu(List<(bool, string)> menu, ActionMenu action)
         {
@@ -109,8 +120,6 @@ namespace LogicGame
                                     GameMaster.players[i].Respawn(GameMaster.players[i]);
                                 }
                             }
-
-                            GameMaster.Player.Power -= 4;
                             if (GameMaster.Player.Power < 0)
                             {
                                 GameMaster.Player.Power = 0;
@@ -212,6 +221,145 @@ namespace LogicGame
             GameDisplay.showmenu = MenuGame.menuG;
             return true;
         }
+        static bool InitAction(ConsoleKeyInfo key)
+        {
+
+            if (key.Key == ConsoleKey.Enter)
+            {
+                int option = 0;
+
+                foreach (var item in Program.InitMenu.MenuOption)
+                {
+                    if (item.Item1)
+                    {
+                        option = Program.InitMenu.MenuOption.IndexOf(item);
+                    }
+                }
+                switch (option)
+                {
+                    case 0:
+                        GameMaster.Game();
+                        Thread.Sleep(1000);
+                        return true;
+                    case 1:
+                        return true;
+                    case 2:
+                        return true;
+                    case 3:
+                        return false;
+
+                    default:
+                        break;
+                }
+                return true;
+            }
+            return true;
+        }
+        //Crear lista auxiliar y eliminar el elmento de la lista del menu cuando se haya seleccionado
+        static bool CharacterSelection(ConsoleKeyInfo key)
+        {
+
+            if (key.Key == ConsoleKey.Enter)
+            {
+                string option = "";
+
+                foreach (var item in GameMaster.CharacterSelection.MenuOption)
+                {
+                    if (item.Item1)
+                    {
+                        option = item.Item2;
+                    }
+                }
+                string[] stringoption = [("Vision Of Light"), ("Creative Wind"), ("Vital Soul"), ("Idea Mimetist"), ("Natural Breaker"), ("Mirror Of Time")];
+                for (int i = 0; i < stringoption.Length; i++)
+                {
+                    if (option == stringoption[i])
+                    {
+                        GameMaster.players.Add(GameMaster.CharacterOption[i]);
+                        GameMaster.CharacterSelection.MenuOption.Remove((true, stringoption[i]));
+                        GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                    }
+                }
+                //El switch no funciona porque despues de eliminar el primer elemento se corre y no coincide, hacerlo con 6if
+                /*   switch (option)
+                   {
+                       case 0:
+                           GameMaster.players.Add(GameMaster.CharacterOption[0]);
+                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Vision Of Light"));
+                           System.Console.WriteLine("vision of Light");
+                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                           break;
+                       case 1:
+                           GameMaster.players.Add(GameMaster.CharacterOption[1]);
+                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Creative Wind"));
+                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                           break;
+                       case 2:
+                           GameMaster.players.Add(GameMaster.CharacterOption[2]);
+                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Vita Soul"));
+                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                           break;
+                       case 3:
+                           GameMaster.players.Add(GameMaster.CharacterOption[3]);
+                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Idea Mimetist"));
+                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                           break;
+                       case 4:
+                           GameMaster.players.Add(GameMaster.CharacterOption[4]);
+                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Natural Breaker"));
+                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                           break;
+                       case 5:
+                           GameMaster.players.Add(GameMaster.CharacterOption[5]);
+                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Mirror Of Time"));
+                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
+                           break;
+
+                       default:
+                           break;
+                   }*/
+                return true;
+            }
+            return false;
+        }
+
+        static bool NumberOfPlayerAction(ConsoleKeyInfo key)
+        {
+
+            if (key.Key == ConsoleKey.Enter)
+            {
+                int option = 0;
+
+                foreach (var item in GameMaster.NumberOfPlayers.MenuOption)
+                {
+                    if (item.Item1)
+                    {
+                        option = GameMaster.NumberOfPlayers.MenuOption.IndexOf(item);
+                    }
+                }
+                switch (option)
+                {
+                    case 0:
+                        GameMaster.playeramount = 2;
+                        break;
+                    case 1:
+                        GameMaster.playeramount = 3;
+                        break;
+                    case 2:
+                        GameMaster.playeramount = 4;
+                        break;
+
+                    default:
+                        break;
+                }
+                return true;
+            }
+            return false;
+        }
+
+
+
+
 
 
         public List<(bool, string)> GetList()
