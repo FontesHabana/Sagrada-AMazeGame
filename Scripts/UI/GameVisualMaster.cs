@@ -20,7 +20,7 @@ namespace UserInterface
 
     class GameDisplay
     {
-
+        static CanvasImage sagrada = new CanvasImage("Assets/images_2_-01-removebg-preview.png");
         public static Layout layoutGame;
         public static Layout layoutInit;
 
@@ -279,134 +279,108 @@ namespace UserInterface
             }
 
 
-            #region referencia según string
-            if (Sreference == "Vision Of Light")
-            {
-                layoutInit["CharacterImage"].Update(
-           new Panel(Align.Center(GameMaster.CharacterOption[0].Image)).BorderColor(GameMaster.CharacterOption[0].Appearance).HeavyBorder()
-       );
+            string[] stringoption = [("Vision Of Light"), ("Creative Wind"), ("Vital Soul"), ("Idea Mimetist"), ("Natural Breaker"), ("Mirror Of Time")];
+            string[] characterHistory = [
+                                            ("Deep within Gaudí's mind, where ideas shine like stars, emerges Vision of Light. This ethereal being represents the overflowing creativity of the architect. With a single leap, it can surpass walls and barriers, symbolizing Gaudí's ability to transcend the limits of architecture. When the labyrinth becomes dark and oppressive, Vision of Light illuminates the path, guiding its companions toward new possibilities. "),
+                                            ("Through the corridors of the labyrinth blows Creative Wind, an ethereal being that moves with the swiftness of the wind. Its ability to increase speed allows its companions to act with agility and ingenuity. Symbolizing the fluidity and dynamism of Gaudí's architectural design, Creative Wind guides its team through challenges with grace and skill, always one step ahead in their quest."),
+                                            ("At the beating heart of the labyrinth lies Vital Soul, a being filled with energy and hope. With its power to increase the life of its allies, it infuses strength into those around it. It represents the love for life that Gaudí infused into each of his designs. When players feel discouraged, Vital Soul revives their spirits, reminding them that there is always light at the end of the tunnel."),
+                                            ("In the shadows of the labyrinth dwells Idea Mimetist, the master of disguise and transformation. With its power to switch with another player, it can alter the course of the game in an instant. This character reflects the duality and adaptability present in Gaudí's creative mind. When strategies or roles need to change, Idea Mimetist becomes the perfect ally, ensuring that every player can shine in their moment."),
+                                            ("From the depths of architectural design arises Natural Breaker, an unyielding warrior who challenges conventions. With its unwavering strength, it can break traps designed to ensnare the unwary. This character embodies Gaudí's tenacity, who was never intimidated by criticism. When dangers lurk in the labyrinth, Natural Breaker charges forward, dismantling obstacles and clearing the way to freedom."),
+                                            ("In a hidden corner of Gaudí's mind resides Mirror of Time, a cunning manipulator of time and perception. This character has the power to take an extra turn, allowing it to plan its moves with precision. Reflecting Gaudí's holistic vision, Mirror of Time gazes into the future and acts wisely, ensuring that every step taken is decisive in the quest for the lost piece of the Sagrada Familia.")  ];
 
-                layoutInit["Items"].Update(
-                    new Panel(
-                        Align.Left(
-                        new BarChart()
-                        .Width(30)
-                        .Label("[blue bold underline]PLAYER Information[/]")
-                        .CenterLabel()
-                        .AddItem("Life", GameMaster.CharacterOption[0].Life, Color.Red)
-                        .AddItem("Speed", GameMaster.CharacterOption[0].Speed, Color.Green)
-                        .AddItem("Power", GameMaster.CharacterOption[0].Power, Color.Blue)
-                        .AddItem("Attack", GameMaster.CharacterOption[0].Attack, Color.Purple), VerticalAlignment.Middle)
-                          ).NoBorder().Expand());
-            }
 
-            if (Sreference == "Creative Wind")
-            {
-                layoutInit["CharacterImage"].Update(
-         new Panel(Align.Center(GameMaster.CharacterOption[1].Image)).BorderColor(GameMaster.CharacterOption[1].Appearance).HeavyBorder()
-     );
-                layoutInit["Items"].Update(
-                                        new Panel(
-                                            Align.Left(
-                                            new BarChart()
-                                            .Width(30)
-                                            .Label("[blue bold underline]PLAYER Information[/]")
-                                            .CenterLabel()
-                                            .AddItem("Life", GameMaster.CharacterOption[1].Life, Color.Red)
-                                            .AddItem("Speed", GameMaster.CharacterOption[1].Speed, Color.Green)
-                                            .AddItem("Power", GameMaster.CharacterOption[1].Power, Color.Blue)
-                                            .AddItem("Attack", GameMaster.CharacterOption[1].Attack, Color.Purple), VerticalAlignment.Middle)
-                                              ).NoBorder().Expand());
-            }
 
-            if (Sreference == "Idea Mimetist")
+            for (int i = 0; i < stringoption.Length; i++)
             {
-                layoutInit["CharacterImage"].Update(
-           new Panel(Align.Center(GameMaster.CharacterOption[3].Image)).BorderColor(GameMaster.CharacterOption[3].Appearance).HeavyBorder()
-       );
-                layoutInit["Items"].Update(
-                                        new Panel(
-                                            Align.Left(
-                                            new BarChart()
-                                            .Width(30)
-                                            .Label("[blue bold underline]PLAYER Information[/]")
-                                            .CenterLabel()
-                                            .AddItem("Life", GameMaster.CharacterOption[3].Life, Color.Red)
-                                            .AddItem("Speed", GameMaster.CharacterOption[3].Speed, Color.Green)
-                                            .AddItem("Power", GameMaster.CharacterOption[3].Power, Color.Blue)
-                                            .AddItem("Attack", GameMaster.CharacterOption[3].Attack, Color.Purple), VerticalAlignment.Middle)
-                                              ).NoBorder().Expand());
-            }
+                if (Sreference == stringoption[i])
+                {
+                    layoutInit["CharacterImage"].Update(
+                   new Panel(Align.Center(GameMaster.CharacterOption[i].Image)).BorderColor(GameMaster.CharacterOption[i].Appearance).HeavyBorder()
+                  );
 
-            if (Sreference == "Mirror Of Time")
-            {
-                layoutInit["CharacterImage"].Update(
-           new Panel(Align.Center(GameMaster.CharacterOption[5].Image)).BorderColor(GameMaster.CharacterOption[5].Appearance).HeavyBorder()
-       );
-                layoutInit["Items"].Update(
-                             new Panel(
-                                 Align.Left(
-                                 new BarChart()
-                                 .Width(30)
-                                 .Label("[blue bold underline]PLAYER Information[/]")
-                                 .CenterLabel()
-                                 .AddItem("Life", GameMaster.CharacterOption[5].Life, Color.Red)
-                                 .AddItem("Speed", GameMaster.CharacterOption[5].Speed, Color.Green)
-                                 .AddItem("Power", GameMaster.CharacterOption[5].Power, Color.Blue)
-                                 .AddItem("Attack", GameMaster.CharacterOption[5].Attack, Color.Purple), VerticalAlignment.Middle)
-                                   ).NoBorder().Expand());
+                    layoutInit["Items"].Update(
+                        new Panel(
+                            Align.Left(
+                            new BarChart()
+                            .Width(30)
+                            .Label("[blue bold underline]PLAYER Information[/]")
+                            .CenterLabel()
+                            .AddItem("Life", GameMaster.CharacterOption[i].Life, Color.Red)
+                            .AddItem("Speed", GameMaster.CharacterOption[i].Speed, Color.Green)
+                            .AddItem("Power", GameMaster.CharacterOption[i].Power, Color.Blue)
+                            .AddItem("Attack", GameMaster.CharacterOption[i].Attack, Color.Purple), VerticalAlignment.Middle)
+                              ).NoBorder().Expand());
+
+                    layoutInit["Information"].Update(
+                        new Panel(characterHistory[i]).Expand().NoBorder()
+                    );
+                }
 
             }
-
-            if (Sreference == "Natural Breaker")
-            {
-                layoutInit["CharacterImage"].Update(
-           new Panel(Align.Center(GameMaster.CharacterOption[4].Image)).BorderColor(GameMaster.CharacterOption[4].Appearance).HeavyBorder()
-       );
-                layoutInit["Items"].Update(
-                             new Panel(
-                                 Align.Left(
-                                 new BarChart()
-                                 .Width(30)
-                                 .Label("[blue bold underline]PLAYER Information[/]")
-                                 .CenterLabel()
-                                 .AddItem("Life", GameMaster.CharacterOption[4].Life, Color.Red)
-                                 .AddItem("Speed", GameMaster.CharacterOption[4].Speed, Color.Green)
-                                 .AddItem("Power", GameMaster.CharacterOption[4].Power, Color.Blue)
-                                 .AddItem("Attack", GameMaster.CharacterOption[4].Attack, Color.Purple), VerticalAlignment.Middle)
-                                   ).NoBorder().Expand());
-
-            }
-
-            if (Sreference == "Vital Soul")
-            {
-                layoutInit["CharacterImage"].Update(
-           new Panel(Align.Center(GameMaster.CharacterOption[2].Image)).BorderColor(GameMaster.CharacterOption[2].Appearance).HeavyBorder()
-       );
-                layoutInit["Items"].Update(
-                             new Panel(
-                                 Align.Left(
-                                 new BarChart()
-                                 .Width(30)
-                                 .Label("[blue bold underline]PLAYER Information[/]")
-                                 .CenterLabel()
-                                 .AddItem("Life", GameMaster.CharacterOption[2].Life, Color.Red)
-                                 .AddItem("Speed", GameMaster.CharacterOption[2].Speed, Color.Green)
-                                 .AddItem("Power", GameMaster.CharacterOption[2].Power, Color.Blue)
-                                 .AddItem("Attack", GameMaster.CharacterOption[2].Attack, Color.Purple), VerticalAlignment.Middle)
-                                   ).NoBorder().Expand());
-
-            }
-            #endregion
 
 
             AnsiConsole.Write(layoutInit);
 
         }
 
+        #endregion
+
+        public static void Start()
+        {
+            Console.Clear();
+            AnsiConsole.Clear();
+
+            sagrada.PixelWidth(1);
+            LiveText.PrintHitory();
+            Thread.Sleep(5000);
+        }
+
+        public static void mainPage()
+        {
+
+            AnsiConsole.Clear();
+
+            //Presentación del juego
+
+            //Menú de inicio
+            // System.Console.WriteLine("\n \n \n");
+            AnsiConsole.Write(
+                new FigletText("Sagrada")
+                .LeftJustified()
+                .Color(Color.Blue)
+                .Centered()
+            );
+
+            AnsiConsole.Write(GameDisplay.VerticalMenuInit(Program.InitMenu).Centered().Expand());
+
+            AnsiConsole.Write(sagrada);
+        }
+        public static void Victory(int winner)
+        {
+            AnsiConsole.Clear();
+            Layout victory = new Layout("victory").SplitRows(
+                new Layout("top"),
+                new Layout("image")
+            );
+            victory["top"].Size(15);
+            victory["top"].Update(new FigletText("Victory")
+                .LeftJustified()
+                .Color(Color.Blue)
+                .Centered());
+
+            GameDisplay.GenerateCharacter(35);
+            victory["image"].Update(new Panel(Align.Center(GameMaster.players[winner - 1].Image)).Expand().NoBorder());
+
+
+
+            AnsiConsole.Write(victory);
+            Thread.Sleep(5000);
+
+        }
+
     }
 
-    #endregion
+
 }
 
 

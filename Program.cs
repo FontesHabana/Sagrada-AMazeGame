@@ -7,42 +7,27 @@ using UserInterface;
 using System.Runtime.CompilerServices;
 using LogicGame;
 using NAudio.Wave;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 class Program
 {
-    private static bool isPlaying = true; // Variable para controlar la reproducción
     public static Menu InitMenu = new Menu(Menu.initmenu, Menu.initaction);
 
     public static void Main(string[] args)
     {
 
-
         // Iniciar la reproducción de audio en un hilo separado
+        Audio.currentFile = Audio.music["presentation"];
+        // Thread audioThread = new Thread(() => Audio.PlayAudio(Audio.currentFile));
         Thread audioThread = new Thread(Audio.PlayAudio);
         audioThread.Start();
-
-        CanvasImage sagrada = new CanvasImage("Assets/images_2_-01-removebg-preview.png");
-
-        AnsiConsole.Clear();
+        // GameDisplay.Start();
 
         while (true)
         {
-            Console.Clear();
-
-            //Presentación del juego
-
-            //Menú de inicio
-            System.Console.WriteLine("\n \n \n");
-            AnsiConsole.Write(
-                new FigletText("Sagrada")
-                .LeftJustified()
-                .Color(Color.Blue)
-                .Centered()
-            );
-
-            AnsiConsole.Write(GameDisplay.VerticalMenuInit(InitMenu).Centered().Expand());
-
-            AnsiConsole.Write(sagrada);
+            Audio.currentFile = Audio.music["selectionMenu"];
+            GameDisplay.mainPage();
 
 
             ConsoleKeyInfo key = Console.ReadKey();
@@ -53,6 +38,7 @@ class Program
             }
 
         }
+
         Audio.isPlaying = false;
         audioThread.Join();
     }

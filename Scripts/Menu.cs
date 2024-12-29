@@ -23,7 +23,7 @@ namespace LogicGame
         public static List<(bool, string)> pswitch = new List<(bool, string)>();
         public static ActionMenu change = SwitchMenu;
         //Menu de inicio
-        public static List<(bool, string)> initmenu = new List<(bool, string)> { (true, "New Game"), (false, "Instruction"), (false, "Credits"), (false, "Exit") };
+        public static List<(bool, string)> initmenu = new List<(bool, string)> { (true, "New Game"), (false, "Instruction"), (false, "Lenguage"), (false, "History"), (false, "Exit") };
         public static ActionMenu initaction = InitAction;
         //Number of players
         public static List<(bool, string)> numberofplayer = new List<(bool, string)> { (true, "2"), (false, "3"), (false, "4") };
@@ -39,7 +39,12 @@ namespace LogicGame
             MenuOption = menu;
             actionMenu = action;
         }
+        //Crear un metodo para cada lista
+        public static List<(bool, string)> CharacterList()
+        {
 
+            return new List<(bool, string)> { (false, "Vision Of Light"), (false, "Creative Wind"), (true, "Vital Soul"), (false, "Idea Mimetist"), (false, "Natural Breaker"), (false, "Mirror Of Time") };
+        }
         public bool ChangeOption(ConsoleKeyInfo key)
         {
 
@@ -94,6 +99,9 @@ namespace LogicGame
 
         }
 
+
+
+
         static bool MenuAction(ConsoleKeyInfo key)
         {
 
@@ -118,6 +126,7 @@ namespace LogicGame
                                 if (GameMaster.players[i].Life <= 0)
                                 {
                                     GameMaster.players[i].Respawn(GameMaster.players[i]);
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("You kill a player").NoBorder());
                                 }
                             }
                             if (GameMaster.Player.Power < 0)
@@ -131,6 +140,7 @@ namespace LogicGame
                         if (GameMaster.Player.ShowTrap())
                         {
                             MazeCanvas.ShowTrap();
+                            GameDisplay.layoutGame["bottom"].Update(new Panel("Hay un monton de trampas").NoBorder());
                             Thread.Sleep(1000);
                         }
                         GameDisplay.RefreshMaze();
@@ -140,24 +150,68 @@ namespace LogicGame
                         switch (GameMaster.Player.SpecialPower)
                         {
                             case PowerEnum.JumpWall:
-                                Power.JumpWall(Console.ReadKey());
+
+                                if (Power.JumpWall(Console.ReadKey()))
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("Ese muro no era tan alto").NoBorder());
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder o no es un muro").NoBorder());
+                                }
                                 break;
                             case PowerEnum.IncreaseLife:
-                                Power.IncreaseLife(3);
+                                if (Power.IncreaseLife(3))
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("I fell better").NoBorder());
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                }
                                 break;
                             case PowerEnum.IncreaseSpeed:
-                                Power.IncreaseSpeed(4);
+                                if (Power.IncreaseSpeed(4))
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("I can walk more").NoBorder());
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("no tienes suficiente poder").NoBorder());
+                                }
                                 break;
                             case PowerEnum.SwitchPlayer:
+                                if (GameMaster.Player.Power >= 5)
+                                {
+                                    GameMaster.SwitchMenu.actionMenu(key);
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("Me gusta el cambio").NoBorder());
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                }
 
-                                GameMaster.SwitchMenu.actionMenu(key);
 
                                 break;
                             case PowerEnum.DestroyTrap:
-                                Power.DestroyTrap();
+                                if (Power.DestroyTrap())
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("I'm destroy a trap").NoBorder());
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                }
                                 break;
                             case PowerEnum.NewTurn:
-                                Power.NewTurn();
+                                if (Power.NewTurn())
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("Tengo un nuevo turno").NoBorder());
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                }
                                 break;
                             default:
                                 break;
@@ -240,13 +294,21 @@ namespace LogicGame
                     case 0:
                         GameMaster.Game();
                         Thread.Sleep(1000);
+                        //El threadSleep debe ser igual al tiempo de la animación de victoria
                         return true;
                     case 1:
+                        //Escribe el texto
+                        Thread.Sleep(2000);
+                        Console.ReadKey();
                         return true;
                     case 2:
                         return true;
                     case 3:
+                        GameDisplay.Start();
+                        return true;
+                    case 4:
                         return false;
+
 
                     default:
                         break;
@@ -280,44 +342,6 @@ namespace LogicGame
                         GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
                     }
                 }
-                //El switch no funciona porque despues de eliminar el primer elemento se corre y no coincide, hacerlo con 6if
-                /*   switch (option)
-                   {
-                       case 0:
-                           GameMaster.players.Add(GameMaster.CharacterOption[0]);
-                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Vision Of Light"));
-                           System.Console.WriteLine("vision of Light");
-                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
-                           break;
-                       case 1:
-                           GameMaster.players.Add(GameMaster.CharacterOption[1]);
-                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Creative Wind"));
-                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
-                           break;
-                       case 2:
-                           GameMaster.players.Add(GameMaster.CharacterOption[2]);
-                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Vita Soul"));
-                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
-                           break;
-                       case 3:
-                           GameMaster.players.Add(GameMaster.CharacterOption[3]);
-                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Idea Mimetist"));
-                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
-                           break;
-                       case 4:
-                           GameMaster.players.Add(GameMaster.CharacterOption[4]);
-                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Natural Breaker"));
-                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
-                           break;
-                       case 5:
-                           GameMaster.players.Add(GameMaster.CharacterOption[5]);
-                           GameMaster.CharacterSelection.MenuOption.Remove((true, "Mirror Of Time"));
-                           GameMaster.CharacterSelection.MenuOption[0] = (true, GameMaster.CharacterSelection.MenuOption[0].Item2);
-                           break;
-
-                       default:
-                           break;
-                   }*/
                 return true;
             }
             return false;

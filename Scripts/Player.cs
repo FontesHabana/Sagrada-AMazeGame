@@ -12,21 +12,12 @@ using UserInterface;
 
 namespace Tiles
 {
-    public enum CharacterReference
-    {
-        VisionOfLight,
-        NaturalBreaker,
-        MirrorOfTime,
-        VitalSoul,
-        CreativeWind,
-        IdeaMimetist,
-    }
+
     #region player
     class Character : Tile
     {
         #region  Properties
         //Propiedades del jugador
-        public CharacterReference Reference { get; set; }
         public string Name { get; set; }
         public int Life { get; set; }
         public int MaxLife { get; set; }
@@ -44,7 +35,7 @@ namespace Tiles
         #endregion
 
 
-        public Character(CharacterReference reference, (int, int) position, Color appearance, CanvasImage image, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
+        public Character((int, int) position, Color appearance, CanvasImage image, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
         {
             Name = name;
             MaxLife = life;
@@ -58,7 +49,6 @@ namespace Tiles
             haveFlag = false;
             InitialPosition = position;
             Image = image;
-            Reference = reference;
 
 
         }
@@ -103,9 +93,10 @@ namespace Tiles
 
         public bool ShowTrap()
         {
-            if (Power > 3)
+            if (Power >= 3)
             {  //Meter esto en un método
                 Power -= 3;
+
                 return true;
             }
 
@@ -122,6 +113,7 @@ namespace Tiles
             {
                 haveFlag = true;
                 GameMaster.mainFlag.IsCaptured = true;
+                GameDisplay.layoutGame["bottom"].Update(new Panel("Now you have the flag").NoBorder());
                 return true;
             }
             if (haveFlag)
@@ -178,10 +170,12 @@ namespace Tiles
                         DecreasePower(5);
                         GameMaster.Player.HaveFlag();
                         Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].ApplyEffect();
+
                         return true;
                     }
+
                 }
-                GameMaster.Player.HaveFlag();
+
             }
 
             return false;
@@ -193,6 +187,7 @@ namespace Tiles
             {
                 GameMaster.playerspeed += speed;
                 DecreasePower(3);
+
                 return true;
             }
             return false;
@@ -204,6 +199,7 @@ namespace Tiles
             {
                 GameMaster.Player.Life += life;
                 DecreasePower(4);
+
                 return true;
             }
             return false;
@@ -228,9 +224,10 @@ namespace Tiles
 
 
                 DecreasePower(5);
+
                 return true;
             }
-            return true;
+            return false;
         }
         //Destroy a trap
         public static bool DestroyTrap()
@@ -267,6 +264,7 @@ namespace Tiles
                 GameMaster.Turn();
 
                 GameMaster.turn--;
+
                 return true;
             }
             return false;

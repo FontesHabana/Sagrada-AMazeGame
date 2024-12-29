@@ -1,5 +1,6 @@
 using System.Security;
 using LogicGame;
+using Spectre.Console;
 using Tiles;
 using UserInterface;
 
@@ -95,7 +96,7 @@ namespace MazeBuilder
 
             //Genera el laberinto
             Maze.MainMaze();
-
+            GameDisplay.layoutGame["bottom"].Update(new Panel("The maze was change").NoBorder());
         }
         private static bool Teletransportation()
         {
@@ -120,7 +121,7 @@ namespace MazeBuilder
             {
                 newY = rnd.Next(1, 4);
             }
-            if (Maze.mainMaze[newX, newY].Occuped == false)
+            if (!Maze.mainMaze[newX, newY].Occuped)
             {
                 Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = false;
                 GameMaster.Player.Position = (newX, newY);
@@ -138,16 +139,20 @@ namespace MazeBuilder
 
             }
             System.Console.WriteLine("Teletransportation");
+            GameDisplay.layoutGame["bottom"].Update(new Panel("Where I am, this is not my position").NoBorder());
             return true;
         }
         private static void Damage()
         {
             Random rnd = new Random();
             GameMaster.Player.Life -= rnd.Next(2, 5);
+            GameDisplay.layoutGame["bottom"].Update(new Panel("Auch that me dolio").NoBorder());
             if (GameMaster.Player.Life <= 0)
             {
                 GameMaster.Player.Respawn(GameMaster.Player);
+                GameDisplay.layoutGame["bottom"].Update(new Panel("You are dead, Start again").NoBorder());
             }
+
             //Agregar método que te regresa al inicio
         }
     }

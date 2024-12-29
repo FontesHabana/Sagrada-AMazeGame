@@ -15,23 +15,22 @@ namespace LogicGame
         public static int playeramount;
         public static (int, int)[] position = [(0, 0), (Maze.mainWidth - 1, Maze.mainHeight - 1), (Maze.mainWidth - 1, 0), (0, Maze.mainHeight - 1)];
         //private static List<Color> appearance = [Color.Blue, Color.Red, Color.Green, Color.Yellow, Color.Orange1, Color.Black, Color.DeepPink1];
-        private static int[] speed = [5, 5, 5, 5];
         public static Character Player { get; set; }
         public static int playerspeed = 0;
-        public static Flag mainFlag = new Flag((6, 6), Color.DarkMagenta);
+        public static Flag mainFlag = new Flag((Maze.mainHeight / 2, Maze.mainWidth / 2), Color.DarkMagenta);
         //Listas para ejecutar los menus
         public static Menu GameMenu = new Menu(Menu.gamemenu, Menu.action);
         public static Menu SwitchMenu = new Menu(Menu.pswitch, Menu.change);
-        public static Menu CharacterSelection = new Menu(Menu.characters, Menu.charactersaction);
+        public static Menu CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
         public static Menu NumberOfPlayers = new Menu(Menu.numberofplayer, Menu.numberofplayeraction);
         //Mis jugadores
         //Creo que la referencia no se usa
-        public static List<Character> CharacterOption = [ new Character(CharacterReference.VisionOfLight,position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
-                                               new Character(CharacterReference.CreativeWind,position[0], Color.Red,new CanvasImage("Assets/pxjs3trcyyv71-06-removebg-preview.png"), "", 8, 5, PowerEnum.IncreaseSpeed, 6, 2, 3),
-                                               new Character(CharacterReference.VitalSoul,position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 12, 2, PowerEnum.IncreaseLife, 10, 3, 5),
-                                               new Character(CharacterReference.IdeaMimetist,position[0], Color.Green,new CanvasImage("Assets/pxjs3trcyyv71-05-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
-                                               new Character(CharacterReference.NaturalBreaker,position[0], Color.Pink1,new CanvasImage("Assets/pxjs3trcyyv71-08-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
-                                               new Character(CharacterReference.MirrorOfTime,position[0], Color.Orange1,new CanvasImage("Assets/pxjs3trcyyv71-07-removebg-preview(1).png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3)];
+        public static List<Character> CharacterOption = [ new Character(position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
+                                               new Character(position[0], Color.Red,new CanvasImage("Assets/pxjs3trcyyv71-06-removebg-preview.png"), "", 8, 3, PowerEnum.IncreaseSpeed, 6, 1, 3),
+                                               new Character(position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 12, 4, PowerEnum.IncreaseLife, 5, 3, 5),
+                                               new Character(position[0], Color.Green,new CanvasImage("Assets/pxjs3trcyyv71-05-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
+                                               new Character(position[0], Color.Pink1,new CanvasImage("Assets/pxjs3trcyyv71-08-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
+                                               new Character(position[0], Color.Orange1,new CanvasImage("Assets/pxjs3trcyyv71-07-removebg-preview(1).png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3)];
 
 
 
@@ -49,8 +48,10 @@ namespace LogicGame
         public static bool InitGame()
         {   //Declarar jugadores. Más adelante esto será elegible
             //List<Color> gamecolor = appearance;
-            List<Character> characters = CharacterOption;
-            Menu charactersmenu = CharacterSelection;
+            //List<Character> characters = CharacterOption;
+            //List<(bool, string)> aux = Menu.characters;
+            //CharacterSelection.MenuOption = aux;
+            CharacterSelection.MenuOption = Menu.CharacterList();
             GameDisplay.InitLayout();
             GameDisplay.GenerateCharacter(30);
             // playeramount = 4;
@@ -85,8 +86,6 @@ namespace LogicGame
                     name = Console.ReadLine();
                 }
 
-
-
                 //Selecciona tu personaje
 
                 while (true)
@@ -104,11 +103,14 @@ namespace LogicGame
                 }
                 players[i].Name = name;
                 players[i].Position = position[i];
+                players[i].haveFlag = false;
+
 
             }
-            //Falta la asignación de colores
-            CharacterOption = characters;
-            CharacterSelection = charactersmenu;
+
+
+
+
             GameDisplay.GenerateCharacter(16);
             Random rand = new Random();
             turn = rand.Next(0, playeramount);
@@ -121,9 +123,8 @@ namespace LogicGame
                 Maze.mainMaze[players[i].Position.Item1, players[i].Position.Item2].Occuped = true;
                 MazeCanvas.AddTile(players[i]);
             }
-
+            mainFlag.Position = (Maze.mainHeight / 2, Maze.mainWidth / 2);
             MazeCanvas.AddTile(mainFlag);
-
             //MazeCanvas.RefreshMaze();
 
             return true;
@@ -167,7 +168,7 @@ namespace LogicGame
                 }
                 if (VictoryCondition() > 0)
                 {
-                    Victory(VictoryCondition());
+                    GameDisplay.Victory(VictoryCondition());
                     break;
                 }
 
@@ -196,87 +197,7 @@ namespace LogicGame
             return 0;
         }
 
-        public static void Victory(int winner)
-        {
-            //players[turn].Speed = 0;
-            switch (winner)
-            {
-                case 1:
-                    AnsiConsole.Clear();
-                    System.Console.WriteLine($"{players[0].Name} eres el ganador");
-                    break;
-                case 2:
-                    AnsiConsole.Clear();
-                    System.Console.WriteLine($"{players[1].Name} eres el ganador");
-                    break;
-                case 3:
-                    AnsiConsole.Clear();
-                    System.Console.WriteLine($"{players[2].Name} eres el ganador");
-                    break;
-                case 4:
-                    AnsiConsole.Clear();
-                    System.Console.WriteLine($"{players[3].Name} eres el ganador");
-                    break;
-                default:
-                    break;
-            }
 
-
-
-
-        }
-
-        /*  public static bool Menu(List<(bool, string)> menu, ConsoleKeyInfo key)
-          {
-              if (key.Key == ConsoleKey.UpArrow)
-              {
-                  for (var i = 0; i < menu.Count; i++)
-                  {
-                      if (menu[i].Item1)
-                      {
-                          menu[i] = (false, menu[i].Item2);
-                          if (i == 0)
-                          {
-                              menu[menu.Count - 1] = (true, menu[menu.Count - 1].Item2);
-                              return true;
-                          }
-                          else
-                          {
-                              menu[i - 1] = (true, menu[i - 1].Item2);
-                              return true;
-                          }
-                      }
-                  }
-
-
-
-              }
-
-              if (key.Key == ConsoleKey.DownArrow)
-              {
-                  for (int i = 0; i < menu.Count; i++)
-                  {
-                      if (menu[i].Item1)
-                      {
-                          menu[i] = (false, menu[i].Item2);
-                          if (i == menu.Count - 1)
-                          {
-                              menu[0] = (true, menu[0].Item2);
-                              return true;
-                          }
-                          else
-                          {
-                              menu[i + 1] = (true, menu[i + 1].Item2);
-                              return true;
-                          }
-                      }
-
-                  }
-              }
-
-
-              return false;
-          }*/
 
         public static void Normalize()
         {
