@@ -113,7 +113,7 @@ namespace Tiles
             {
                 haveFlag = true;
                 GameMaster.mainFlag.IsCaptured = true;
-                GameDisplay.layoutGame["bottom"].Update(new Panel("Now you have the flag").NoBorder());
+
                 return true;
             }
             if (haveFlag)

@@ -96,7 +96,7 @@ namespace MazeBuilder
 
             //Genera el laberinto
             Maze.MainMaze();
-            GameDisplay.layoutGame["bottom"].Update(new Panel("The maze was change").NoBorder());
+            GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["newMaze"]).NoBorder());
         }
         private static bool Teletransportation()
         {
@@ -139,7 +139,7 @@ namespace MazeBuilder
 
             }
             System.Console.WriteLine("Teletransportation");
-            GameDisplay.layoutGame["bottom"].Update(new Panel("Where I am, this is not my position").NoBorder());
+            GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["teletransportation"]).NoBorder());
             return true;
         }
         private static void Damage()
@@ -150,7 +150,7 @@ namespace MazeBuilder
             if (GameMaster.Player.Life <= 0)
             {
                 GameMaster.Player.Respawn(GameMaster.Player);
-                GameDisplay.layoutGame["bottom"].Update(new Panel("You are dead, Start again").NoBorder());
+                GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["damage"]).NoBorder());
             }
 
             //Agregar método que te regresa al inicio

@@ -92,7 +92,7 @@ namespace UserInterface
         public static void VerticalMenu(MenuGame showmenu)
         {
             var table = new Table();
-            table.AddColumn(new TableColumn("Options").Centered());
+            table.AddColumn(new TableColumn(MyText.text[MyText.language]["visualMaster"]["option"]).Centered());
             List<(bool, string)> m = new List<(bool, string)>();
             if (showmenu == MenuGame.menuG)
             {
@@ -127,27 +127,7 @@ namespace UserInterface
             );
 
         }
-        /* public static void SwitchMenu()
-         {
-             var table = new Table();
-             table.AddColumn("Options");
-             foreach (var item in GameMaster.pswitch)
-             {
-                 if (item.Item1)
-                 {
-                     table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
-                 }
-                 else
-                 {
-                     table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
-                 }
-             }
 
-
-             layout["GameOption"].Update(
-                 Align.Center(table)
-             );
-         }*/
         public static void RefreshMaze()
         {
             MazeCanvas.PrintMaze();
@@ -189,7 +169,7 @@ namespace UserInterface
         public static Table VerticalMenuInit(Menu menu)
         {
             var table = new Table();
-            table.AddColumn(new TableColumn("MENU").Centered());
+            table.AddColumn(new TableColumn(MyText.text[MyText.language]["visualMaster"]["menu"]).Centered());
             List<(bool, string)> m = menu.GetList();
 
 
@@ -279,14 +259,18 @@ namespace UserInterface
             }
 
 
-            string[] stringoption = [("Vision Of Light"), ("Creative Wind"), ("Vital Soul"), ("Idea Mimetist"), ("Natural Breaker"), ("Mirror Of Time")];
-            string[] characterHistory = [
-                                            ("Deep within Gaudí's mind, where ideas shine like stars, emerges Vision of Light. This ethereal being represents the overflowing creativity of the architect. With a single leap, it can surpass walls and barriers, symbolizing Gaudí's ability to transcend the limits of architecture. When the labyrinth becomes dark and oppressive, Vision of Light illuminates the path, guiding its companions toward new possibilities. "),
-                                            ("Through the corridors of the labyrinth blows Creative Wind, an ethereal being that moves with the swiftness of the wind. Its ability to increase speed allows its companions to act with agility and ingenuity. Symbolizing the fluidity and dynamism of Gaudí's architectural design, Creative Wind guides its team through challenges with grace and skill, always one step ahead in their quest."),
-                                            ("At the beating heart of the labyrinth lies Vital Soul, a being filled with energy and hope. With its power to increase the life of its allies, it infuses strength into those around it. It represents the love for life that Gaudí infused into each of his designs. When players feel discouraged, Vital Soul revives their spirits, reminding them that there is always light at the end of the tunnel."),
-                                            ("In the shadows of the labyrinth dwells Idea Mimetist, the master of disguise and transformation. With its power to switch with another player, it can alter the course of the game in an instant. This character reflects the duality and adaptability present in Gaudí's creative mind. When strategies or roles need to change, Idea Mimetist becomes the perfect ally, ensuring that every player can shine in their moment."),
-                                            ("From the depths of architectural design arises Natural Breaker, an unyielding warrior who challenges conventions. With its unwavering strength, it can break traps designed to ensnare the unwary. This character embodies Gaudí's tenacity, who was never intimidated by criticism. When dangers lurk in the labyrinth, Natural Breaker charges forward, dismantling obstacles and clearing the way to freedom."),
-                                            ("In a hidden corner of Gaudí's mind resides Mirror of Time, a cunning manipulator of time and perception. This character has the power to take an extra turn, allowing it to plan its moves with precision. Reflecting Gaudí's holistic vision, Mirror of Time gazes into the future and acts wisely, ensuring that every step taken is decisive in the quest for the lost piece of the Sagrada Familia.")  ];
+            string[] stringoption = [MyText.text[MyText.language]["menu"]["visionLight"],
+                                    MyText.text[MyText.language]["menu"]["creativeWind"],
+                                    MyText.text[MyText.language]["menu"]["vitalSoul"],
+                                    MyText.text[MyText.language]["menu"]["ideaMimetist"],
+                                    MyText.text[MyText.language]["menu"]["naturalBreaker"],
+                                    MyText.text[MyText.language]["menu"]["mirrorTime"]];
+            string[] characterHistory = [ MyText.text[MyText.language]["visualMaster"]["visionLight"],
+                                         MyText.text[MyText.language]["visualMaster"]["creativeWind"],
+                                         MyText.text[MyText.language]["visualMaster"]["vitalSoul"],
+                                         MyText.text[MyText.language]["visualMaster"]["ideaMimetist"],
+                                         MyText.text[MyText.language]["visualMaster"]["naturalBreaker"],
+                                         MyText.text[MyText.language]["visualMaster"]["mirrorTime"]];
 
 
 
@@ -303,12 +287,12 @@ namespace UserInterface
                             Align.Left(
                             new BarChart()
                             .Width(30)
-                            .Label("[blue bold underline]PLAYER Information[/]")
+                            .Label(MyText.text[MyText.language]["visualMaster"]["information"])
                             .CenterLabel()
-                            .AddItem("Life", GameMaster.CharacterOption[i].Life, Color.Red)
-                            .AddItem("Speed", GameMaster.CharacterOption[i].Speed, Color.Green)
-                            .AddItem("Power", GameMaster.CharacterOption[i].Power, Color.Blue)
-                            .AddItem("Attack", GameMaster.CharacterOption[i].Attack, Color.Purple), VerticalAlignment.Middle)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["life"], GameMaster.CharacterOption[i].Life, Color.Red)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["speed"], GameMaster.CharacterOption[i].Speed, Color.Green)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["power"], GameMaster.CharacterOption[i].Power, Color.Blue)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["attack"], GameMaster.CharacterOption[i].Attack, Color.Purple), VerticalAlignment.Middle)
                               ).NoBorder().Expand());
 
                     layoutInit["Information"].Update(
@@ -331,7 +315,7 @@ namespace UserInterface
             AnsiConsole.Clear();
 
             sagrada.PixelWidth(1);
-            LiveText.PrintHitory();
+            MyText.PrintHitory();
             Thread.Sleep(5000);
         }
 
@@ -351,7 +335,7 @@ namespace UserInterface
                 .Centered()
             );
 
-            AnsiConsole.Write(GameDisplay.VerticalMenuInit(Program.InitMenu).Centered().Expand());
+            AnsiConsole.Write(VerticalMenuInit(Program.InitMenu).Centered().Expand());
 
             AnsiConsole.Write(sagrada);
         }
@@ -362,13 +346,13 @@ namespace UserInterface
                 new Layout("top"),
                 new Layout("image")
             );
-            victory["top"].Size(15);
-            victory["top"].Update(new FigletText("Victory")
+            victory["top"].Size(10);
+            victory["top"].Update(new FigletText(MyText.text[MyText.language]["visualMaster"]["victory"])
                 .LeftJustified()
                 .Color(Color.Blue)
                 .Centered());
 
-            GameDisplay.GenerateCharacter(35);
+            GameDisplay.GenerateCharacter(25);
             victory["image"].Update(new Panel(Align.Center(GameMaster.players[winner - 1].Image)).Expand().NoBorder());
 
 

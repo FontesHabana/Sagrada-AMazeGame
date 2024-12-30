@@ -17,21 +17,15 @@ namespace LogicGame
 
         //Listas de todos los menus del juego
         //Menu del juego
-        public static List<(bool, string)> gamemenu = new List<(bool, string)> { (false, "Attack"), (false, "Show Traps"), (false, "Special Effect"), (true, "Next Turn") };
         public static ActionMenu action = MenuAction;
         //Menu Principal
-        public static List<(bool, string)> pswitch = new List<(bool, string)>();
         public static ActionMenu change = SwitchMenu;
         //Menu de inicio
-        public static List<(bool, string)> initmenu = new List<(bool, string)> { (true, "New Game"), (false, "Instruction"), (false, "Lenguage"), (false, "History"), (false, "Exit") };
         public static ActionMenu initaction = InitAction;
         //Number of players
-        public static List<(bool, string)> numberofplayer = new List<(bool, string)> { (true, "2"), (false, "3"), (false, "4") };
         public static ActionMenu numberofplayeraction = NumberOfPlayerAction;
 
-
         //Select player list
-        public static List<(bool, string)> characters = new List<(bool, string)> { (false, "Vision Of Light"), (false, "Creative Wind"), (true, "Vital Soul"), (false, "Idea Mimetist"), (false, "Natural Breaker"), (false, "Mirror Of Time") };
         public static ActionMenu charactersaction = CharacterSelection;
 
         public Menu(List<(bool, string)> menu, ActionMenu action)
@@ -40,11 +34,42 @@ namespace LogicGame
             actionMenu = action;
         }
         //Crear un metodo para cada lista
+        public static List<(bool, string)> InitMenu()
+        {
+
+            return new List<(bool, string)> { (true, MyText.text[MyText.language]["menu"]["newGame"]), (false, MyText.text[MyText.language]["menu"]["instruction"]), (false, MyText.text[MyText.language]["menu"]["language"]), (false, MyText.text[MyText.language]["menu"]["history"]), (false, MyText.text[MyText.language]["menu"]["exit"]) };
+        }
+        public static List<(bool, string)> NumberPlayer()
+        {
+
+            return new List<(bool, string)> { (true, "2"), (false, "3"), (false, "4") };
+        }
         public static List<(bool, string)> CharacterList()
         {
 
-            return new List<(bool, string)> { (false, "Vision Of Light"), (false, "Creative Wind"), (true, "Vital Soul"), (false, "Idea Mimetist"), (false, "Natural Breaker"), (false, "Mirror Of Time") };
+            return new List<(bool, string)> { (false, MyText.text[MyText.language]["menu"]["visionLight"]),
+                                              (false, MyText.text[MyText.language]["menu"]["creativeWind"]),
+                                              (true, MyText.text[MyText.language]["menu"]["vitalSoul"]),
+                                              (false, MyText.text[MyText.language]["menu"]["ideaMimetist"]),
+                                              (false, MyText.text[MyText.language]["menu"]["naturalBreaker"]),
+                                             (false, MyText.text[MyText.language]["menu"]["mirrorTime"]) };
         }
+        public static List<(bool, string)> GameMenu()
+        {
+
+            return new List<(bool, string)> { (false, MyText.text[MyText.language]["menu"]["attack"]),
+                                              (false, MyText.text[MyText.language]["menu"]["showTrap"]),
+                                              (false, MyText.text[MyText.language]["menu"]["specialPower"]),
+                                              (true, MyText.text[MyText.language]["menu"]["next"]) };
+        }
+        public static List<(bool, string)> PSwitch()
+        {
+
+            return new List<(bool, string)>();
+        }
+
+
+
         public bool ChangeOption(ConsoleKeyInfo key)
         {
 
@@ -99,9 +124,6 @@ namespace LogicGame
 
         }
 
-
-
-
         static bool MenuAction(ConsoleKeyInfo key)
         {
 
@@ -126,7 +148,7 @@ namespace LogicGame
                                 if (GameMaster.players[i].Life <= 0)
                                 {
                                     GameMaster.players[i].Respawn(GameMaster.players[i]);
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("You kill a player").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["kill"]).NoBorder());
                                 }
                             }
                             if (GameMaster.Player.Power < 0)
@@ -140,7 +162,7 @@ namespace LogicGame
                         if (GameMaster.Player.ShowTrap())
                         {
                             MazeCanvas.ShowTrap();
-                            GameDisplay.layoutGame["bottom"].Update(new Panel("Hay un monton de trampas").NoBorder());
+                            GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["show"]).NoBorder());
                             Thread.Sleep(1000);
                         }
                         GameDisplay.RefreshMaze();
@@ -153,42 +175,42 @@ namespace LogicGame
 
                                 if (Power.JumpWall(Console.ReadKey()))
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("Ese muro no era tan alto").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["jump"]).NoBorder());
                                 }
                                 else
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder o no es un muro").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"] + MyText.text[MyText.language]["menu"]["noWall"]).NoBorder());
                                 }
                                 break;
                             case PowerEnum.IncreaseLife:
                                 if (Power.IncreaseLife(3))
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("I fell better").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseLife"]).NoBorder());
                                 }
                                 else
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
                                 }
                                 break;
                             case PowerEnum.IncreaseSpeed:
                                 if (Power.IncreaseSpeed(4))
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("I can walk more").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseSpeed"]).NoBorder());
                                 }
                                 else
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("no tienes suficiente poder").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
                                 }
                                 break;
                             case PowerEnum.SwitchPlayer:
                                 if (GameMaster.Player.Power >= 5)
                                 {
                                     GameMaster.SwitchMenu.actionMenu(key);
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("Me gusta el cambio").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["switch"]).NoBorder());
                                 }
                                 else
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
                                 }
 
 
@@ -196,21 +218,21 @@ namespace LogicGame
                             case PowerEnum.DestroyTrap:
                                 if (Power.DestroyTrap())
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("I'm destroy a trap").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["destroyTrap"]).NoBorder());
                                 }
                                 else
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
                                 }
                                 break;
                             case PowerEnum.NewTurn:
                                 if (Power.NewTurn())
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("Tengo un nuevo turno").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["newTurn"]).NoBorder());
                                 }
                                 else
                                 {
-                                    GameDisplay.layoutGame["bottom"].Update(new Panel("No tienes suficiente poder").NoBorder());
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
                                 }
                                 break;
                             default:
@@ -227,7 +249,7 @@ namespace LogicGame
         static bool SwitchMenu(ConsoleKeyInfo key)
         {
             List<Character> p = new List<Character>();
-            pswitch.Clear();
+            GameMaster.SwitchMenu.MenuOption.Clear();
 
 
             //Crea la lista del menu y la lista del player
@@ -235,12 +257,12 @@ namespace LogicGame
             {
                 if (GameMaster.players[i] != GameMaster.Player)
                 {
-                    pswitch.Add((false, GameMaster.players[i].Name));
+                    GameMaster.SwitchMenu.MenuOption.Add((false, GameMaster.players[i].Name));
                     p.Add(GameMaster.players[i]);
                 }
             }
             //Actualiza el menú para que la primera opción sea 1
-            pswitch[0] = (true, pswitch[0].Item2);
+            GameMaster.SwitchMenu.MenuOption[0] = (true, GameMaster.SwitchMenu.MenuOption[0].Item2);
 
             bool a = true;
             //Hacer el cambio de variable que modifica el menu desde afuera
@@ -256,11 +278,11 @@ namespace LogicGame
                 if (k.Key == ConsoleKey.Enter)
                 {
 
-                    foreach (var item in pswitch)
+                    foreach (var item in GameMaster.SwitchMenu.MenuOption)
                     {
                         if (item.Item1)
                         {
-                            playerselected = pswitch.IndexOf(item);
+                            playerselected = GameMaster.SwitchMenu.MenuOption.IndexOf(item);
                         }
                     }
 
@@ -302,6 +324,9 @@ namespace LogicGame
                         Console.ReadKey();
                         return true;
                     case 2:
+                        MyText.langIndex += 1;
+                        MyText.language = MyText.allLanguage[MyText.langIndex % MyText.allLanguage.Length];
+                        Program.InitMenu = new Menu(Menu.InitMenu(), Menu.initaction);
                         return true;
                     case 3:
                         GameDisplay.Start();
@@ -332,7 +357,12 @@ namespace LogicGame
                         option = item.Item2;
                     }
                 }
-                string[] stringoption = [("Vision Of Light"), ("Creative Wind"), ("Vital Soul"), ("Idea Mimetist"), ("Natural Breaker"), ("Mirror Of Time")];
+                string[] stringoption = [MyText.text[MyText.language]["menu"]["visionLight"],
+                                         MyText.text[MyText.language]["menu"]["creativeWind"],
+                                         MyText.text[MyText.language]["menu"]["vitalSoul"],
+                                         MyText.text[MyText.language]["menu"]["ideaMimetist"],
+                                          MyText.text[MyText.language]["menu"]["naturalBreaker"],
+                                          MyText.text[MyText.language]["menu"]["mirrorTime"]];
                 for (int i = 0; i < stringoption.Length; i++)
                 {
                     if (option == stringoption[i])
@@ -380,11 +410,6 @@ namespace LogicGame
             }
             return false;
         }
-
-
-
-
-
 
         public List<(bool, string)> GetList()
         {

@@ -19,10 +19,10 @@ namespace LogicGame
         public static int playerspeed = 0;
         public static Flag mainFlag = new Flag((Maze.mainHeight / 2, Maze.mainWidth / 2), Color.DarkMagenta);
         //Listas para ejecutar los menus
-        public static Menu GameMenu = new Menu(Menu.gamemenu, Menu.action);
-        public static Menu SwitchMenu = new Menu(Menu.pswitch, Menu.change);
+        public static Menu GameMenu = new Menu(Menu.GameMenu(), Menu.action);
+        public static Menu SwitchMenu = new Menu(Menu.PSwitch(), Menu.change);
         public static Menu CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
-        public static Menu NumberOfPlayers = new Menu(Menu.numberofplayer, Menu.numberofplayeraction);
+        public static Menu NumberOfPlayers = new Menu(Menu.NumberPlayer(), Menu.numberofplayeraction);
         //Mis jugadores
         //Creo que la referencia no se usa
         public static List<Character> CharacterOption = [ new Character(position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
@@ -46,7 +46,13 @@ namespace LogicGame
             }
         }
         public static bool InitGame()
-        {   //Declarar jugadores. Más adelante esto será elegible
+
+        {
+            GameMenu = new Menu(Menu.GameMenu(), Menu.action);
+
+            CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
+
+            //Declarar jugadores. Más adelante esto será elegible
             //List<Color> gamecolor = appearance;
             //List<Character> characters = CharacterOption;
             //List<(bool, string)> aux = Menu.characters;
@@ -61,7 +67,7 @@ namespace LogicGame
             while (true)
             {
                 Console.Clear();
-                AnsiConsole.Write(GameDisplay.HorizontalMenu(NumberOfPlayers, "Number of Players"));
+                AnsiConsole.Write(GameDisplay.HorizontalMenu(NumberOfPlayers, MyText.text[MyText.language]["gameMaster"]["numberPlayers"]));
 
                 ConsoleKeyInfo key = Console.ReadKey();
                 NumberOfPlayers.ChangeOption(key);
@@ -76,13 +82,13 @@ namespace LogicGame
             {
                 //Escribe tu nombre
                 Console.Clear();
-                AnsiConsole.Write(new Markup("Insert your name").Centered());
+                AnsiConsole.Write(new Markup(MyText.text[MyText.language]["gameMaster"]["name"]).Centered());
                 //Hacer que el nombre sea válido;
                 string? name = Console.ReadLine();
                 while (ValidateName(name))
                 {
                     Console.Clear();
-                    AnsiConsole.Write(new Markup("Insert your name").Centered());
+                    AnsiConsole.Write(new Markup(MyText.text[MyText.language]["gameMaster"]["name"]).Centered());
                     name = Console.ReadLine();
                 }
 
@@ -90,7 +96,7 @@ namespace LogicGame
 
                 while (true)
                 {
-                    GameDisplay.PrintSelectionMenu(CharacterSelection, "Select your character");
+                    GameDisplay.PrintSelectionMenu(CharacterSelection, MyText.text[MyText.language]["gameMaster"]["character"]);
 
                     ConsoleKeyInfo key = Console.ReadKey();
                     CharacterSelection.ChangeOption(key);
@@ -152,7 +158,10 @@ namespace LogicGame
                     if (Player.Movement(key))
                     {
                         playerspeed--;
-                        Player.HaveFlag();
+                        if (Player.HaveFlag())
+                        {
+                            GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["gameMaster"]["flag"]).NoBorder());
+                        }
                         Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
                     }
                 }

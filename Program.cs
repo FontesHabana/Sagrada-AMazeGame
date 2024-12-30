@@ -12,7 +12,7 @@ using System.Text.Json.Nodes;
 
 class Program
 {
-    public static Menu InitMenu = new Menu(Menu.initmenu, Menu.initaction);
+    public static Menu InitMenu = new Menu(Menu.InitMenu(), Menu.initaction);
 
     public static void Main(string[] args)
     {
