@@ -334,13 +334,16 @@ namespace LogicGame
                         return true;
                     case 1:
                         //Escribe el texto
-                        Thread.Sleep(2000);
+                        AnsiConsole.Clear();
+                        System.Console.WriteLine(MyText.text[MyText.language]["menu"]["control"]);
                         Console.ReadKey();
                         return true;
                     case 2:
                         MyText.langIndex += 1;
                         MyText.language = MyText.allLanguage[MyText.langIndex % MyText.allLanguage.Length];
                         Program.InitMenu = new Menu(Menu.InitMenu(), Menu.initaction);
+                        Program.InitMenu.MenuOption[0] = (false, Program.InitMenu.MenuOption[0].Item2);
+                        Program.InitMenu.MenuOption[2] = (true, Program.InitMenu.MenuOption[2].Item2);
                         return true;
                     case 3:
                         GameDisplay.Start();
@@ -425,6 +428,7 @@ namespace LogicGame
             }
             return false;
         }
+
         static bool CopyPowerAction(ConsoleKeyInfo key)
         {
             List<Character> p = new List<Character>();

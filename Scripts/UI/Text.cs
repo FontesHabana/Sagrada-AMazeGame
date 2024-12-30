@@ -56,7 +56,11 @@ namespace UserInterface
                          {"destroyTrap","He destruido una trampa"},
                          {"newTurn","Tengo un nuevo turno"},
                          {"noWall"," o no es una pared "},
-                         {"noPower","No tienes suficiente poder para realizar esta acción"}
+                         {"noPower","No tienes suficiente poder para realizar esta acción"},
+
+
+                    //Control
+                     {"control","🕹️ Manual de Usuario: La Búsqueda de la Pieza Perdida \n\n ¡Bienvenido a La Búsqueda de la Pieza Perdida! Prepárate para adentrarte en el laberinto de la mente de Antonio Gaudí, donde competirás contra otros jugadores para encontrar la pieza perdida de la Sagrada Familia. Aquí tienes todo lo que necesitas saber para comenzar tu aventura.\n\n🎮 Controles del Juego\nMovimiento\nUsa las siguientes teclas para moverte por el laberinto:\nW: Avanzar hacia adelante ↑\nA: Moverse a la izquierda ←\nS: Retroceder hacia atrás ↓\nD: Moverse a la derecha →\n\nMenús\nPara navegar por los menús, utiliza las flechas:\nFlecha Arriba: ↑ Moverse hacia arriba en el menú\nFlecha Abajo: ↓ Moverse hacia abajo en el menú\nPara seleccionar una opción, presiona:\nEnter: ✅ Aceptar selección\n\n🧩 Objetivo del Juego\nTu misión es encontrar la pieza perdida antes que los demás jugadores. Utiliza tus habilidades y estrategias para superar obstáculos y competir contra tus oponentes."},
                   }    },
                   {"text",new Dictionary<string, string>{
                     {"title", "La Búsqueda de la Pieza Perdida"},
@@ -127,7 +131,9 @@ namespace UserInterface
             {"destroyTrap", "I destroyed a trap"},
             {"newTurn", "I have a new turn"},
             {"noWall", " or it's not a wall "},
-            {"noPower", "You don't have enough power to perform this action"}
+            {"noPower", "You don't have enough power to perform this action"},
+             //Control
+                     {"control","🕹️ User Manual: The Search for the Lost Piece\nWelcome to The Search for the Lost Piece! Prepare to dive into the labyrinth of Antonio Gaudí's mind, where you will compete against other players to find the lost piece of the Sagrada Familia. Here’s everything you need to know to start your adventure.\n\n🎮 Game Controls\nMovement\nUse the following keys to move through the labyrinth:\nW: Move forward ↑\nA: Move left ←\nS: Move backward ↓\nD: Move right →\n\nMenus\nTo navigate through menus, use the arrow keys:\nUp Arrow: ↑ Move up in the menu\nDown Arrow: ↓ Move down in the menu\nTo select an option, press:\nEnter: ✅ Confirm selection\n\n🧩 Game Objective\nYour mission is to find the lost piece before the other players. Use your skills and strategies to overcome obstacles and compete against your opponents."},
         }},
         {"text", new Dictionary<string, string>(){
             {"title", "The Search for the Lost Piece"},
@@ -199,7 +205,10 @@ namespace UserInterface
             {"destroyTrap", "J'ai détruit un piège"},
             {"newTurn", "J'ai un nouveau tour"},
             {"noWall", " ou ce n'est pas un mur "},
-            {"noPower", "Vous n'avez pas assez de pouvoir pour effectuer cette action"}
+            {"noPower", "Vous n'avez pas assez de pouvoir pour effectuer cette action"},
+
+             //Control
+                     {"control","🕹️ Manuel de l'utilisateur : La recherche de la pièce perdue\nBienvenue dans La recherche de la pièce perdue ! Préparez-vous à plonger dans le labyrinthe de l'esprit d'Antonio Gaudí, où vous allez rivaliser avec d'autres joueurs pour trouver la pièce perdue de la Sagrada Familia. Voici tout ce que vous devez savoir pour commencer votre aventure.\n\n🎮 Contrôles du jeu\nMouvement\nUtilisez les touches suivantes pour vous déplacer dans le labyrinthe :\nW : Avancer ↑\nA : Aller à gauche ←\nS : Reculer ↓\nD : Aller à droite →\n\nMenus\nPour naviguer dans les menus, utilisez les flèches :\nFlèche Haut : ↑ Aller vers le haut dans le menu\nFlèche Bas : ↓ Aller vers le bas dans le menu\nPour sélectionner une option, appuyez sur :\nEntrée : ✅ Confirmer la sélection\n\n🧩 Objectif du jeu\nVotre mission est de trouver la pièce perdue avant les autres joueurs. Utilisez vos compétences et vos stratégies pour surmonter les obstacles et rivaliser avec vos adversaires."},
         }},
         {"text", new Dictionary<string, string>(){
             {"title", "La Quête de la Pièce Perdue"},
