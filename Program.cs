@@ -18,11 +18,11 @@ class Program
     {
 
         // Iniciar la reproducción de audio en un hilo separado
-        Audio.currentFile = Audio.music["presentation"];
+        Audio.currentFile = Audio.music["history"];
         // Thread audioThread = new Thread(() => Audio.PlayAudio(Audio.currentFile));
         Thread audioThread = new Thread(Audio.PlayAudio);
         audioThread.Start();
-        //GameDisplay.Start();
+        GameDisplay.Start();
 
         while (true)
         {

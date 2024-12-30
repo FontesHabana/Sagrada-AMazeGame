@@ -24,6 +24,7 @@ namespace LogicGame
         public static Menu CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
         public static Menu NumberOfPlayers = new Menu(Menu.NumberPlayer(), Menu.numberofplayeraction);
         public static Menu CopyPowerMenu = new Menu(Menu.PSwitch(), Menu.powercopy);
+        static string[] gamemusic = [Audio.music["game1"], Audio.music["game2"], Audio.music["game3"]];
         //Mis jugadores
         //Creo que la referencia no se usa
         public static List<Character> CharacterOption = [ new Character(position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
@@ -41,9 +42,17 @@ namespace LogicGame
         {
             GameDisplay.GameScreen();
             InitGame();
+            //Para evaluar la cancion que está
+            int i = 0;
+            Audio.currentFile = gamemusic[i];
             //MazeCanvas.RefreshMaze();
             while (VictoryCondition() == 0)
             {
+                if (Audio.changesong)
+                {
+                    i += 1;
+                    Audio.currentFile = gamemusic[i % gamemusic.Length];
+                }
                 Turn();
             }
         }
@@ -175,6 +184,7 @@ namespace LogicGame
                 }
                 if (VictoryCondition() > 0)
                 {
+                    Audio.currentFile = Audio.music["victory"];
                     GameDisplay.Victory(VictoryCondition());
                     break;
                 }

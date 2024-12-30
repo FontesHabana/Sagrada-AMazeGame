@@ -346,6 +346,7 @@ namespace LogicGame
                         Program.InitMenu.MenuOption[2] = (true, Program.InitMenu.MenuOption[2].Item2);
                         return true;
                     case 3:
+                        Audio.currentFile = Audio.music["history"];
                         GameDisplay.Start();
                         return true;
                     case 4:
