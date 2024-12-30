@@ -27,6 +27,8 @@ namespace LogicGame
 
         //Select player list
         public static ActionMenu charactersaction = CharacterSelection;
+        //CopyPower
+        public static ActionMenu powercopy = CopyPowerAction;
 
         public Menu(List<(bool, string)> menu, ActionMenu action)
         {
@@ -47,12 +49,13 @@ namespace LogicGame
         public static List<(bool, string)> CharacterList()
         {
 
-            return new List<(bool, string)> { (false, MyText.text[MyText.language]["menu"]["visionLight"]),
+            return new List<(bool, string)> { (true, MyText.text[MyText.language]["menu"]["visionLight"]),
                                               (false, MyText.text[MyText.language]["menu"]["creativeWind"]),
-                                              (true, MyText.text[MyText.language]["menu"]["vitalSoul"]),
+                                              (false, MyText.text[MyText.language]["menu"]["vitalSoul"]),
                                               (false, MyText.text[MyText.language]["menu"]["ideaMimetist"]),
                                               (false, MyText.text[MyText.language]["menu"]["naturalBreaker"]),
-                                             (false, MyText.text[MyText.language]["menu"]["mirrorTime"]) };
+                                             (false, MyText.text[MyText.language]["menu"]["mirrorTime"]),
+                                             (false, MyText.text[MyText.language]["menu"]["chameleonMind"]) };
         }
         public static List<(bool, string)> GameMenu()
         {
@@ -235,6 +238,16 @@ namespace LogicGame
                                     GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
                                 }
                                 break;
+                            case PowerEnum.CopyPower:
+                                if (GameMaster.Player.Power >= 1)
+                                {
+                                    GameMaster.CopyPowerMenu.actionMenu(key);
+                                }
+                                else
+                                {
+                                    GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                                }
+                                break;
                             default:
                                 break;
                         }
@@ -246,6 +259,7 @@ namespace LogicGame
             }
             return false;
         }
+
         static bool SwitchMenu(ConsoleKeyInfo key)
         {
             List<Character> p = new List<Character>();
@@ -362,7 +376,8 @@ namespace LogicGame
                                          MyText.text[MyText.language]["menu"]["vitalSoul"],
                                          MyText.text[MyText.language]["menu"]["ideaMimetist"],
                                           MyText.text[MyText.language]["menu"]["naturalBreaker"],
-                                          MyText.text[MyText.language]["menu"]["mirrorTime"]];
+                                          MyText.text[MyText.language]["menu"]["mirrorTime"],
+                                          MyText.text[MyText.language]["menu"]["chameleonMind"]];
                 for (int i = 0; i < stringoption.Length; i++)
                 {
                     if (option == stringoption[i])
@@ -410,7 +425,54 @@ namespace LogicGame
             }
             return false;
         }
+        static bool CopyPowerAction(ConsoleKeyInfo key)
+        {
+            List<Character> p = new List<Character>();
+            GameMaster.SwitchMenu.MenuOption.Clear();
 
+
+            //Crea la lista del menu y la lista del player
+            for (int i = 0; i < GameMaster.players.Count; i++)
+            {
+                if (GameMaster.players[i] != GameMaster.Player)
+                {
+                    GameMaster.SwitchMenu.MenuOption.Add((false, GameMaster.players[i].Name));
+                    p.Add(GameMaster.players[i]);
+                }
+            }
+            //Actualiza el menú para que la primera opción sea 1
+            GameMaster.SwitchMenu.MenuOption[0] = (true, GameMaster.SwitchMenu.MenuOption[0].Item2);
+
+
+
+            GameDisplay.showmenu = MenuGame.menuS;
+            bool a = true;
+            while (a)
+            {
+                GameDisplay.RefreshMaze();
+                ConsoleKeyInfo k = Console.ReadKey();
+                GameMaster.SwitchMenu.ChangeOption(k);
+
+                int playerselected = 0;
+                if (k.Key == ConsoleKey.Enter)
+                {
+
+                    foreach (var item in GameMaster.SwitchMenu.MenuOption)
+                    {
+                        if (item.Item1)
+                        {
+                            playerselected = GameMaster.SwitchMenu.MenuOption.IndexOf(item);
+                        }
+                    }
+
+                    Power.CopyPower(p[playerselected], k);
+
+                    a = false;
+                }
+            }
+            GameDisplay.showmenu = MenuGame.menuG;
+            return true;
+        }
         public List<(bool, string)> GetList()
         {
             return MenuOption;

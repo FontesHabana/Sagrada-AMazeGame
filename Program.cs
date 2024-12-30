@@ -22,7 +22,7 @@ class Program
         // Thread audioThread = new Thread(() => Audio.PlayAudio(Audio.currentFile));
         Thread audioThread = new Thread(Audio.PlayAudio);
         audioThread.Start();
-        // GameDisplay.Start();
+        //GameDisplay.Start();
 
         while (true)
         {

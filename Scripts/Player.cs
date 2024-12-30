@@ -138,6 +138,7 @@ namespace Tiles
         SwitchPlayer,
         DestroyTrap,
         NewTurn,
+        CopyPower,
 
     }
     static class Power
@@ -270,6 +271,81 @@ namespace Tiles
             return false;
         }
 
+        public static bool CopyPower(Character player, ConsoleKeyInfo key)
+        {
+
+            switch (player.SpecialPower)
+            {
+                case PowerEnum.JumpWall:
+
+                    if (Power.JumpWall(Console.ReadKey()))
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["jump"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"] + MyText.text[MyText.language]["menu"]["noWall"]).NoBorder());
+                    }
+                    break;
+                case PowerEnum.IncreaseLife:
+                    if (Power.IncreaseLife(3))
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseLife"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                    }
+                    break;
+                case PowerEnum.IncreaseSpeed:
+                    if (Power.IncreaseSpeed(4))
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseSpeed"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                    }
+                    break;
+                case PowerEnum.SwitchPlayer:
+                    if (GameMaster.Player.Power >= 5)
+                    {
+                        GameMaster.SwitchMenu.actionMenu(key);
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["switch"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                    }
+
+
+                    break;
+                case PowerEnum.DestroyTrap:
+                    if (Power.DestroyTrap())
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["destroyTrap"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                    }
+                    break;
+                case PowerEnum.NewTurn:
+                    if (Power.NewTurn())
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["newTurn"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+            return true;
+        }
         #endregion
         private static void DecreasePower(int decrease)
         {

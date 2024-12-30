@@ -264,13 +264,15 @@ namespace UserInterface
                                     MyText.text[MyText.language]["menu"]["vitalSoul"],
                                     MyText.text[MyText.language]["menu"]["ideaMimetist"],
                                     MyText.text[MyText.language]["menu"]["naturalBreaker"],
-                                    MyText.text[MyText.language]["menu"]["mirrorTime"]];
+                                    MyText.text[MyText.language]["menu"]["mirrorTime"],
+                                    MyText.text[MyText.language]["menu"]["chameleonMind"]];
             string[] characterHistory = [ MyText.text[MyText.language]["visualMaster"]["visionLight"],
                                          MyText.text[MyText.language]["visualMaster"]["creativeWind"],
                                          MyText.text[MyText.language]["visualMaster"]["vitalSoul"],
                                          MyText.text[MyText.language]["visualMaster"]["ideaMimetist"],
                                          MyText.text[MyText.language]["visualMaster"]["naturalBreaker"],
-                                         MyText.text[MyText.language]["visualMaster"]["mirrorTime"]];
+                                         MyText.text[MyText.language]["visualMaster"]["mirrorTime"],
+                                         MyText.text[MyText.language]["visualMaster"]["chameleonMind"]];
 
 
 

@@ -35,6 +35,7 @@ namespace UserInterface
                          {"ideaMimetist","Mimetista de Ideas"},
                          {"naturalBreaker","Ruptura Natural"},
                          {"mirrorTime","Espejo del Tiempo"},
+                         {"chameleonMind","Mente Camaleón"},
                     //Game Menu
                          {"attack","Atacar"},
                          {"showTrap","Mostrar Trampas"},
@@ -71,6 +72,7 @@ namespace UserInterface
                          {"ideaMimetist","En las sombras del laberinto habita Idea Mimetist, el maestro del disfraz y la transformación. Con su poder para cambiarse con otro jugador, puede alterar el curso del juego en un instante. Este personaje refleja la dualidad y adaptabilidad presentes en la mente creativa de Gaudí. Cuando es necesario cambiar estrategias o roles, Idea Mimetist se convierte en el aliado perfecto, asegurando que cada jugador pueda brillar en su momento."},
                          {"naturalBreaker","De las entrañas del diseño arquitectónico nace Natural Breaker, un guerrero implacable que desafía las convenciones. Con su fuerza inquebrantable, puede romper trampas diseñadas para atrapar a los desprevenidos. Este personaje personifica la tenacidad de Gaudí, quien nunca se dejó intimidar por las críticas. Cuando los peligros acechan en el laberinto, Natural Breaker se lanza al frente, desmantelando obstáculos y abriendo el camino hacia la libertad."},
                          {"mirrorTime","En un rincón oculto de la mente de Gaudí reside Mirror of Time, un astuto manipulador del tiempo y la percepción. Este personaje tiene el poder de tomar un turno extra, permitiéndole planificar sus movimientos con precisión. Reflejando la visión holística de Gaudí, Mirror of Time observa el futuro y actúa con sabiduría, asegurándose de que cada paso sea decisivo en su búsqueda por la pieza perdida de la Sagrada Familia."},
+                         {"chameleonMind","En lo profundo del laberinto de la mente de Gaudí, donde las ideas fluyen y se transforman, emerge Mente Camaleón. Este ser intrigante representa la adaptabilidad y la versatilidad del arquitecto. Con un simple toque, puede imitar los poderes de cualquier jugador, convirtiéndose en un rival formidable en la búsqueda de la pieza perdida."},
                  //Player Information
                     {"information","Información del jugador"},
                     {"life","Vida"},
@@ -108,6 +110,7 @@ namespace UserInterface
             {"ideaMimetist", "Idea Mimic"},
             {"naturalBreaker", "Natural Breaker"},
             {"mirrorTime", "Mirror of Time"},
+            {"chameleonMind","Chamaleon Mind"},
             //Game Menu
             {"attack", "Attack"},
             {"showTrap", "Show Traps"},
@@ -140,6 +143,7 @@ namespace UserInterface
             {"ideaMimetist","In the shadows of the labyrinth dwells Idea Mimic, master of disguise and transformation. With its power to switch places with another player, it can alter the course of the game in an instant. This character reflects the duality and adaptability present in Gaudí's creative mind. When strategies or roles need to change, Idea Mimic becomes the perfect ally, ensuring that every player can shine in their moment."},
             {"naturalBreaker","From the depths of architectural design emerges Natural Breaker, an unyielding warrior who defies conventions. With its unwavering strength, it can break traps designed to ensnare the unwary. This character embodies Gaudí's tenacity, who was never intimidated by criticism. When dangers lurk in the labyrinth, Natural Breaker charges forward, dismantling obstacles and opening pathways to freedom."},
             {"mirrorTime","In a hidden corner of Gaudí's mind resides Mirror of Time, a cunning manipulator of time and perception. This character has the power to take an extra turn, allowing it to plan its moves with precision. Reflecting Gaudí's holistic vision, Mirror of Time observes the future and acts wisely, ensuring that each step is decisive in its quest for the lost piece of the Sagrada Familia."},
+            {"chameleonMind","Deep within the labyrinth of Gaudí's mind, where ideas flow and transform, emerges Chameleon Mind. This intriguing being represents the adaptability and versatility of the architect. With a simple touch, it can imitate the powers of any player, becoming a formidable rival in the quest for the lost piece."},
              //Player Information
              {"information","Player Information"},
              {"life","Life"},
@@ -178,6 +182,7 @@ namespace UserInterface
             {"ideaMimetist", "Mimétiste d'Idées"},
             {"naturalBreaker", "Briseur Naturel"},
             {"mirrorTime", "Miroir du Temps"},
+            {"chameleonMind","Esprit Caméléon"},
             //Game Menu
             {"attack", "Attaquer"},
             {"showTrap", "Montrer les Pièges"},
@@ -210,6 +215,7 @@ namespace UserInterface
             {"ideaMimetist","Dans les ombres du labyrinthe réside Mimétiste d'Idées, maître du déguisement et de la transformation. Avec son pouvoir d'échanger sa place avec un autre joueur, il peut altérer le cours du jeu en un instant. Ce personnage reflète la dualité et l'adaptabilité présentes dans l'esprit créatif de Gaudí. Lorsque des stratégies ou des rôles doivent changer, Mimétiste d'Idées devient l'allié parfait, s'assurant que chaque joueur puisse briller en son moment."},
             {"naturalBreaker","Des entrailles du design architectural naît Briseur Naturel, un guerrier inflexible qui défie les conventions. Avec sa force inébranlable, il peut briser des pièges conçus pour attraper les imprudents. Ce personnage incarne la ténacité de Gaudí, qui ne s'est jamais laissé intimider par les critiques. Lorsque des dangers rôdent dans le labyrinthe, Briseur Naturel se lance en avant, démontant les obstacles et ouvrant le chemin vers la liberté."},
             {"mirrorTime","Dans un coin caché de l'esprit de Gaudí réside Miroir du Temps, un manipulateur astucieux du temps et de la perception. Ce personnage a le pouvoir de prendre un tour supplémentaire, lui permettant de planifier ses mouvements avec précision. Reflétant la vision holistique de Gaudí, Miroir du Temps observe l'avenir et agit avec sagesse, s'assurant que chaque pas soit décisif dans sa quête pour la pièce perdue de la Sagrada Familia."},
+             {"chameleonMind","Au cœur du labyrinthe de l'esprit de Gaudí, où les idées coulent et se transforment, émerge Esprit Caméléon. Cet être intrigant représente l'adaptabilité et la polyvalence de l'architecte. D'un simple toucher, il peut imiter les pouvoirs de n'importe quel joueur, devenant un rival redoutable dans la quête de la pièce perdue."},
              //Player Information
              {"information","Informations sur le joueur"},
              {"life","Vie"},

@@ -23,14 +23,16 @@ namespace LogicGame
         public static Menu SwitchMenu = new Menu(Menu.PSwitch(), Menu.change);
         public static Menu CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
         public static Menu NumberOfPlayers = new Menu(Menu.NumberPlayer(), Menu.numberofplayeraction);
+        public static Menu CopyPowerMenu = new Menu(Menu.PSwitch(), Menu.powercopy);
         //Mis jugadores
         //Creo que la referencia no se usa
         public static List<Character> CharacterOption = [ new Character(position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
                                                new Character(position[0], Color.Red,new CanvasImage("Assets/pxjs3trcyyv71-06-removebg-preview.png"), "", 8, 3, PowerEnum.IncreaseSpeed, 6, 1, 3),
-                                               new Character(position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 12, 4, PowerEnum.IncreaseLife, 5, 3, 5),
+                                               new Character(position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 12, 3, PowerEnum.IncreaseLife, 5, 3, 5),
                                                new Character(position[0], Color.Green,new CanvasImage("Assets/pxjs3trcyyv71-05-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
                                                new Character(position[0], Color.Pink1,new CanvasImage("Assets/pxjs3trcyyv71-08-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
-                                               new Character(position[0], Color.Orange1,new CanvasImage("Assets/pxjs3trcyyv71-07-removebg-preview(1).png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3)];
+                                               new Character(position[0], Color.Orange1,new CanvasImage("Assets/pxjs3trcyyv71-07-removebg-preview(1).png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3),
+                                               new Character(position[0], Color.Turquoise4,new CanvasImage("Assets/pxjs3trcyyv71-04-removebg-preview.png"), "", 6, 3, PowerEnum.CopyPower, 6, 1, 4)];
 
 
 
@@ -52,11 +54,6 @@ namespace LogicGame
 
             CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
 
-            //Declarar jugadores. Más adelante esto será elegible
-            //List<Color> gamecolor = appearance;
-            //List<Character> characters = CharacterOption;
-            //List<(bool, string)> aux = Menu.characters;
-            //CharacterSelection.MenuOption = aux;
             CharacterSelection.MenuOption = Menu.CharacterList();
             GameDisplay.InitLayout();
             GameDisplay.GenerateCharacter(30);
@@ -131,6 +128,7 @@ namespace LogicGame
             }
             mainFlag.Position = (Maze.mainHeight / 2, Maze.mainWidth / 2);
             MazeCanvas.AddTile(mainFlag);
+
             //MazeCanvas.RefreshMaze();
 
             return true;
