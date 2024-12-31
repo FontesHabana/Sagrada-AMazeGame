@@ -1,6 +1,6 @@
 ![Game Screenshot](https://github.com/user-attachments/assets/72dcd829-cb49-4e33-bce1-c1fa4c5a2fd0)
 
-<h1 align=center> Sagrada: A Labyrinth Game</h2>
+<h1 align=center> SAGRADA </h2>
 
 <h2 align=center><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=Labyrinth+Game | Programming+Project;University+of+Havana | MATCOM;" alt="Typing SVG" /></a></h2>
 
