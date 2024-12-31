@@ -60,7 +60,7 @@ Here are some screenshots from the game:
 If you have any questions or feedback, feel free to reach out!
 
 - Email: [javierfontbas@gmail.com](mailto:javierfontbas@gmail.com)
-- GitHub: [My GitHub Profile](<[https://github.com/FontesHabana](https://github.com/FontesHabana)>)
+- GitHub: [My GitHub Profile](https://github.com/FontesHabana](https://github.com/FontesHabana))
 
 ## 🚀 Getting Started
 
