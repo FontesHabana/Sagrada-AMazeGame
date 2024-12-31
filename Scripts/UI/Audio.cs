@@ -6,7 +6,7 @@ namespace UserInterface
     class Audio
     {
         public static bool isPlaying = true;
-        public static bool changesong;
+        public static bool Game;
         //Determina el archivo de audio que se está reproduciendo
         public static string currentFile;
         public static Dictionary<string, string> music = new Dictionary<string, string>(){
@@ -17,14 +17,18 @@ namespace UserInterface
             {"game3","Assets/Music/Undertale OST - Oh_ One True Love(MP3_160K).mp3"},
             {"victory","Assets/Music/Undertale OST - Menu (Full)(MP3_160K).mp3"}
         };
+        static string[] gamemusic = [Audio.music["game1"], Audio.music["game2"], Audio.music["game3"]];
+
 
 
         public static void PlayAudio()
         {
+            int i = 0;
+            Audio.currentFile = gamemusic[i];
             // Cambia esto a la ruta de tu archivo
             while (isPlaying)
             {
-                changesong = false;
+
                 using (var audioFile = new AudioFileReader(currentFile))
                 using (var outputDevice = new WaveOutEvent())
                 {
@@ -40,7 +44,13 @@ namespace UserInterface
                             break;
                         }
                     }
-                    changesong = true;
+
+
+                    if (Audio.Game)
+                    {
+                        i += 1;
+                        Audio.currentFile = gamemusic[i % gamemusic.Length];
+                    }
                     outputDevice.Stop(); // Detener el dispositivo de salida si se debe parar
 
 

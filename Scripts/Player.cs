@@ -56,7 +56,19 @@ namespace Tiles
         public void Respawn(Character player)
         {
             player.Life = player.MaxLife;
+            player.Power = player.MaxPower;
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
+
+            if (Maze.mainMaze[GameMaster.position[GameMaster.players.IndexOf(player)].Item1, GameMaster.position[GameMaster.players.IndexOf(player)].Item2].Occuped)
+            {
+                foreach (var item in GameMaster.players)
+                {
+                    if (item.Position == GameMaster.position[GameMaster.players.IndexOf(player)])
+                    {
+                        Respawn(item);
+                    }
+                }
+            }
             Position = GameMaster.position[GameMaster.players.IndexOf(player)];
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
             haveFlag = false;
@@ -113,6 +125,7 @@ namespace Tiles
             {
                 haveFlag = true;
                 GameMaster.mainFlag.IsCaptured = true;
+                GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["gameMaster"]["flag"]).NoBorder());
 
                 return true;
             }

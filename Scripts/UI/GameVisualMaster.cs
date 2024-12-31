@@ -79,10 +79,10 @@ namespace UserInterface
                     .Width(30)
                     .Label("[blue bold underline]PLAYER STATUS[/]")
                     .CenterLabel()
-                    .AddItem("Life", GameMaster.Player.Life, Color.Red)
-                    .AddItem("Speed", GameMaster.playerspeed, Color.Green)
-                    .AddItem("Power", GameMaster.Player.Power, Color.Blue)
-                    .AddItem("Attack", GameMaster.Player.Attack, Color.Purple), VerticalAlignment.Middle)
+                     .AddItem(MyText.text[MyText.language]["visualMaster"]["life"], GameMaster.Player.Life, Color.Red)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["speed"], GameMaster.playerspeed, Color.Green)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["power"], GameMaster.Player.Power, Color.Blue)
+                            .AddItem(MyText.text[MyText.language]["visualMaster"]["attack"], GameMaster.Player.Attack, Color.Purple), VerticalAlignment.Middle)
                       ).Expand().BorderColor(GameMaster.Player.Appearance));
 
 
@@ -318,7 +318,7 @@ namespace UserInterface
 
             sagrada.PixelWidth(1);
             MyText.PrintHitory();
-            Thread.Sleep(5000);
+            Thread.Sleep(8000);
         }
 
         public static void mainPage()

@@ -22,3 +22,8 @@ You and your fellow players have been summoned as guardians of Gaudí's legacy. 
 As you venture into winding corridors and hidden rooms, each player will face ingenious traps and challenges designed to test their ingenuity and strategy. The powers you possess will allow you to jump over walls, break traps, increase your speed, or even swap places with other competitors.
 But beware: in this game, everyone is a rival. Every decision counts, and each move may be the key to advancing or falling into another player's trap. The search is not only physical; it is also a mental battle where you must confront your own fears and doubts while trying to outpace your opponents.
 Who will be the first to find the lost piece? Who will emerge from the labyrinth with Gaudí's legacy in hand? The adventure begins now, and only one can claim victory. Good luck! This version sets a competitive atmosphere among players while maintaining the intriguing context of the labyrinth inspired by Gaudí. I hope you like it!
+
+Revisar todos los textos
+al que sube vida modificar vida ataque y poder
+hacer fondo negro
+si esquina ocupada en respawn matar al que esta en la esquina

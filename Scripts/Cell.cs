@@ -146,8 +146,7 @@ namespace MazeBuilder
         {
             Random rnd = new Random();
             GameMaster.Player.Life -= rnd.Next(2, 5);
-            GameDisplay.layoutGame["bottom"].Update(new Panel("Auch that me dolio").NoBorder());
-            if (GameMaster.Player.Life <= 0)
+            GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["damage"]).NoBorder());
             {
                 GameMaster.Player.Respawn(GameMaster.Player);
                 GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["damage"]).NoBorder());

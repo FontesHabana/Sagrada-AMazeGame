@@ -24,12 +24,12 @@ namespace LogicGame
         public static Menu CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
         public static Menu NumberOfPlayers = new Menu(Menu.NumberPlayer(), Menu.numberofplayeraction);
         public static Menu CopyPowerMenu = new Menu(Menu.PSwitch(), Menu.powercopy);
-        static string[] gamemusic = [Audio.music["game1"], Audio.music["game2"], Audio.music["game3"]];
+
         //Mis jugadores
         //Creo que la referencia no se usa
         public static List<Character> CharacterOption = [ new Character(position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
                                                new Character(position[0], Color.Red,new CanvasImage("Assets/pxjs3trcyyv71-06-removebg-preview.png"), "", 8, 3, PowerEnum.IncreaseSpeed, 6, 1, 3),
-                                               new Character(position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 12, 3, PowerEnum.IncreaseLife, 5, 3, 5),
+                                               new Character(position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 8, 3, PowerEnum.IncreaseLife, 5, 3, 4),
                                                new Character(position[0], Color.Green,new CanvasImage("Assets/pxjs3trcyyv71-05-removebg-preview.png"), "", 9, 4, PowerEnum.SwitchPlayer, 7, 2, 3),
                                                new Character(position[0], Color.Pink1,new CanvasImage("Assets/pxjs3trcyyv71-08-removebg-preview.png"), "", 10, 3, PowerEnum.DestroyTrap, 9, 2, 2),
                                                new Character(position[0], Color.Orange1,new CanvasImage("Assets/pxjs3trcyyv71-07-removebg-preview(1).png"), "", 10, 3, PowerEnum.NewTurn, 6, 1, 3),
@@ -43,18 +43,14 @@ namespace LogicGame
             GameDisplay.GameScreen();
             InitGame();
             //Para evaluar la cancion que está
-            int i = 0;
-            Audio.currentFile = gamemusic[i];
+            Audio.Game = true;
             //MazeCanvas.RefreshMaze();
             while (VictoryCondition() == 0)
             {
-                if (Audio.changesong)
-                {
-                    i += 1;
-                    Audio.currentFile = gamemusic[i % gamemusic.Length];
-                }
+
                 Turn();
             }
+
         }
         public static bool InitGame()
 
@@ -165,10 +161,8 @@ namespace LogicGame
                     if (Player.Movement(key))
                     {
                         playerspeed--;
-                        if (Player.HaveFlag())
-                        {
-                            GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["gameMaster"]["flag"]).NoBorder());
-                        }
+                        Player.HaveFlag();
+
                         Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
                     }
                 }
@@ -184,6 +178,7 @@ namespace LogicGame
                 }
                 if (VictoryCondition() > 0)
                 {
+                    Audio.Game = false;
                     Audio.currentFile = Audio.music["victory"];
                     GameDisplay.Victory(VictoryCondition());
                     break;
