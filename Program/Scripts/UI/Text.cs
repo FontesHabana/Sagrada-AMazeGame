@@ -89,6 +89,7 @@ namespace UserInterface
                   {"gameMaster",new Dictionary<string, string>(){
                     {"numberPlayers","Cantidad de jugadores"},
                     {"name","Escriba su nombre"},
+                    {"nameError","Su nombre es demasiado largo"},
                     {"character","Seleccione su personaje"},
                     {"flag","Ahora tienes la bandera"},
                   }}
@@ -161,6 +162,7 @@ namespace UserInterface
         {"gameMaster", new Dictionary<string, string>(){
              {"numberPlayers","Number of players"},
              {"name","Enter your name"},
+             {"nameError","Your name is too long"},
              {"character","Select your character"},
              {"flag","You now have the flag"}
         }}
@@ -236,6 +238,7 @@ namespace UserInterface
         {"gameMaster", new Dictionary<string, string>(){
              {"numberPlayers","Nombre de joueurs"},
              {"name","Entrez votre nom"},
+             {"nameError","Votre nom est trés grand"},
              {"character","Sélectionnez votre personnage"},
              {"flag","Vous avez maintenant le drapeau"}
         }}

@@ -90,7 +90,12 @@ namespace LogicGame
                 while (ValidateName(name))
                 {
                     Console.Clear();
+                    if (name.Length > 10)
+                    {
+                        AnsiConsole.Write(new Markup(MyText.text[MyText.language]["gameMaster"]["nameError"]).Centered());
+                    }
                     AnsiConsole.Write(new Markup(MyText.text[MyText.language]["gameMaster"]["name"]).Centered());
+
                     name = Console.ReadLine();
                 }
 
@@ -227,7 +232,7 @@ namespace LogicGame
         {
 
 
-            if (string.IsNullOrEmpty(s))
+            if (string.IsNullOrEmpty(s) || s.Length > 10)
             {
                 return true;
             }
