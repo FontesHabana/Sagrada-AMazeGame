@@ -348,6 +348,10 @@ namespace LogicGame
                     case 3:
                         Audio.currentFile = Audio.music["history"];
                         GameDisplay.Start();
+                        while (MyText.historyPlay)
+                        {
+                            Thread.Sleep(25);
+                        }
                         return true;
                     case 4:
                         return false;

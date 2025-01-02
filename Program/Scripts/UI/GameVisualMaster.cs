@@ -318,6 +318,7 @@ namespace UserInterface
 
             sagrada.PixelWidth(1);
             MyText.PrintHitory();
+
             Thread.Sleep(8000);
         }
 
