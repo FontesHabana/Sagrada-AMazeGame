@@ -7,7 +7,7 @@ namespace UserInterface
         public static string language = "es";
         public static int langIndex = 0;
         public static string[] allLanguage = ["es", "en", "fr"];
-        public static bool historyPlay;
+
 
 
         //Crear un diccionario con los textos en inglés y en español
@@ -261,7 +261,7 @@ namespace UserInterface
 
         public static void PrintHitory()
         {
-            historyPlay = true;
+
             foreach (var x in text[language]["text"]["title"])
             {
                 System.Console.Write(x);
@@ -283,7 +283,7 @@ namespace UserInterface
 
 
             }
-            historyPlay = false;
+
 
 
         }

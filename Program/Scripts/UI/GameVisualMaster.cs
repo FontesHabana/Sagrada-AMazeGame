@@ -365,6 +365,30 @@ namespace UserInterface
 
         }
 
+        public static void History()
+        {
+            Console.Clear();
+            AnsiConsole.Clear();
+
+
+            System.Console.WriteLine(MyText.text[MyText.language]["text"]["title"]);
+            Thread.Sleep(25);
+
+
+            foreach (char x in MyText.text[MyText.language]["text"]["content"])
+            {
+                if (x == '+')
+                {
+                    System.Console.WriteLine();
+                }
+                else
+                {
+                    System.Console.Write(x);
+                }
+
+
+            }
+        }
     }
 
 

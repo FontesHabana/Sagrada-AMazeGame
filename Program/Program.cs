@@ -29,7 +29,6 @@ class Program
             Audio.currentFile = Audio.music["selectionMenu"];
             GameDisplay.mainPage();
 
-
             ConsoleKeyInfo key = Console.ReadKey();
             InitMenu.ChangeOption(key);
             if (!InitMenu.actionMenu(key))
