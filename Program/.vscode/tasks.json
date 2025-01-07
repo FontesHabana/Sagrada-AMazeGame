@@ -1,0 +1,16 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "dotnet",
+			"task": "watch Sagrada",
+			"file": "D:\\01_proyectos\\Programación\\Maze Runners\\Sagrada\\Program\\Sagrada.csproj",
+			"problemMatcher": [],
+			"label": "dotnet: watch Sagrada",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

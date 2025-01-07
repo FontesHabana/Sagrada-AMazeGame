@@ -149,6 +149,9 @@ namespace LogicGame
             Player = players[turn];
             playerspeed = Player.Speed;
             Player.Power += Player.PowerIncrease;
+            //Vaciar el panel de información
+            GameDisplay.layoutGame["bottom"].Update(new Panel("").NoBorder()
+                       );
 
 
             while (true)

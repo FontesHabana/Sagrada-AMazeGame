@@ -142,6 +142,7 @@ namespace UserInterface
             layoutGame["MazeContainer"].Update(
                 new Panel(Align.Center(MazeCanvas.canvas))
             );
+
             PlayerStatus();
             VerticalMenu(showmenu);
 

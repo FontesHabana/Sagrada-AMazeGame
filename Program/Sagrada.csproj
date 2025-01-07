@@ -6,6 +6,8 @@
     <RootNamespace>Sagrada</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+     <PublishFormat>SelfContained</PublishFormat>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
   </PropertyGroup>
 
   <ItemGroup>
