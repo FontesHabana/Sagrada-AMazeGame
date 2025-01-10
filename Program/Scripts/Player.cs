@@ -209,7 +209,6 @@ namespace Tiles
             }
             return false;
         }
-        //Aumentar vida FALTAN COSAS POR HACER
         public static bool IncreaseLife(int life)
         {
             if (GameMaster.Player.Power >= 4)
@@ -221,7 +220,7 @@ namespace Tiles
             }
             return false;
         }
-        //Teletransportación
+
         public static bool SwitchPlayer(Character player)
         {
             if (GameMaster.Player.Power >= 5)
@@ -246,7 +245,7 @@ namespace Tiles
             }
             return false;
         }
-        //Destroy a trap
+
         public static bool DestroyTrap()
         {
 

@@ -17,7 +17,11 @@ namespace UserInterface
     }
     // Class responsible for managing game visual elements
     class GameDisplay
-    {// Static canvas representing the sagrada logo
+    {
+
+
+
+        // Static canvas representing the sagrada logo
         static CanvasImage sagrada = new CanvasImage("Assets/images_2_-01-removebg-preview.png");
         // Layout objects for game screen and initialization
         public static Layout layoutGame;
@@ -328,13 +332,16 @@ namespace UserInterface
         // Method to start the game
         public static void Start()
         {
+
             Console.Clear();
             AnsiConsole.Clear();
 
-            sagrada.PixelWidth(1);
-            MyText.PrintHitory();
 
-            Thread.Sleep(8000);
+            sagrada.PixelWidth(1);
+            History();
+
+            Console.ReadKey();
+
         }
         // Method to display main page
         public static void mainPage()
@@ -389,7 +396,13 @@ namespace UserInterface
             Console.Clear();
             AnsiConsole.Clear();
 
-
+            AnsiConsole.Write(
+                          new FigletText("Sagrada")
+                          .LeftJustified()
+                          .Color(Color.Blue)
+                          .Centered()
+                      );
+            System.Console.WriteLine("\n\n\n");
             System.Console.WriteLine(MyText.text[MyText.language]["text"]["title"]);
             Thread.Sleep(25);
 

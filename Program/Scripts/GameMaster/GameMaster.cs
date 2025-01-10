@@ -6,27 +6,31 @@ using System.Security.Cryptography.X509Certificates;
 using System.Diagnostics;
 
 namespace LogicGame
-{
+{   // This class manages the overall game logic and flow
     class GameMaster
     {
+
 
         public static List<Character> players = new List<Character>();
         public static int turn;
         public static int playeramount;
+        // Array of starting positions for each player
         public static (int, int)[] position = [(0, 0), (Maze.mainWidth - 1, Maze.mainHeight - 1), (Maze.mainWidth - 1, 0), (0, Maze.mainHeight - 1)];
-        //private static List<Color> appearance = [Color.Blue, Color.Red, Color.Green, Color.Yellow, Color.Orange1, Color.Black, Color.DeepPink1];
+
+        // Current active player
         public static Character Player { get; set; }
+        // Speed of the current player
         public static int playerspeed = 0;
         public static Flag mainFlag = new Flag((Maze.mainHeight / 2, Maze.mainWidth / 2), Color.DarkMagenta);
-        //Listas para ejecutar los menus
+        // Menus used in the game
         public static Menu GameMenu = new Menu(Menu.GameMenu(), Menu.action);
         public static Menu SwitchMenu = new Menu(Menu.PSwitch(), Menu.change);
         public static Menu CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
         public static Menu NumberOfPlayers = new Menu(Menu.NumberPlayer(), Menu.numberofplayeraction);
         public static Menu CopyPowerMenu = new Menu(Menu.PSwitch(), Menu.powercopy);
 
-        //Mis jugadores
-        //Creo que la referencia no se usa
+        // Available character options
+
         public static List<Character> CharacterOption = [ new Character(position[0], Color.Blue,new CanvasImage("Assets/pxjs3trcyyv71-01-removebg-preview.png"), "", 10, 3, PowerEnum.JumpWall, 8, 1, 2),
                                                new Character(position[0], Color.Red,new CanvasImage("Assets/pxjs3trcyyv71-06-removebg-preview.png"), "", 8, 3, PowerEnum.IncreaseSpeed, 6, 1, 3),
                                                new Character(position[0], Color.Yellow,new CanvasImage("Assets/pxjs3trcyyv71-03-removebg-preview.png"), "", 8, 3, PowerEnum.IncreaseLife, 5, 3, 4),
@@ -37,14 +41,12 @@ namespace LogicGame
 
 
 
-        //Variable speed modificar más adelante
+        // Main game method
         public static void Game()
         {
             GameDisplay.GameScreen();
             InitGame();
-            //Para evaluar la cancion que está
             Audio.Game = true;
-            //MazeCanvas.RefreshMaze();
             while (VictoryCondition() == 0)
             {
 
@@ -52,40 +54,46 @@ namespace LogicGame
             }
 
         }
+        // Initialization method
         public static bool InitGame()
 
         {
+            // Reset the GameMenu
             GameMenu = new Menu(Menu.GameMenu(), Menu.action);
-
+            // Reset the CharacterSelection menu
             CharacterSelection = new Menu(Menu.CharacterList(), Menu.charactersaction);
-
+            // Set the CharacterSelection menu options
             CharacterSelection.MenuOption = Menu.CharacterList();
             GameDisplay.InitLayout();
+            // Generate character images for the selection process
             GameDisplay.GenerateCharacter(30);
-            // playeramount = 4;
+            // Clear the list of players
             players.Clear();
-            //Cuantos jugadores menu
 
+            // Loop to select the number of players
             while (true)
             {
                 Console.Clear();
+                // Display the number of players menu
                 AnsiConsole.Write(GameDisplay.HorizontalMenu(NumberOfPlayers, MyText.text[MyText.language]["gameMaster"]["numberPlayers"]));
 
                 ConsoleKeyInfo key = Console.ReadKey();
                 NumberOfPlayers.ChangeOption(key);
-
+                // Check if the selected option should trigger an action
                 if (NumberOfPlayers.actionMenu(key))
                 {
-                    break;
+                    break;// Exit the loop if an action was triggered
                 }
 
             }
+            // Loop to initialize each player
             for (int i = 0; i < playeramount; i++)
             {
-                //Escribe tu nombre
+                // Players name input
                 Console.Clear();
                 AnsiConsole.Write(new Markup(MyText.text[MyText.language]["gameMaster"]["name"]).Centered());
                 //Hacer que el nombre sea válido;
+                // Input validation for player name
                 string? name = Console.ReadLine();
                 while (ValidateName(name))
                 {
@@ -99,21 +107,25 @@ namespace LogicGame
                     name = Console.ReadLine();
                 }
 
-                //Selecciona tu personaje
+                // Character selection
 
                 while (true)
                 {
                     GameDisplay.PrintSelectionMenu(CharacterSelection, MyText.text[MyText.language]["gameMaster"]["character"]);
-
+                    // Read a key press from the console
                     ConsoleKeyInfo key = Console.ReadKey();
+
+                    // Change the selected option in the CharacterSelection menu
                     CharacterSelection.ChangeOption(key);
 
+                    // Check if the selected option should trigger an action
                     if (CharacterSelection.actionMenu(key))
                     {
-                        break;
+                        break;// Exit the loop if an action was triggered
                     }
 
                 }
+                // Set up the player with the chosen name and character
                 players[i].Name = name;
                 players[i].Position = position[i];
                 players[i].haveFlag = false;
@@ -125,35 +137,42 @@ namespace LogicGame
 
 
             GameDisplay.GenerateCharacter(16);
+            // Randomly determine the first player's turn
             Random rand = new Random();
             turn = rand.Next(0, playeramount);
-
+            // Generate the main maze
             Maze.MainMaze();
+            // Print the initial maze
             MazeCanvas.PrintMaze();
-
+            // Place players on the maze
             for (int i = 0; i < playeramount; i++)
             {
                 Maze.mainMaze[players[i].Position.Item1, players[i].Position.Item2].Occuped = true;
                 MazeCanvas.AddTile(players[i]);
             }
+            // Place the main flag on the maze
             mainFlag.Position = (Maze.mainHeight / 2, Maze.mainWidth / 2);
             MazeCanvas.AddTile(mainFlag);
 
-            //MazeCanvas.RefreshMaze();
 
             return true;
         }
-
+        // Turn method
         public static void Turn()
         {
+            // Set the current player as the active player
             Player = players[turn];
+
+            // Set the player's speed
             playerspeed = Player.Speed;
+
+            // Increase the player's power
             Player.Power += Player.PowerIncrease;
-            //Vaciar el panel de información
-            GameDisplay.layoutGame["bottom"].Update(new Panel("").NoBorder()
-                       );
 
+            // Clear the bottom panel of the game display
+            GameDisplay.layoutGame["bottom"].Update(new Panel("").NoBorder());
 
+            // Main loop for the player's turn
             while (true)
             {
                 Normalize();
@@ -163,7 +182,7 @@ namespace LogicGame
                 //Read a key for a action
                 ConsoleKeyInfo key = Console.ReadKey();
 
-                //Move action
+                // Handle movement action
                 if (playerspeed > 0)
                 {
                     if (Player.Movement(key))
@@ -174,26 +193,29 @@ namespace LogicGame
                         Maze.mainMaze[Player.Position.Item1, Player.Position.Item2].ApplyEffect();
                     }
                 }
-                //Change menu option
+                // Handle movement action
 
                 GameMenu.ChangeOption(key);
                 if (GameMenu.actionMenu(key))
-                {
+                {// If the 'Action' key is pressed and it's not the last option
                     if (GameMenu.GetList()[3].Item1)
                     {
-                        break;
+                        break;// End the turn
                     }
                 }
+                // Check for victory condition
                 if (VictoryCondition() > 0)
                 {
+                    // Set game audio to false and play victory music
                     Audio.Game = false;
                     Audio.currentFile = Audio.music["victory"];
+                    // Display victory screen
                     GameDisplay.Victory(VictoryCondition());
-                    break;
+                    break; // Exit the turn loop
                 }
 
             }
-
+            // Move to the next player's turn
             NextTurn();
         }
 
@@ -203,7 +225,7 @@ namespace LogicGame
             turn++;
             turn %= playeramount;
         }
-
+        // Check victory condition
         public static int VictoryCondition()
         {
             for (int i = 0; i < players.Count; i++)
@@ -218,7 +240,7 @@ namespace LogicGame
         }
 
 
-
+        // Normalize player stats
         public static void Normalize()
         {
             if (Player.Power > Player.MaxPower)
@@ -231,6 +253,7 @@ namespace LogicGame
                 Player.Life = Player.MaxLife;
             }
         }
+        // Validate player name
         static bool ValidateName(string s)
         {
 

@@ -26,6 +26,7 @@ class Program
 
         while (true)
         {
+
             Audio.currentFile = Audio.music["selectionMenu"];
             GameDisplay.mainPage();
 
