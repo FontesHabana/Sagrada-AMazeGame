@@ -9,19 +9,22 @@ namespace MazeBuilder
         W,
     };
     public class Maze
-    {  //Tamaño del laberinto principal
+    {  //Main maze dimensions
         public static int mainWidth = 13;
         public static int mainHeight = 13;
         public static Cell[,] mainMaze;
-        //Laberinto principal
+
 
         #region mainMaze
+        // Main maze generation method
         public static void MainMaze()
-        { //Los laberintos están enumerados en el sentido de las agujas del reloj comenzando en 0,0 y el central es el 0 ;
+        {
+            //the five mazes are enumerated in the next order 0.0 , 0.max , max,max, max.0
+            // Generates the main 13x13 maze
             mainMaze = new Cell[mainWidth, mainHeight];
             int xcenter = (mainWidth - 1) / 2;
             int ycenter = (mainHeight - 1) / 2;
-            //Genera los laberintos auxiliares
+            // Generates the auxiliar maze
             //0
             Cell[,] aux0 = GenerateMaze(5, 5);
             //1
@@ -32,7 +35,7 @@ namespace MazeBuilder
             Cell[,] aux3 = GenerateMaze(xcenter - 2, ycenter + 3);
             //4
             Cell[,] aux4 = GenerateMaze(xcenter + 3, ycenter - 2);
-            //Coloca los laberintos auxiliares en el laberinto principal
+            // Combines four 5x5 auxiliary mazes
             //1
             for (int x = 0; x < xcenter - 2; x++)
             {
@@ -74,9 +77,9 @@ namespace MazeBuilder
                 }
             }
 
-            //Fija celdas estaticas
+
             StaticCell();
-            //Generar trampas en el laberinto con una probabilidad de 1/5
+            //Generate traps with 1/5%
             Random rnd = new Random();
             for (int x = 1; x < mainWidth - 2; x++)
             {
@@ -115,8 +118,8 @@ namespace MazeBuilder
 
         }
 
-        //Declarar celdas específicas. Esta disposición es personal con el fin de conectar los distintos espacios de una forma más equilibrada.
-        //Es totalmente una decisión personal
+
+        // Method to configure static cells
         public static void StaticCell()
         {
             int xcenter = (mainWidth - 1) / 2;
@@ -158,7 +161,7 @@ namespace MazeBuilder
             mainMaze[xcenter - 3, ycenter + 2].Wall[(int)WallDir.E] = false;
 
             #region 13x13
-            //A partir de aquí es solo para 13x13       
+            //THis is for a 13x13 maze       
             //1-4
             mainMaze[0, 8].Wall[(int)WallDir.S] = false;
             mainMaze[0, 9].Wall[(int)WallDir.N] = false;
@@ -193,14 +196,15 @@ namespace MazeBuilder
 
 
         #endregion
-        //Maze algorithm
+
         #region mazealgorithm
+        //Maze generation algorithm
         public static Cell[,] GenerateMaze(int MX, int MY)
 
-        {   //Variables de tamaño del laberinto
+        {   //MAze size
             int heigth = MY;
             int width = MX;
-            //Stack con las celdas visitadas
+            // Implements a stack-based maze generation algorithm
             Stack<Cell> Mystack = new Stack<Cell>();
             //Values of Initial Array
             Cell[,] MyMaze = new Cell[width, heigth];
@@ -217,7 +221,7 @@ namespace MazeBuilder
             Mystack.Push(currentCell);
 
 
-            //Do Maze Algorithm
+            // Uses depth-first search to create a perfect maze
             while (Mystack.Count > 0)
             {
                 //Actualiza el valor de la celda actual
@@ -234,7 +238,7 @@ namespace MazeBuilder
 
 
 
-
+        // Helper method for maze generation
         private static List<int> GetUnvisitedNeighbors(Cell currentCell, Cell[,] maze, int width, int height)
         {
 
@@ -274,7 +278,7 @@ namespace MazeBuilder
             return neighbors;
         }
 
-
+        // Helper method for maze generation
         private static void RemoveWall(List<int> neighbors, Cell currentCell, Cell[,] maze, Stack<Cell> Mystack)
         {
             if (neighbors.Count != 0)
@@ -282,7 +286,7 @@ namespace MazeBuilder
                 Random rnd = new Random();
                 int next = neighbors[rnd.Next(neighbors.Count)];
 
-                // Eliminar la pared entre dos celdas vecinas
+                // Remove a wall
                 switch (next)
                 {   //North
                     case 0:

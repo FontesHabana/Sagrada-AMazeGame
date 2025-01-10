@@ -17,7 +17,7 @@ class Program
     public static void Main(string[] args)
     {
         AnsiConsole.Background = Color.Black;
-        // Iniciar la reproducción de audio en un hilo separado
+        // Start music in a new thread
         Audio.currentFile = Audio.music["history"];
         // Thread audioThread = new Thread(() => Audio.PlayAudio(Audio.currentFile));
         Thread audioThread = new Thread(Audio.PlayAudio);

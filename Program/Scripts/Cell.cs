@@ -24,10 +24,10 @@ namespace MazeBuilder
             Occuped = false;
             IsATramp = false;
         }
-
+        //Constructor
         public virtual void ApplyEffect()
         {
-
+            // Empty method, intended to be overridden
         }
 
 
@@ -40,14 +40,14 @@ namespace MazeBuilder
     }
     public class Trap : Cell
     {
-        //Propiedades
+
         public TrapEffect Effect { get; set; }
         //constructor
         public Trap(int x, int y) : base(x, y)
         {
             Coordenada = (x, y);
             Visited = true;
-            //Establece el efecto de la trampa
+            // Set random trap effect
             Random rnd = new Random();
             int effect = rnd.Next(0, 3);
             switch (effect)
@@ -69,7 +69,7 @@ namespace MazeBuilder
 
 
         }
-        //Sobrescribe el poder que no aplica una celda para que lo ejecute la trampa
+
         public override void ApplyEffect()
         {
             switch (Effect)
@@ -89,12 +89,12 @@ namespace MazeBuilder
             }
         }
 
-        //Genera un nuevo laberinto sobre el cual juegan los personajes
-        //Pensar como modificar el código para que no imprima el laberinto en la lógica
+
+
         private static void NewMaze()
         {
 
-            //Genera el laberinto
+            // Generate new maze logic
             Maze.MainMaze();
             GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["newMaze"]).NoBorder());
         }
@@ -103,7 +103,8 @@ namespace MazeBuilder
             Random rnd = new Random();
             int newX;
             int newY;
-            //Establece una posición de la x en el borde del lado opuesto del tablero
+            // Determine new position based on current player location
+            //x position
             if (GameMaster.Player.Position.Item1 < 6)
             {
                 newX = rnd.Next(Maze.mainWidth - 4, Maze.mainWidth - 1);
@@ -112,7 +113,7 @@ namespace MazeBuilder
             {
                 newX = rnd.Next(1, 4);
             }
-            //Establece una posición de la y en el borde del lado opuesto del tablero
+            //y position
             if (GameMaster.Player.Position.Item2 < 6)
             {
                 newY = rnd.Next(Maze.mainHeight - 4, Maze.mainHeight - 1);
@@ -121,18 +122,23 @@ namespace MazeBuilder
             {
                 newY = rnd.Next(1, 4);
             }
+
+            // Check if new position is occupied
             if (!Maze.mainMaze[newX, newY].Occuped)
             {
+                // Move player to new position
                 Maze.mainMaze[GameMaster.Player.Position.Item1, GameMaster.Player.Position.Item2].Occuped = false;
                 GameMaster.Player.Position = (newX, newY);
                 Maze.mainMaze[newX, newY].Occuped = true;
             }
             else
             {
+                // If occupied, recursively call Teletransportation
                 Teletransportation();
                 return true;
             }
 
+            // Update flag position if necessary
             if (GameMaster.Player.haveFlag)
             {
                 GameMaster.mainFlag.Position = GameMaster.Player.Position;
@@ -153,7 +159,7 @@ namespace MazeBuilder
                 GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["damage"]).NoBorder());
             }
 
-            //Agregar método que te regresa al inicio
+
         }
     }
 

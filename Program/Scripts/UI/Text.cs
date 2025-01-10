@@ -280,8 +280,6 @@ namespace UserInterface
                     System.Console.Write(x);
                     Thread.Sleep(25);
                 }
-
-
             }
 
 

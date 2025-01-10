@@ -30,7 +30,7 @@ namespace UserInterface
                     }
                 }
             }
-            //Imprimir Celdas
+            //Print cells
             for (int x = 0; x < Maze.mainWidth; x++)
             {
                 for (int y = 0; y < Maze.mainHeight; y++)
@@ -118,16 +118,7 @@ namespace UserInterface
         }
 
 
-        //Elimina una pieza del tablero
-        public static void RemoveTile(Tile tile)
-        {
-            canvas.SetPixel(3 * tile.Position.Item1 + 1, 3 * tile.Position.Item2 + 1, Color.White);
-            canvas.SetPixel(3 * tile.Position.Item1 + 2, 3 * tile.Position.Item2 + 1, Color.White);
-            canvas.SetPixel(3 * tile.Position.Item1 + 1, 3 * tile.Position.Item2 + 2, Color.White);
-            canvas.SetPixel(3 * tile.Position.Item1 + 2, 3 * tile.Position.Item2 + 2, Color.White);
 
-        }
-        //Añade una pieza en el tablero
         public static void AddTile(Tile tile)
         {
 
@@ -137,7 +128,7 @@ namespace UserInterface
             canvas.SetPixel(3 * tile.Position.Item1 + 2, 3 * tile.Position.Item2 + 2, tile.Appearance);
             ;
         }
-        //Esto no va aquí esto va en un generico de la pantalla
+
 
         public static void ShowTrap()
         {
@@ -158,8 +149,7 @@ namespace UserInterface
 
             AnsiConsole.Write(GameDisplay.layoutGame);
 
-            ///AnsiConsole.Clear();
-            //AnsiConsole.Write(canvas);
+
         }
 
     }

@@ -15,20 +15,20 @@ namespace UserInterface
         menuS,
 
     }
-    //Asignar nombre de cada personaje
-    //Creo que estas referencias no serna necesarias 
-
+    // Class responsible for managing game visual elements
     class GameDisplay
-    {
+    {// Static canvas representing the sagrada logo
         static CanvasImage sagrada = new CanvasImage("Assets/images_2_-01-removebg-preview.png");
+        // Layout objects for game screen and initialization
         public static Layout layoutGame;
         public static Layout layoutInit;
-
+        // Current menu state
         public static MenuGame showmenu = MenuGame.menuG;
 
-
+        // Method to set up the game screen layout
         public static void GameScreen()
         {
+            // Create the main game screen layout
             layoutGame = new Layout("GameScreen")
                      .SplitColumns(
                          new Layout("MazeContainer"),
@@ -48,21 +48,25 @@ namespace UserInterface
                              new Layout("bottom")
                          )
                      );
-
+            // Set minimum size for maze container
             layoutGame["MazeContainer"].MinimumSize(85);
+            // Set ratio for top section
             layoutGame["top"].Ratio(3);
+            // Set ratio for character image
             layoutGame["Character Image"].Ratio(5);
 
         }
 
-
+        // Method to display player statu
         public static void PlayerStatus()
         {
 
-
+            // Update character image panel
             layoutGame["Character Image"].Update(
                     new Panel(
                 Align.Center(GameMaster.Player.Image).MiddleAligned()).Border(BoxBorder.Double).BorderColor(GameMaster.Player.Appearance).Expand());
+
+            // Update character name panel
             layoutGame["Character name"].Update(
                 new Panel(
             Align.Center(
@@ -71,7 +75,7 @@ namespace UserInterface
             .Expand().BorderColor(GameMaster.Player.Appearance));
 
 
-
+            // Update character status panel
             layoutGame["Character Status"].Update(
                 new Panel(
                     Align.Left(
@@ -89,11 +93,15 @@ namespace UserInterface
 
         }
 
+
+        // Method to display vertical menu
         public static void VerticalMenu(MenuGame showmenu)
-        {
+        {  // Create table for menu options
             var table = new Table();
             table.AddColumn(new TableColumn(MyText.text[MyText.language]["visualMaster"]["option"]).Centered());
+            // List to store menu items
             List<(bool, string)> m = new List<(bool, string)>();
+            // Populate menu items based on current menu state
             if (showmenu == MenuGame.menuG)
             {
                 m = GameMaster.GameMenu.GetList();
@@ -103,42 +111,45 @@ namespace UserInterface
                 m = GameMaster.SwitchMenu.GetList();
             }
 
-
+            // Add rows to the table based on menu items
             foreach (var item in m)
             {
                 if (item.Item1)
-                {
+                {// Highlight selected option
                     table.AddRow(new Markup($"[blue]> {item.Item2} [/]"));
                 }
                 else
-                {
+                { // Normal unselected option
                     table.AddRow(new Markup($"[white]  {item.Item2} [/]"));
                 }
             }
+            // Set table properties
             table.Border = TableBorder.HeavyHead;
             table.BorderColor(GameMaster.Player.Appearance);
             table.Expand();
 
 
-
+            // Update game option panel with the menu table
 
             layoutGame["GameOption"].Update(
                 Align.Center(table).VerticalAlignment(VerticalAlignment.Middle)
             );
 
         }
-
+        // Method to refresh maze visualization
         public static void RefreshMaze()
-        {
+        {// Print maze to canvas
             MazeCanvas.PrintMaze();
+            // Add player tiles to the canvas
             for (int i = 0; i < GameMaster.players.Count; i++)
             {
                 MazeCanvas.AddTile(GameMaster.players[i]);
             }
+            // Add main flag tile to the canvas
             MazeCanvas.AddTile(GameMaster.mainFlag);
 
 
-
+            // Update maze container in the game layout
             layoutGame["MazeContainer"].Update(
                 new Panel(Align.Center(MazeCanvas.canvas))
             );
@@ -146,7 +157,7 @@ namespace UserInterface
             PlayerStatus();
             VerticalMenu(showmenu);
 
-
+            // Clear console and redraw game layout
             Console.WriteLine();
             AnsiConsole.Clear();
 
@@ -156,9 +167,9 @@ namespace UserInterface
             //AnsiConsole.Write(canvas);
         }
 
-
+        // Method to generate character images
         public static void GenerateCharacter(int size)
-        {
+        {// Resize character images
             for (int i = 0; i < GameMaster.CharacterOption.Count; i++)
             {
                 GameMaster.CharacterOption[i].Image.MaxWidth(size);
@@ -167,6 +178,7 @@ namespace UserInterface
 
 
         #region  InitGameMenus
+        // Method to create vertical menu for initialization
         public static Table VerticalMenuInit(Menu menu)
         {
             var table = new Table();
@@ -174,7 +186,7 @@ namespace UserInterface
             List<(bool, string)> m = menu.GetList();
 
 
-
+            // Add rows to the table based on menu items
             foreach (var item in m)
             {
                 if (item.Item1)
@@ -187,7 +199,7 @@ namespace UserInterface
                 }
             }
             table.Border = TableBorder.Minimal;
-            //table.Expand();
+
 
             return table;
         }
@@ -209,11 +221,9 @@ namespace UserInterface
                                  ))
                      );
 
-            // layoutInit["CharacterSpecification"].Ratio(40);
-            // layoutInit["CharacterImage"].Ratio(40);
+
             layoutInit["Menu"].Size(8);
             layoutInit["Items"].Size(12);
-            //
 
 
         }
@@ -226,11 +236,12 @@ namespace UserInterface
             List<(bool, string)> m = menu.GetList();
 
 
-
+            // Add rows to the table based on menu items
             foreach (var item in m)
             {
                 if (item.Item1)
                 {
+                    // Highlight selected option
                     table.AddRow(new Markup($"[blue] < {item.Item2} > [/]"));
                 }
             }
@@ -240,17 +251,20 @@ namespace UserInterface
             return table;
         }
 
+
+        // Method to print character selection menu
         public static void PrintSelectionMenu(Menu menu, string title)
         {
             Console.Clear();
             layoutInit["Menu"].Update(
                new Panel(Align.Center(HorizontalMenu(menu, title))).NoBorder()
            );
+            // Reference variable for selected option
             string Sreference = "";
 
 
 
-
+            // Arrays of strings for character options and histories
             foreach (var item in menu.MenuOption)
             {
                 if (item.Item1)
@@ -276,15 +290,15 @@ namespace UserInterface
                                          MyText.text[MyText.language]["visualMaster"]["chameleonMind"]];
 
 
-
+            // Iterate through menu options
             for (int i = 0; i < stringoption.Length; i++)
             {
                 if (Sreference == stringoption[i])
-                {
+                { // Update character image panel
                     layoutInit["CharacterImage"].Update(
                    new Panel(Align.Center(GameMaster.CharacterOption[i].Image)).BorderColor(GameMaster.CharacterOption[i].Appearance).HeavyBorder()
                   );
-
+                    // Update character specification panel
                     layoutInit["Items"].Update(
                         new Panel(
                             Align.Left(
@@ -311,7 +325,7 @@ namespace UserInterface
         }
 
         #endregion
-
+        // Method to start the game
         public static void Start()
         {
             Console.Clear();
@@ -322,30 +336,32 @@ namespace UserInterface
 
             Thread.Sleep(8000);
         }
-
+        // Method to display main page
         public static void mainPage()
         {
 
             AnsiConsole.Clear();
 
-            //Presentación del juego
+            //Game presentation
 
-            //Menú de inicio
-            // System.Console.WriteLine("\n \n \n");
             AnsiConsole.Write(
                 new FigletText("Sagrada")
                 .LeftJustified()
                 .Color(Color.Blue)
                 .Centered()
             );
-
+            // Display initial menu
             AnsiConsole.Write(VerticalMenuInit(Program.InitMenu).Centered().Expand());
-
+            // Display sagrada logo
             AnsiConsole.Write(sagrada);
         }
+
+
+        //Victory visualisation
         public static void Victory(int winner)
         {
             AnsiConsole.Clear();
+            //victory text
             Layout victory = new Layout("victory").SplitRows(
                 new Layout("top"),
                 new Layout("image")
@@ -356,6 +372,7 @@ namespace UserInterface
                 .Color(Color.Blue)
                 .Centered());
 
+            //player image
             GameDisplay.GenerateCharacter(25);
             victory["image"].Update(new Panel(Align.Center(GameMaster.players[winner - 1].Image)).Expand().NoBorder());
 
@@ -365,6 +382,7 @@ namespace UserInterface
             Thread.Sleep(5000);
 
         }
+
 
         public static void History()
         {

@@ -4,20 +4,20 @@ using UserInterface;
 namespace Tiles
 {
     class Tile
-    { //Propiedades de la clase
+    {  // Properties of the class
         public (int, int) Position { get; set; }
         public Color Appearance { get; set; }
         public (int, int)[] direction = { (0, -1), (1, 0), (0, 1), (-1, 0) };
 
-
+        // Constructor
         public Tile((int, int) position, Color appearance)
         {
             Position = position;
             Appearance = appearance;
 
         }
-        //Definimos el movimiento de una ficha en el tablero
-        //
+
+        // Method for tile movement
         public bool Movement(ConsoleKeyInfo keyInput)
         {
             ConsoleKey[] key = { ConsoleKey.W, ConsoleKey.D, ConsoleKey.S, ConsoleKey.A };

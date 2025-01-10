@@ -6,21 +6,21 @@ namespace LogicGame
 {
 
     class Menu
-    {  //General 
+    {  // Properties
         public List<(bool, string)> MenuOption { get; set; }
-        //Create a delegate
+        // Delegate for menu actions
         public delegate bool ActionMenu(ConsoleKeyInfo key);
-        //Variable delegate
+        // Variable to hold the current action
         public ActionMenu actionMenu { get; set; }
 
 
 
-        //Listas de todos los menus del juego
-        //Menu del juego
+        //List 
+        //Game menu
         public static ActionMenu action = MenuAction;
-        //Menu Principal
+        //Main Menu
         public static ActionMenu change = SwitchMenu;
-        //Menu de inicio
+        //Start Menu
         public static ActionMenu initaction = InitAction;
         //Number of players
         public static ActionMenu numberofplayeraction = NumberOfPlayerAction;
@@ -30,17 +30,23 @@ namespace LogicGame
         //CopyPower
         public static ActionMenu powercopy = CopyPowerAction;
 
+        //Constructor
         public Menu(List<(bool, string)> menu, ActionMenu action)
         {
             MenuOption = menu;
             actionMenu = action;
         }
-        //Crear un metodo para cada lista
+
+
+
+        // Static methods for creating different types of menus
+
         public static List<(bool, string)> InitMenu()
         {
 
             return new List<(bool, string)> { (true, MyText.text[MyText.language]["menu"]["newGame"]), (false, MyText.text[MyText.language]["menu"]["instruction"]), (false, MyText.text[MyText.language]["menu"]["language"]), (false, MyText.text[MyText.language]["menu"]["history"]), (false, MyText.text[MyText.language]["menu"]["exit"]) };
         }
+
         public static List<(bool, string)> NumberPlayer()
         {
 
@@ -72,10 +78,10 @@ namespace LogicGame
         }
 
 
-
+        // Method for changing selected menu option
         public bool ChangeOption(ConsoleKeyInfo key)
         {
-
+            // Handles arrow key presses to navigate menu options
             if (key.Key == ConsoleKey.UpArrow)
             {
                 for (var i = 0; i < MenuOption.Count; i++)
@@ -127,6 +133,7 @@ namespace LogicGame
 
         }
 
+        // Static methods for handling different menu actions
         static bool MenuAction(ConsoleKeyInfo key)
         {
 

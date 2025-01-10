@@ -17,7 +17,7 @@ namespace Tiles
     class Character : Tile
     {
         #region  Properties
-        //Propiedades del jugador
+        // Properties of the character
         public string Name { get; set; }
         public int Life { get; set; }
         public int MaxLife { get; set; }
@@ -34,7 +34,7 @@ namespace Tiles
         public CanvasImage Image { get; set; }
         #endregion
 
-
+        // Constructor
         public Character((int, int) position, Color appearance, CanvasImage image, string name, int life, int speed, PowerEnum specialpower, int power, int powerincrease, int attack) : base(position, appearance)
         {
             Name = name;
@@ -53,6 +53,7 @@ namespace Tiles
 
         }
 
+        // Respawn method
         public void Respawn(Character player)
         {
             player.Life = player.MaxLife;
@@ -74,6 +75,7 @@ namespace Tiles
             haveFlag = false;
         }
 
+        // Attack method
         public bool AttackTo()
         {
             if (Power >= 2)
@@ -103,6 +105,7 @@ namespace Tiles
             return false;
         }
 
+        // Show Trap method
         public bool ShowTrap()
         {
             if (Power >= 3)
@@ -116,6 +119,7 @@ namespace Tiles
 
             return false;
         }
+
 
         //Check if a player have a flag
         public bool HaveFlag()
@@ -155,10 +159,9 @@ namespace Tiles
 
     }
     static class Power
-    {   //Detener turno, es poner un contador a caada player
-        //Ataque con distancia?
+    {
 
-
+        // Methods for using special powers
         //Atravesar paredes y trampas
         public static bool JumpWall(ConsoleKeyInfo keyInput)
         {
