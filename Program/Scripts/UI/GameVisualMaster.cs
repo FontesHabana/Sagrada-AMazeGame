@@ -74,7 +74,7 @@ namespace UserInterface
             layoutGame["Character name"].Update(
                 new Panel(
             Align.Center(
-            new Markup($"{GameMaster.Player.Name} [blue]Is your turn![/]"),
+            new Markup(GameMaster.Player.Name + MyText.text[MyText.language]["visualMaster"]["yourturn"]),
             VerticalAlignment.Middle))
             .Expand().BorderColor(GameMaster.Player.Appearance));
 
