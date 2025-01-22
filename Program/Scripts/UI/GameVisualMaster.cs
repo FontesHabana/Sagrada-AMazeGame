@@ -246,7 +246,7 @@ namespace UserInterface
                 if (item.Item1)
                 {
                     // Highlight selected option
-                    table.AddRow(new Markup($"[blue] < {item.Item2} > [/]"));
+                    table.AddRow(new Markup($"[blue] ▼ {item.Item2} ▼ [/]"));
                 }
             }
             table.Border = TableBorder.Minimal;
