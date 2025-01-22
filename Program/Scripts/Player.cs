@@ -293,67 +293,25 @@ namespace Tiles
             {
                 case PowerEnum.JumpWall:
 
-                    if (Power.JumpWall(Console.ReadKey()))
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["jump"]).NoBorder());
-                    }
-                    else
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"] + MyText.text[MyText.language]["menu"]["noWall"]).NoBorder());
-                    }
+                    Power.JumpWall(Console.ReadKey());
                     break;
                 case PowerEnum.IncreaseLife:
-                    if (Power.IncreaseLife(3))
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseLife"]).NoBorder());
-                    }
-                    else
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
-                    }
+                    Power.IncreaseLife(3);
                     break;
                 case PowerEnum.IncreaseSpeed:
-                    if (Power.IncreaseSpeed(4))
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseSpeed"]).NoBorder());
-                    }
-                    else
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
-                    }
+                    Power.IncreaseSpeed(4);
+
                     break;
                 case PowerEnum.SwitchPlayer:
-                    if (GameMaster.Player.Power >= 5)
-                    {
-                        GameMaster.SwitchMenu.actionMenu(key);
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["switch"]).NoBorder());
-                    }
-                    else
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
-                    }
-
-
+                    GameMaster.SwitchMenu.actionMenu(key);
                     break;
                 case PowerEnum.DestroyTrap:
-                    if (Power.DestroyTrap())
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["destroyTrap"]).NoBorder());
-                    }
-                    else
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
-                    }
+                    Power.DestroyTrap();
+
                     break;
                 case PowerEnum.NewTurn:
-                    if (Power.NewTurn())
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["newTurn"]).NoBorder());
-                    }
-                    else
-                    {
-                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
-                    }
+                    Power.NewTurn();
+
                     break;
 
                 default:

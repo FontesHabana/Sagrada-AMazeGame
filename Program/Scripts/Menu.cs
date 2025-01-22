@@ -478,7 +478,14 @@ namespace LogicGame
                         }
                     }
 
-                    Power.CopyPower(p[playerselected], k);
+                    if (Power.CopyPower(p[playerselected], k))
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["increaseLife"]).NoBorder());
+                    }
+                    else
+                    {
+                        GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["menu"]["noPower"]).NoBorder());
+                    }
 
                     a = false;
                 }
