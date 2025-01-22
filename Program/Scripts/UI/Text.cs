@@ -83,6 +83,7 @@ namespace UserInterface
                     {"speed","Pasos"},
                     {"power","Poder"},
                     {"attack","Ataque"},
+                    {"yourturn"," es tu turno"},
 
                 //Victory
                    {"victory","VICTORIA"}
@@ -157,6 +158,7 @@ namespace UserInterface
              {"speed","Steps"},
              {"power","Power"},
              {"attack","Attack"},
+             {"yourturn"," is your turn"},
              //Victory
              {"victory","VICTORY"}
         }},
@@ -233,6 +235,7 @@ namespace UserInterface
              {"speed","Pas"},
              {"power","Pouvoir"},
              {"attack","Attaque"},
+             {"yourturn"," c'est ton tour  "},
              //Victory
              {"victory","VICTOIRE"}
         }},
