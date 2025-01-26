@@ -124,7 +124,7 @@ namespace MazeBuilder
         {
             int xcenter = (mainWidth - 1) / 2;
             int ycenter = (mainHeight - 1) / 2;
-            //Celdas fijas para cualquier laberinto cuadrado de lado 2k+1 con k>2
+            //Static Cell for any square maze witz size 2k+1 with k>2
             //Center Cell
             mainMaze[xcenter, ycenter].Wall[(int)WallDir.N] = false;
             mainMaze[xcenter, ycenter - 1].Wall[(int)WallDir.S] = false;
@@ -224,7 +224,7 @@ namespace MazeBuilder
             // Uses depth-first search to create a perfect maze
             while (Mystack.Count > 0)
             {
-                //Actualiza el valor de la celda actual
+                //Change value of actual cell
                 currentCell = Mystack.Peek();
                 //Step 1: Create a set of the unvisted neighbours
                 List<int> neighbors = GetUnvisitedNeighbors(currentCell, MyMaze, width, heigth);

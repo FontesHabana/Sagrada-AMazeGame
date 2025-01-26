@@ -127,6 +127,7 @@ namespace LogicGame
                 }
                 // Set up the player with the chosen name and character
                 players[i].Name = name;
+                players[i].InitialPosition = position[i];
                 players[i].Position = position[i];
                 players[i].haveFlag = false;
 

@@ -60,17 +60,27 @@ namespace Tiles
             player.Power = player.MaxPower;
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = false;
 
-            if (Maze.mainMaze[GameMaster.position[GameMaster.players.IndexOf(player)].Item1, GameMaster.position[GameMaster.players.IndexOf(player)].Item2].Occuped)
+
+            for (int i = 0; i < GameMaster.players.Count; i++)
             {
-                foreach (var item in GameMaster.players)
+                if (GameMaster.players[i].Position == player.InitialPosition)
                 {
-                    if (item.Position == GameMaster.position[GameMaster.players.IndexOf(player)])
-                    {
-                        Respawn(item);
-                    }
+                    GameMaster.players[i].Position = GameMaster.players[i].InitialPosition;
+                    //Respawn(GameMaster.players[i]);
+                    Console.Clear();
+                    System.Console.WriteLine(GameMaster.players[i].Name);
+                    Thread.Sleep(2000);
                 }
             }
-            Position = GameMaster.position[GameMaster.players.IndexOf(player)];
+            /* foreach (var item in GameMaster.players)
+             {
+                 if (item.Position == player.InitialPosition)
+                 {
+                     Respawn(item);
+                 }
+             }*/
+
+            Position = player.InitialPosition;
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
             haveFlag = false;
         }
@@ -92,7 +102,7 @@ namespace Tiles
                                 if (GameMaster.players[j].Position == (Position.Item1 + direction[i].Item1, Position.Item2 + direction[i].Item2))
                                 {
                                     GameMaster.players[j].Life -= Attack;
-                                    GameMaster.Player.Power -= 2;
+                                    Power -= 2;
                                 }
                             }
                         }

@@ -7,7 +7,7 @@ namespace UserInterface
     {
         public static bool isPlaying = true;
         public static bool Game;
-        //Determina el archivo de audio que se está reproduciendo
+        //Directory of audio archives
         public static string currentFile;
         public static Dictionary<string, string> music = new Dictionary<string, string>(){
             {"history","Assets/Music/Undertale OST - His Theme(MP3_160K).mp3" },
@@ -25,7 +25,6 @@ namespace UserInterface
         {
             int i = 0;
             Audio.currentFile = gamemusic[i];
-            // Cambia esto a la ruta de tu archivo
             while (isPlaying)
             {
 
@@ -38,7 +37,7 @@ namespace UserInterface
 
                     while (isPlaying && outputDevice.PlaybackState == PlaybackState.Playing)
                     {
-                        Thread.Sleep(100); // Espera mientras se reproduce el audio
+                        Thread.Sleep(100);
                         if (aux != currentFile)
                         {
                             break;
@@ -51,7 +50,8 @@ namespace UserInterface
                         i += 1;
                         Audio.currentFile = gamemusic[i % gamemusic.Length];
                     }
-                    outputDevice.Stop(); // Detener el dispositivo de salida si se debe parar
+                    //Stop reproduction
+                    outputDevice.Stop();
 
 
                 }
