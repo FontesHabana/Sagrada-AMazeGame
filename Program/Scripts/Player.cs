@@ -66,19 +66,8 @@ namespace Tiles
                 if (GameMaster.players[i].Position == player.InitialPosition)
                 {
                     GameMaster.players[i].Position = GameMaster.players[i].InitialPosition;
-                    //Respawn(GameMaster.players[i]);
-                    Console.Clear();
-                    System.Console.WriteLine(GameMaster.players[i].Name);
-                    Thread.Sleep(2000);
                 }
             }
-            /* foreach (var item in GameMaster.players)
-             {
-                 if (item.Position == player.InitialPosition)
-                 {
-                     Respawn(item);
-                 }
-             }*/
 
             Position = player.InitialPosition;
             Maze.mainMaze[player.Position.Item1, player.Position.Item2].Occuped = true;
