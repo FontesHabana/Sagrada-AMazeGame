@@ -453,7 +453,7 @@ namespace LogicGame
                     p.Add(GameMaster.players[i]);
                 }
             }
-            //Actualiza el menú para que la primera opción sea 1
+            //Change menu. First option is 1
             GameMaster.SwitchMenu.MenuOption[0] = (true, GameMaster.SwitchMenu.MenuOption[0].Item2);
 
 
