@@ -45,7 +45,7 @@ namespace LogicGame
         public static void Game()
         {
             GameDisplay.GameScreen();
-            InitGame();
+            NewGame();
             Audio.Game = true;
             while (VictoryCondition() == 0)
             {
@@ -55,7 +55,7 @@ namespace LogicGame
 
         }
         // Initialization method
-        public static bool InitGame()
+        public static bool NewGame()
 
         {
             // Reset the GameMenu
