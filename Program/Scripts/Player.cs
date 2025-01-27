@@ -108,7 +108,7 @@ namespace Tiles
         public bool ShowTrap()
         {
             if (Power >= 3)
-            {  //Meter esto en un método
+            {
                 Power -= 3;
 
                 return true;
@@ -161,7 +161,6 @@ namespace Tiles
     {
 
         // Methods for using special powers
-        //Atravesar paredes y trampas
         public static bool JumpWall(ConsoleKeyInfo keyInput)
         {
 
@@ -196,7 +195,6 @@ namespace Tiles
 
             return false;
         }
-        //Aumentar velocidad
         public static bool IncreaseSpeed(int speed)
         {
             if (GameMaster.Player.Power >= 3)
