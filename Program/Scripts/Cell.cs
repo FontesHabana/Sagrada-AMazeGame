@@ -96,6 +96,10 @@ namespace MazeBuilder
 
             // Generate new maze logic
             Maze.MainMaze();
+            foreach (var item in GameMaster.players)
+            {
+                Maze.mainMaze[item.Position.Item1, item.Position.Item2].Occuped = true;
+            }
             GameDisplay.layoutGame["bottom"].Update(new Panel(MyText.text[MyText.language]["trap"]["newMaze"]).NoBorder());
         }
         private static bool Teletransportation()
