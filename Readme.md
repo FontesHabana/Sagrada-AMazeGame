@@ -2,7 +2,7 @@
 
 <h1 align=center> SAGRADA </h2>
 
-<h2 align=center><a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&random=false&width=435&lines=Labyrinth+Game | Programming+Project;University+of+Havana | MATCOM;" alt="Typing SVG" /></a></h2>
+
 
 Welcome to **Sagrada**, an exciting multiplayer game inspired by the creative mind of Antonio Gaudí! This is my first project for my Computer Science degree, and I am thrilled to share it with you.
 
